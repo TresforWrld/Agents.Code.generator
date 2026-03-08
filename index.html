@@ -16,7 +16,7 @@
         html, body { background: var(--primary); color: var(--text); font-family: 'Rajdhani', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
         /* RINGS */
-        .rings-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
+        .rings-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: hidden; }
         .ring-el { position: absolute; top: 50%; left: 50%; border: 1.5px solid transparent; border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; will-change: transform; }
         .ring-el:nth-child(1) { width: 900px; height: 900px; margin: -450px 0 0 -450px; border-color: rgba(0,191,255,0.09); animation: spin1 22s linear infinite; }
         .ring-el:nth-child(2) { width: 650px; height: 650px; margin: -325px 0 0 -325px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border-color: rgba(198,168,92,0.07); animation: spin2 15s linear infinite; }
@@ -32,7 +32,7 @@
         .top-login-btn:hover { background: rgba(198,168,92,0.2); color: #fff; }
 
         /* OVERLAY SCREENS */
-        .overlay-screen { position: fixed; inset: 0; z-index: 999; background: var(--primary); display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 24px; gap: 18px; }
+        .overlay-screen { position: fixed; inset: 0; z-index: 50; background: rgba(11,28,45,0.97); display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 24px; gap: 18px; }
         .overlay-screen.active { display: flex; }
         .overlay-logo-ring { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
         .overlay-logo-ring::before { content: ''; position: absolute; inset: 0; border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; border: 2px solid rgba(198,168,92,0.5); animation: spin1 6s linear infinite; }
@@ -172,6 +172,7 @@
             <div class="existing-code-details" id="existingCodeDetails"></div>
             <button class="copy-existing-btn" onclick="copyExistingCode()">📋 Copy My Code</button>
         </div>
+        <button class="overlay-btn" style="background:none;border:1px solid rgba(198,168,92,0.2);color:rgba(198,168,92,0.45);font-size:10px;padding:10px 24px;margin-top:4px;" onclick="handleAdminOverride()">🔑 Admin Override</button>
     </div>
 
     <!-- ADMIN PASSWORD MODAL -->
@@ -416,6 +417,21 @@
                 return;
             }
             closeModal();
+            if (pendingAction === 'adminOverride') {
+                document.getElementById('alreadyHasCode').classList.remove('active');
+                adminUnlocked = true;
+                document.getElementById('mainContent').style.display = 'block';
+                document.getElementById('adminBanner').classList.add('visible');
+                document.getElementById('viewAllBtn').textContent = '🔓 Viewing All';
+                document.getElementById('viewAllBtn').classList.add('active');
+                // Lock form since this user already has a code
+                const btn = document.querySelector('.generate-btn');
+                btn.disabled = true; btn.textContent = '✅ Code Already Issued';
+                btn.style.opacity = '0.45'; btn.style.cursor = 'not-allowed';
+                ['firstName','lastName','agentEmail','agentPhone','agentRegion'].forEach(id =>
+                    document.getElementById(id).disabled = true);
+                renderList();
+            }
             if (pendingAction === 'viewAll') {
                 adminUnlocked = true;
                 document.getElementById('adminBanner').classList.add('visible');
@@ -435,6 +451,9 @@
         }
 
         /* BUTTON HANDLERS */
+        function handleAdminOverride() {
+            openModal('adminOverride', 'Admin Override', 'Enter the admin password to access the full page.');
+        }
         function handleViewAll() {
             if (adminUnlocked) {
                 // Toggle back to personal view
