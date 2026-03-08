@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ANICADE TECH | Agent Code Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -43,11 +44,49 @@
             border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
             will-change: transform;
         }
-        .ring-el:nth-child(1) { width: 900px; height: 900px; margin: -450px 0 0 -450px; border-color: rgba(0,191,255,0.06); animation: spin1 22s linear infinite; }
-        .ring-el:nth-child(2) { width: 650px; height: 650px; margin: -325px 0 0 -325px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border-color: rgba(198,168,92,0.05); animation: spin2 15s linear infinite; }
-        .ring-el:nth-child(3) { width: 430px; height: 430px; margin: -215px 0 0 -215px; border-color: rgba(0,191,255,0.04); animation: spin1 32s linear infinite reverse; }
+        .ring-el:nth-child(1) { width: 900px; height: 900px; margin: -450px 0 0 -450px; border-color: rgba(0,191,255,0.09); animation: spin1 22s linear infinite; }
+        .ring-el:nth-child(2) { width: 650px; height: 650px; margin: -325px 0 0 -325px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border-color: rgba(198,168,92,0.07); animation: spin2 15s linear infinite; }
+        .ring-el:nth-child(3) { width: 430px; height: 430px; margin: -215px 0 0 -215px; border-color: rgba(0,191,255,0.05); animation: spin1 32s linear infinite reverse; }
         @keyframes spin1 { to { transform: rotate(360deg); } }
         @keyframes spin2 { to { transform: rotate(-360deg); } }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 36px;
+            background: rgba(11, 28, 45, 0.85);
+            border-bottom: 1px solid rgba(198,168,92,0.1);
+        }
+        .top-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-decoration: none;
+            text-shadow: 0 0 16px rgba(198,168,92,0.3);
+        }
+        .top-logo span { color: var(--accent); }
+        .top-login-btn {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-decoration: none;
+            padding: 8px 18px;
+            border: 1px solid rgba(198,168,92,0.3);
+            border-radius: 8px;
+            background: rgba(198,168,92,0.08);
+            transition: all 0.2s;
+        }
+        .top-login-btn:hover { background: rgba(198,168,92,0.2); color: #fff; }
 
         /* ===== BLOCKED SCREEN ===== */
         #blockedScreen {
@@ -61,34 +100,77 @@
             align-items: center;
             text-align: center;
             padding: 24px;
-            gap: 16px;
+            gap: 18px;
         }
-        #blockedScreen .block-icon { font-size: 52px; }
+
+        .blocked-logo-ring {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+        .blocked-logo-ring::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+            border: 2px solid rgba(198,168,92,0.5);
+            animation: spin1 6s linear infinite;
+        }
+        .blocked-logo-ring::after {
+            content: '';
+            position: absolute;
+            inset: 7px;
+            border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%;
+            border: 1.5px solid rgba(0,191,255,0.4);
+            animation: spin2 4s linear infinite;
+        }
+        .blocked-logo-ring img {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            border: 2px solid rgba(198,168,92,0.3);
+            box-shadow: 0 0 24px rgba(198,168,92,0.2);
+        }
+
         #blockedScreen h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
+            font-size: 18px;
+            font-weight: 900;
             color: var(--gold);
             letter-spacing: 2px;
         }
         #blockedScreen p {
             font-size: 15px;
             color: var(--text-light);
-            max-width: 320px;
-            line-height: 1.6;
+            max-width: 300px;
+            line-height: 1.7;
         }
-        #blockedScreen a {
-            margin-top: 8px;
+        .blocked-btn {
             display: inline-block;
-            padding: 12px 32px;
-            background: rgba(0,191,255,0.1);
-            border: 1px solid rgba(0,191,255,0.3);
+            padding: 13px 36px;
+            background: linear-gradient(135deg, rgba(0,191,255,0.15), rgba(198,168,92,0.1));
+            border: 1px solid rgba(0,191,255,0.35);
             border-radius: 50px;
             color: var(--accent);
             text-decoration: none;
             font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+        .blocked-btn:hover {
+            background: linear-gradient(135deg, rgba(0,191,255,0.25), rgba(198,168,92,0.18));
+            box-shadow: 0 0 24px rgba(0,191,255,0.15);
+            transform: translateY(-2px);
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -96,15 +178,42 @@
             display: none;
             position: relative;
             z-index: 2;
-            max-width: 680px;
+            max-width: 700px;
             margin: 0 auto;
-            padding: 80px 24px 60px;
+            padding: 100px 24px 60px;
         }
 
-        /* header */
-        .page-header {
-            text-align: center;
-            margin-bottom: 40px;
+        /* page header */
+        .page-header { text-align: center; margin-bottom: 40px; }
+        .page-logo-wrap { display: flex; justify-content: center; margin-bottom: 22px; }
+        .page-logo-ring {
+            position: relative;
+            width: 110px; height: 110px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .page-logo-ring::before {
+            content: '';
+            position: absolute; inset: 0;
+            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+            border: 2px solid rgba(198,168,92,0.5);
+            will-change: transform;
+            animation: spin1 6s linear infinite;
+        }
+        .page-logo-ring::after {
+            content: '';
+            position: absolute; inset: 8px;
+            border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%;
+            border: 1.5px solid rgba(0,191,255,0.4);
+            will-change: transform;
+            animation: spin2 4s linear infinite;
+        }
+        .page-logo-ring img {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative; z-index: 2;
+            border: 2px solid rgba(198,168,92,0.4);
+            box-shadow: 0 0 30px rgba(198,168,92,0.25), 0 0 60px rgba(0,191,255,0.1);
         }
         .page-eyebrow {
             font-family: 'Orbitron', sans-serif;
@@ -113,24 +222,22 @@
             text-transform: uppercase;
             color: var(--accent);
             opacity: 0.7;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .page-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 900;
             color: var(--gold);
             text-shadow: 0 0 30px rgba(198,168,92,0.3);
             margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
-        .page-sub {
-            font-size: 14px;
-            color: var(--text-light);
-        }
+        .page-sub { font-size: 15px; color: var(--text-light); }
         .divider {
             width: 50px; height: 2px;
             background: linear-gradient(to right, var(--gold), var(--accent));
-            margin: 16px auto 0;
+            margin: 14px auto 0;
             border-radius: 2px;
         }
 
@@ -139,10 +246,9 @@
             background: var(--card-bg);
             border: 1px solid rgba(198,168,92,0.15);
             border-radius: 20px;
-            padding: 36px 32px;
-            margin-bottom: 32px;
+            padding: 32px 28px;
+            margin-bottom: 28px;
         }
-
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -154,95 +260,104 @@
         .field label {
             display: block;
             font-family: 'Orbitron', sans-serif;
-            font-size: 10px;
+            font-size: 9px;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--text-light);
-            margin-bottom: 8px;
+            margin-bottom: 7px;
         }
         .field input, .field select {
             width: 100%;
             padding: 12px 16px;
             background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.09);
             border-radius: 10px;
             color: var(--text);
             font-family: 'Rajdhani', sans-serif;
             font-size: 15px;
             outline: none;
-            transition: border-color 0.25s;
+            transition: border-color 0.25s, box-shadow 0.25s;
             -webkit-appearance: none;
         }
         .field input:focus, .field select:focus {
             border-color: rgba(0,191,255,0.4);
             box-shadow: 0 0 16px rgba(0,191,255,0.08);
         }
-        .field input::placeholder { color: rgba(148,163,184,0.4); }
+        .field input::placeholder { color: rgba(148,163,184,0.35); }
         .field select option { background: #0d2035; color: var(--text); }
+
+        #formError {
+            color: #ff5050;
+            font-size: 13px;
+            text-align: center;
+            min-height: 18px;
+            margin-bottom: 10px;
+            font-family: 'Rajdhani', sans-serif;
+        }
 
         .generate-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, rgba(198,168,92,0.2), rgba(0,191,255,0.15));
-            border: 1px solid rgba(198,168,92,0.5);
+            background: linear-gradient(135deg, rgba(198,168,92,0.18), rgba(0,191,255,0.12));
+            border: 1px solid rgba(198,168,92,0.45);
             border-radius: 12px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--gold);
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 8px;
         }
         .generate-btn:hover {
-            background: linear-gradient(135deg, rgba(198,168,92,0.35), rgba(0,191,255,0.25));
+            background: linear-gradient(135deg, rgba(198,168,92,0.32), rgba(0,191,255,0.22));
             box-shadow: 0 0 30px rgba(198,168,92,0.2);
             transform: translateY(-1px);
+            color: #fff;
         }
 
-        /* generated code display */
+        /* code result */
         #codeResult {
             display: none;
-            background: rgba(57,255,20,0.05);
-            border: 1px solid rgba(57,255,20,0.25);
-            border-radius: 16px;
+            background: rgba(57,255,20,0.04);
+            border: 1px solid rgba(57,255,20,0.22);
+            border-radius: 18px;
             padding: 28px 24px;
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             animation: fadeUp 0.4s ease both;
         }
         .code-label {
             font-family: 'Orbitron', sans-serif;
-            font-size: 10px;
+            font-size: 9px;
             letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--green);
-            opacity: 0.7;
+            opacity: 0.6;
             margin-bottom: 10px;
         }
         .code-value {
             font-family: 'Orbitron', sans-serif;
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 900;
             color: var(--green);
             text-shadow: 0 0 30px rgba(57,255,20,0.4);
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             margin-bottom: 16px;
         }
         .code-details {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-light);
-            line-height: 1.9;
+            line-height: 2;
         }
-        .code-details span { color: var(--text); font-weight: 600; }
+        .code-details strong { color: var(--text); font-weight: 600; }
         .copy-btn {
             margin-top: 18px;
             display: inline-block;
             padding: 10px 28px;
-            background: rgba(57,255,20,0.1);
-            border: 1px solid rgba(57,255,20,0.3);
+            background: rgba(57,255,20,0.08);
+            border: 1px solid rgba(57,255,20,0.25);
             border-radius: 50px;
             font-family: 'Orbitron', sans-serif;
             font-size: 11px;
@@ -252,35 +367,35 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .copy-btn:hover { background: rgba(57,255,20,0.2); }
+        .copy-btn:hover { background: rgba(57,255,20,0.16); }
 
-        /* all codes list */
+        /* list */
         .list-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .list-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             letter-spacing: 2px;
             color: var(--gold);
         }
         .clear-btn {
             font-family: 'Orbitron', sans-serif;
-            font-size: 10px;
+            font-size: 9px;
             letter-spacing: 1px;
             color: rgba(255,80,80,0.5);
             background: none;
-            border: 1px solid rgba(255,80,80,0.2);
+            border: 1px solid rgba(255,80,80,0.18);
             border-radius: 6px;
             padding: 5px 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
-        .clear-btn:hover { color: #ff5050; border-color: rgba(255,80,80,0.5); }
+        .clear-btn:hover { color: #ff5050; border-color: rgba(255,80,80,0.45); }
 
         #codesList { display: flex; flex-direction: column; gap: 10px; }
 
@@ -295,68 +410,67 @@
             gap: 12px;
             flex-wrap: wrap;
             transition: border-color 0.2s;
+            animation: fadeUp 0.3s ease both;
         }
-        .code-entry:hover { border-color: rgba(198,168,92,0.2); }
+        .code-entry:hover { border-color: rgba(198,168,92,0.18); }
         .entry-code {
             font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 900;
             color: var(--green);
             letter-spacing: 2px;
             flex-shrink: 0;
+            text-shadow: 0 0 12px rgba(57,255,20,0.2);
         }
-        .entry-info { flex: 1; min-width: 140px; }
+        .entry-info { flex: 1; min-width: 150px; }
         .entry-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 2px;
-        }
-        .entry-meta {
+            font-family: 'Orbitron', sans-serif;
             font-size: 12px;
-            color: var(--text-light);
-            line-height: 1.5;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 3px;
+            letter-spacing: 0.5px;
         }
+        .entry-meta { font-size: 12px; color: var(--text-light); line-height: 1.6; }
         .entry-date {
             font-family: 'Orbitron', sans-serif;
-            font-size: 10px;
-            color: rgba(148,163,184,0.4);
+            font-size: 9px;
+            color: rgba(148,163,184,0.35);
             letter-spacing: 1px;
             flex-shrink: 0;
+            text-align: right;
         }
 
         .empty-state {
             text-align: center;
             padding: 40px 20px;
-            color: rgba(148,163,184,0.3);
-            font-size: 14px;
-            border: 1px dashed rgba(255,255,255,0.06);
-            border-radius: 12px;
+            color: rgba(148,163,184,0.25);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            border: 1px dashed rgba(255,255,255,0.05);
+            border-radius: 14px;
         }
-        .empty-state span {
-            display: block;
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
+        .empty-state span { display: block; font-size: 30px; margin-bottom: 12px; }
 
-        /* footer */
         .page-footer {
             text-align: center;
             margin-top: 50px;
             padding-top: 24px;
             border-top: 1px solid rgba(198,168,92,0.08);
-            font-size: 12px;
-            color: rgba(148,163,184,0.3);
+            font-size: 11px;
+            color: rgba(148,163,184,0.25);
             font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 500px) {
+            .top-bar { padding: 14px 18px; }
             .form-row { grid-template-columns: 1fr; }
-            .form-card { padding: 24px 18px; }
-            .code-value { font-size: 26px; letter-spacing: 2px; }
+            .form-card { padding: 22px 16px; }
+            .code-value { font-size: 28px; letter-spacing: 3px; }
         }
     </style>
 </head>
@@ -368,19 +482,32 @@
         <div class="ring-el"></div>
     </div>
 
-    <!-- BLOCKED: shown if not logged in -->
+    <!-- TOP BAR -->
+    <header class="top-bar">
+        <a href="https://tresforwrld.github.io/ANICADEtech.net/index.html" class="top-logo">ANICADE<span>.</span>TECH</a>
+        <a href="https://tresforwrld.github.io/ANICADEtech.net/login.html" class="top-login-btn">Login</a>
+    </header>
+
+    <!-- BLOCKED SCREEN -->
     <div id="blockedScreen">
-        <div class="block-icon">🔒</div>
+        <div class="blocked-logo-ring">
+            <img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH">
+        </div>
         <h2>Access Restricted</h2>
-        <p>You need to be logged in to access the Agent Code Generator. Please login first.</p>
-        <a href="login.html">Go to Login</a>
+        <p>You need to be logged in to access the Agent Code Generator.</p>
+        <a href="https://tresforwrld.github.io/ANICADEtech.net/login.html" class="blocked-btn">Go to Login →</a>
     </div>
 
-    <!-- MAIN CONTENT: shown if logged in -->
+    <!-- MAIN CONTENT -->
     <div id="mainContent">
 
         <div class="page-header">
-            <div class="page-eyebrow">ANICADE TECH</div>
+            <div class="page-logo-wrap">
+                <div class="page-logo-ring">
+                    <img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH">
+                </div>
+            </div>
+            <div class="page-eyebrow">ANICADE TECH — Internal Tool</div>
             <div class="page-title">Agent Code Generator</div>
             <div class="page-sub">Generate unique codes for new agents</div>
             <div class="divider"></div>
@@ -426,11 +553,11 @@
                     </select>
                 </div>
             </div>
-            <div id="formError" style="color:#ff5050;font-size:13px;text-align:center;min-height:18px;margin-bottom:8px;"></div>
+            <div id="formError"></div>
             <button class="generate-btn" onclick="generateCode()">⚡ Generate Agent Code</button>
         </div>
 
-        <!-- GENERATED CODE DISPLAY -->
+        <!-- CODE RESULT -->
         <div id="codeResult">
             <div class="code-label">Agent Code Generated</div>
             <div class="code-value" id="displayCode">ANC-0001</div>
@@ -440,7 +567,7 @@
 
         <!-- ALL CODES LIST -->
         <div class="list-header">
-            <div class="list-title">ALL AGENT CODES (<span id="totalCount">0</span>)</div>
+            <div class="list-title">ALL CODES &nbsp;(<span id="totalCount">0</span>)</div>
             <button class="clear-btn" onclick="confirmClear()">Clear All</button>
         </div>
         <div id="codesList"></div>
@@ -450,8 +577,8 @@
 
     <script>
         const STORAGE_KEY = 'anicade_agent_codes';
+        const LOGIN_URL   = 'https://tresforwrld.github.io/ANICADEtech.net/login.html';
 
-        // ===== ACCESS GUARD =====
         function isLoggedIn() {
             return !!localStorage.getItem('anicade_current_user');
         }
@@ -467,25 +594,22 @@
             }
         });
 
-        // ===== GET NEXT CODE NUMBER =====
-        function getNextNumber() {
-            const codes = getCodes();
-            if (codes.length === 0) return 1;
-            const numbers = codes.map(c => parseInt(c.code.replace('ANC-', ''), 10));
-            return Math.max(...numbers) + 1;
-        }
-
         function getCodes() {
-            try {
-                return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            } catch { return []; }
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+            catch { return []; }
         }
 
         function saveCodes(codes) {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(codes));
         }
 
-        // ===== GENERATE =====
+        function getNextNumber() {
+            const codes = getCodes();
+            if (codes.length === 0) return 1;
+            const nums = codes.map(c => parseInt(c.code.replace('ANC-', ''), 10));
+            return Math.max(...nums) + 1;
+        }
+
         function generateCode() {
             const firstName = document.getElementById('firstName').value.trim();
             const lastName  = document.getElementById('lastName').value.trim();
@@ -501,22 +625,18 @@
                 return;
             }
 
-            const num = getNextNumber();
-            const padded = String(num).padStart(4, '0');
-            const code = `ANC-${padded}`;
-            const date = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-
+            const code = `ANC-${String(getNextNumber()).padStart(4, '0')}`;
+            const date = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
             const entry = { code, firstName, lastName, email, phone, region, date };
 
-            // Save
             const codes = getCodes();
-            codes.unshift(entry); // newest first
+            codes.unshift(entry);
             saveCodes(codes);
 
             // Show result
             document.getElementById('displayCode').textContent = code;
             document.getElementById('displayDetails').innerHTML = `
-                <span>${firstName} ${lastName}</span><br>
+                <strong>${firstName} ${lastName}</strong><br>
                 📧 ${email}<br>
                 📱 ${phone}<br>
                 📍 ${region}<br>
@@ -527,16 +647,12 @@
             result.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             // Clear form
-            document.getElementById('firstName').value = '';
-            document.getElementById('lastName').value = '';
-            document.getElementById('agentEmail').value = '';
-            document.getElementById('agentPhone').value = '';
+            ['firstName','lastName','agentEmail','agentPhone'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('agentRegion').value = '';
 
             renderList();
         }
 
-        // ===== COPY =====
         function copyCode() {
             const code = document.getElementById('displayCode').textContent;
             navigator.clipboard.writeText(code).then(() => {
@@ -546,20 +662,39 @@
             });
         }
 
-        // ===== RENDER LIST =====
         function renderList() {
             const codes = getCodes();
+            document.getElementById('totalCount').textContent = codes.length;
             const container = document.getElementById('codesList');
-            const countEl = document.getElementById('totalCount');
-            countEl.textContent = codes.length;
 
             if (codes.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <span>📋</span>
-                        No agent codes generated yet
+                        NO AGENT CODES GENERATED YET
                     </div>`;
                 return;
             }
 
-          
+            container.innerHTML = codes.map(c => `
+                <div class="code-entry">
+                    <div class="entry-code">${c.code}</div>
+                    <div class="entry-info">
+                        <div class="entry-name">${c.firstName} ${c.lastName}</div>
+                        <div class="entry-meta">📧 ${c.email} &nbsp;·&nbsp; 📱 ${c.phone} &nbsp;·&nbsp; 📍 ${c.region}</div>
+                    </div>
+                    <div class="entry-date">${c.date}</div>
+                </div>
+            `).join('');
+        }
+
+        function confirmClear() {
+            if (confirm('Delete ALL agent codes? This cannot be undone.')) {
+                localStorage.removeItem(STORAGE_KEY);
+                document.getElementById('codeResult').style.display = 'none';
+                renderList();
+            }
+        }
+    </script>
+</body>
+</html>
