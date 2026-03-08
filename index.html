@@ -5,502 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ANICADE TECH | Agent Code Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
-            --primary: #0B1C2D;
-            --accent: #00BFFF;
-            --gold: #C6A85C;
-            --text: #F5F7FA;
-            --text-light: #94A3B8;
-            --border: rgba(255,255,255,0.07);
-            --card-bg: rgba(15, 30, 48, 0.92);
-            --green: #39ff14;
-            --red: #ff4d4d;
+            --primary: #0B1C2D; --accent: #00BFFF; --gold: #C6A85C;
+            --text: #F5F7FA; --text-light: #94A3B8;
+            --border: rgba(255,255,255,0.07); --card-bg: rgba(15,30,48,0.92);
+            --green: #39ff14; --red: #ff4d4d;
         }
+        html, body { background: var(--primary); color: var(--text); font-family: 'Rajdhani', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
-        html, body {
-            background: var(--primary);
-            color: var(--text);
-            font-family: 'Rajdhani', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* ===== RINGS BG ===== */
-        .rings-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .ring-el {
-            position: absolute;
-            top: 50%; left: 50%;
-            border: 1.5px solid transparent;
-            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
-            will-change: transform;
-        }
+        /* RINGS */
+        .rings-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
+        .ring-el { position: absolute; top: 50%; left: 50%; border: 1.5px solid transparent; border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; will-change: transform; }
         .ring-el:nth-child(1) { width: 900px; height: 900px; margin: -450px 0 0 -450px; border-color: rgba(0,191,255,0.09); animation: spin1 22s linear infinite; }
         .ring-el:nth-child(2) { width: 650px; height: 650px; margin: -325px 0 0 -325px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border-color: rgba(198,168,92,0.07); animation: spin2 15s linear infinite; }
         .ring-el:nth-child(3) { width: 430px; height: 430px; margin: -215px 0 0 -215px; border-color: rgba(0,191,255,0.05); animation: spin1 32s linear infinite reverse; }
         @keyframes spin1 { to { transform: rotate(360deg); } }
         @keyframes spin2 { to { transform: rotate(-360deg); } }
 
-        /* ===== TOP BAR ===== */
-        .top-bar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 36px;
-            background: rgba(11, 28, 45, 0.85);
-            border-bottom: 1px solid rgba(198,168,92,0.1);
-        }
-        .top-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
-            font-weight: 900;
-            color: var(--gold);
-            letter-spacing: 2px;
-            text-decoration: none;
-            text-shadow: 0 0 16px rgba(198,168,92,0.3);
-        }
+        /* TOP BAR */
+        .top-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 16px 36px; background: rgba(11,28,45,0.85); border-bottom: 1px solid rgba(198,168,92,0.1); }
+        .top-logo { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; color: var(--gold); letter-spacing: 2px; text-decoration: none; text-shadow: 0 0 16px rgba(198,168,92,0.3); }
         .top-logo span { color: var(--accent); }
-        .top-login-btn {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--gold);
-            text-decoration: none;
-            padding: 8px 18px;
-            border: 1px solid rgba(198,168,92,0.3);
-            border-radius: 8px;
-            background: rgba(198,168,92,0.08);
-            transition: all 0.2s;
-        }
+        .top-login-btn { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); text-decoration: none; padding: 8px 18px; border: 1px solid rgba(198,168,92,0.3); border-radius: 8px; background: rgba(198,168,92,0.08); transition: all 0.2s; }
         .top-login-btn:hover { background: rgba(198,168,92,0.2); color: #fff; }
 
-        /* ===== SHARED OVERLAY STYLES ===== */
-        .overlay-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 999;
-            background: var(--primary);
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 24px;
-            gap: 18px;
-        }
+        /* OVERLAY SCREENS */
+        .overlay-screen { position: fixed; inset: 0; z-index: 999; background: var(--primary); display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 24px; gap: 18px; }
         .overlay-screen.active { display: flex; }
-
-        .overlay-logo-ring {
-            position: relative;
-            width: 100px; height: 100px;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 6px;
-        }
-        .overlay-logo-ring::before {
-            content: '';
-            position: absolute; inset: 0;
-            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
-            border: 2px solid rgba(198,168,92,0.5);
-            animation: spin1 6s linear infinite;
-        }
-        .overlay-logo-ring::after {
-            content: '';
-            position: absolute; inset: 7px;
-            border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%;
-            border: 1.5px solid rgba(0,191,255,0.4);
-            animation: spin2 4s linear infinite;
-        }
-        .overlay-logo-ring img {
-            width: 72px; height: 72px;
-            border-radius: 50%; object-fit: cover;
-            position: relative; z-index: 2;
-            border: 2px solid rgba(198,168,92,0.3);
-            box-shadow: 0 0 24px rgba(198,168,92,0.2);
-        }
-        .overlay-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-        }
-        .overlay-msg {
-            font-size: 15px;
-            color: var(--text-light);
-            max-width: 320px;
-            line-height: 1.7;
-        }
-        .overlay-btn {
-            display: inline-block;
-            padding: 13px 36px;
-            border-radius: 50px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-decoration: none;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-        }
-        .overlay-btn-cyan {
-            background: linear-gradient(135deg, rgba(0,191,255,0.15), rgba(198,168,92,0.1));
-            border: 1px solid rgba(0,191,255,0.35) !important;
-            color: var(--accent);
-        }
-        .overlay-btn-cyan:hover {
-            background: linear-gradient(135deg, rgba(0,191,255,0.25), rgba(198,168,92,0.18));
-            box-shadow: 0 0 24px rgba(0,191,255,0.15);
-            transform: translateY(-2px);
-        }
-
-        /* existing code display on blocked screen */
-        .existing-code-box {
-            background: rgba(57,255,20,0.05);
-            border: 1px solid rgba(57,255,20,0.2);
-            border-radius: 16px;
-            padding: 20px 28px;
-            max-width: 340px;
-            width: 100%;
-        }
-        .existing-code-label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 9px;
-            letter-spacing: 3px;
-            color: var(--green);
-            opacity: 0.6;
-            margin-bottom: 8px;
-        }
-        .existing-code-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 30px;
-            font-weight: 900;
-            color: var(--green);
-            text-shadow: 0 0 24px rgba(57,255,20,0.35);
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-        }
-        .existing-code-details {
-            font-size: 13px;
-            color: var(--text-light);
-            line-height: 1.8;
-        }
+        .overlay-logo-ring { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+        .overlay-logo-ring::before { content: ''; position: absolute; inset: 0; border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; border: 2px solid rgba(198,168,92,0.5); animation: spin1 6s linear infinite; }
+        .overlay-logo-ring::after { content: ''; position: absolute; inset: 7px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border: 1.5px solid rgba(0,191,255,0.4); animation: spin2 4s linear infinite; }
+        .overlay-logo-ring img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; position: relative; z-index: 2; border: 2px solid rgba(198,168,92,0.3); box-shadow: 0 0 24px rgba(198,168,92,0.2); }
+        .overlay-title { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; letter-spacing: 1.5px; }
+        .overlay-msg { font-size: 15px; color: var(--text-light); max-width: 320px; line-height: 1.7; }
+        .overlay-btn { display: inline-block; padding: 13px 36px; border-radius: 50px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; }
+        .overlay-btn-cyan { background: linear-gradient(135deg, rgba(0,191,255,0.15), rgba(198,168,92,0.1)); border: 1px solid rgba(0,191,255,0.35) !important; color: var(--accent); }
+        .overlay-btn-cyan:hover { background: linear-gradient(135deg, rgba(0,191,255,0.25), rgba(198,168,92,0.18)); box-shadow: 0 0 24px rgba(0,191,255,0.15); transform: translateY(-2px); }
+        .existing-code-box { background: rgba(57,255,20,0.05); border: 1px solid rgba(57,255,20,0.2); border-radius: 16px; padding: 20px 28px; max-width: 340px; width: 100%; }
+        .existing-code-label { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 3px; color: var(--green); opacity: 0.6; margin-bottom: 8px; }
+        .existing-code-value { font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 900; color: var(--green); text-shadow: 0 0 24px rgba(57,255,20,0.35); letter-spacing: 4px; margin-bottom: 10px; }
+        .existing-code-details { font-size: 13px; color: var(--text-light); line-height: 1.8; }
         .existing-code-details strong { color: var(--text); }
-        .copy-existing-btn {
-            margin-top: 14px;
-            display: inline-block;
-            padding: 9px 24px;
-            background: rgba(57,255,20,0.08);
-            border: 1px solid rgba(57,255,20,0.22);
-            border-radius: 50px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: var(--green);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .copy-existing-btn { margin-top: 14px; display: inline-block; padding: 9px 24px; background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.22); border-radius: 50px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--green); cursor: pointer; transition: all 0.2s; }
         .copy-existing-btn:hover { background: rgba(57,255,20,0.16); }
 
-        /* ===== MAIN CONTENT ===== */
-        #mainContent {
-            display: none;
-            position: relative;
-            z-index: 2;
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 100px 24px 60px;
-        }
+        /* ADMIN MODAL */
+        .modal-backdrop { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: center; padding: 24px; }
+        .modal-backdrop.active { display: flex; }
+        .modal-box { background: #0d2035; border: 1px solid rgba(198,168,92,0.3); border-radius: 20px; padding: 36px 32px; max-width: 360px; width: 100%; text-align: center; animation: fadeUp 0.3s ease both; }
+        .modal-icon { font-size: 36px; margin-bottom: 12px; }
+        .modal-title { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900; color: var(--gold); letter-spacing: 2px; margin-bottom: 8px; }
+        .modal-sub { font-size: 13px; color: var(--text-light); margin-bottom: 22px; line-height: 1.6; }
+        .modal-input { width: 100%; padding: 13px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--text); font-family: 'Rajdhani', sans-serif; font-size: 16px; outline: none; text-align: center; letter-spacing: 3px; margin-bottom: 8px; transition: border-color 0.2s; -webkit-appearance: none; }
+        .modal-input:focus { border-color: rgba(198,168,92,0.4); }
+        .modal-error { font-size: 12px; color: var(--red); min-height: 16px; margin-bottom: 14px; font-family: 'Rajdhani', sans-serif; }
+        .modal-btns { display: flex; gap: 10px; }
+        .modal-confirm { flex: 1; padding: 12px; background: linear-gradient(135deg, rgba(198,168,92,0.2), rgba(0,191,255,0.12)); border: 1px solid rgba(198,168,92,0.4); border-radius: 10px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold); cursor: pointer; transition: all 0.2s; }
+        .modal-confirm:hover { background: linear-gradient(135deg, rgba(198,168,92,0.35), rgba(0,191,255,0.22)); color: #fff; }
+        .modal-cancel { flex: 1; padding: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-light); cursor: pointer; transition: all 0.2s; }
+        .modal-cancel:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 
+        /* MAIN */
+        #mainContent { display: none; position: relative; z-index: 2; max-width: 700px; margin: 0 auto; padding: 100px 24px 60px; }
         .page-header { text-align: center; margin-bottom: 40px; }
         .page-logo-wrap { display: flex; justify-content: center; margin-bottom: 22px; }
-        .page-logo-ring {
-            position: relative;
-            width: 110px; height: 110px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .page-logo-ring::before {
-            content: '';
-            position: absolute; inset: 0;
-            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
-            border: 2px solid rgba(198,168,92,0.5);
-            will-change: transform;
-            animation: spin1 6s linear infinite;
-        }
-        .page-logo-ring::after {
-            content: '';
-            position: absolute; inset: 8px;
-            border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%;
-            border: 1.5px solid rgba(0,191,255,0.4);
-            will-change: transform;
-            animation: spin2 4s linear infinite;
-        }
-        .page-logo-ring img {
-            width: 80px; height: 80px;
-            border-radius: 50%; object-fit: cover;
-            position: relative; z-index: 2;
-            border: 2px solid rgba(198,168,92,0.4);
-            box-shadow: 0 0 30px rgba(198,168,92,0.25), 0 0 60px rgba(0,191,255,0.1);
-        }
-        .page-eyebrow {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 10px;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: var(--accent);
-            opacity: 0.7;
-            margin-bottom: 10px;
-        }
-        .page-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--gold);
-            text-shadow: 0 0 30px rgba(198,168,92,0.3);
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
+        .page-logo-ring { position: relative; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center; }
+        .page-logo-ring::before { content: ''; position: absolute; inset: 0; border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; border: 2px solid rgba(198,168,92,0.5); will-change: transform; animation: spin1 6s linear infinite; }
+        .page-logo-ring::after { content: ''; position: absolute; inset: 8px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border: 1.5px solid rgba(0,191,255,0.4); will-change: transform; animation: spin2 4s linear infinite; }
+        .page-logo-ring img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; position: relative; z-index: 2; border: 2px solid rgba(198,168,92,0.4); box-shadow: 0 0 30px rgba(198,168,92,0.25), 0 0 60px rgba(0,191,255,0.1); }
+        .page-eyebrow { font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); opacity: 0.7; margin-bottom: 10px; }
+        .page-title { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; color: var(--gold); text-shadow: 0 0 30px rgba(198,168,92,0.3); margin-bottom: 8px; }
         .page-sub { font-size: 15px; color: var(--text-light); }
-        .divider {
-            width: 50px; height: 2px;
-            background: linear-gradient(to right, var(--gold), var(--accent));
-            margin: 14px auto 0;
-            border-radius: 2px;
-        }
+        .divider { width: 50px; height: 2px; background: linear-gradient(to right, var(--gold), var(--accent)); margin: 14px auto 0; border-radius: 2px; }
 
-        /* form */
-        .form-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(198,168,92,0.15);
-            border-radius: 20px;
-            padding: 32px 28px;
-            margin-bottom: 28px;
-        }
+        /* FORM */
+        .form-card { background: var(--card-bg); border: 1px solid rgba(198,168,92,0.15); border-radius: 20px; padding: 32px 28px; margin-bottom: 28px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
         .form-row.full { grid-template-columns: 1fr; }
-
-        .field label {
-            display: block;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 9px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-light);
-            margin-bottom: 7px;
-        }
-        .field input, .field select {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.09);
-            border-radius: 10px;
-            color: var(--text);
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.25s, box-shadow 0.25s;
-            -webkit-appearance: none;
-        }
-        .field input:focus, .field select:focus {
-            border-color: rgba(0,191,255,0.4);
-            box-shadow: 0 0 16px rgba(0,191,255,0.08);
-        }
+        .field label { display: block; font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-light); margin-bottom: 7px; }
+        .field input, .field select { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 10px; color: var(--text); font-family: 'Rajdhani', sans-serif; font-size: 15px; outline: none; transition: border-color 0.25s, box-shadow 0.25s; -webkit-appearance: none; }
+        .field input:focus, .field select:focus { border-color: rgba(0,191,255,0.4); box-shadow: 0 0 16px rgba(0,191,255,0.08); }
         .field input::placeholder { color: rgba(148,163,184,0.35); }
         .field select option { background: #0d2035; color: var(--text); }
+        #formError { color: var(--red); font-size: 13px; text-align: center; min-height: 18px; margin-bottom: 10px; font-family: 'Rajdhani', sans-serif; }
+        .generate-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, rgba(198,168,92,0.18), rgba(0,191,255,0.12)); border: 1px solid rgba(198,168,92,0.45); border-radius: 12px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); cursor: pointer; transition: all 0.3s; }
+        .generate-btn:hover { background: linear-gradient(135deg, rgba(198,168,92,0.32), rgba(0,191,255,0.22)); box-shadow: 0 0 30px rgba(198,168,92,0.2); transform: translateY(-1px); color: #fff; }
 
-        #formError {
-            color: var(--red);
-            font-size: 13px;
-            text-align: center;
-            min-height: 18px;
-            margin-bottom: 10px;
-            font-family: 'Rajdhani', sans-serif;
-        }
-
-        .generate-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(198,168,92,0.18), rgba(0,191,255,0.12));
-            border: 1px solid rgba(198,168,92,0.45);
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--gold);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .generate-btn:hover {
-            background: linear-gradient(135deg, rgba(198,168,92,0.32), rgba(0,191,255,0.22));
-            box-shadow: 0 0 30px rgba(198,168,92,0.2);
-            transform: translateY(-1px);
-            color: #fff;
-        }
-
-        /* code result */
-        #codeResult {
-            display: none;
-            background: rgba(57,255,20,0.04);
-            border: 1px solid rgba(57,255,20,0.22);
-            border-radius: 18px;
-            padding: 28px 24px;
-            text-align: center;
-            margin-bottom: 28px;
-            animation: fadeUp 0.4s ease both;
-        }
-        .code-label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 9px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--green);
-            opacity: 0.6;
-            margin-bottom: 10px;
-        }
-        .code-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 38px;
-            font-weight: 900;
-            color: var(--green);
-            text-shadow: 0 0 30px rgba(57,255,20,0.4);
-            letter-spacing: 5px;
-            margin-bottom: 16px;
-        }
-        .code-details {
-            font-size: 14px;
-            color: var(--text-light);
-            line-height: 2;
-        }
+        /* CODE RESULT */
+        #codeResult { display: none; background: rgba(57,255,20,0.04); border: 1px solid rgba(57,255,20,0.22); border-radius: 18px; padding: 28px 24px; text-align: center; margin-bottom: 28px; animation: fadeUp 0.4s ease both; }
+        .code-label { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--green); opacity: 0.6; margin-bottom: 10px; }
+        .code-value { font-family: 'Orbitron', sans-serif; font-size: 38px; font-weight: 900; color: var(--green); text-shadow: 0 0 30px rgba(57,255,20,0.4); letter-spacing: 5px; margin-bottom: 16px; }
+        .code-details { font-size: 14px; color: var(--text-light); line-height: 2; }
         .code-details strong { color: var(--text); font-weight: 600; }
-        .copy-btn {
-            margin-top: 18px;
-            display: inline-block;
-            padding: 10px 28px;
-            background: rgba(57,255,20,0.08);
-            border: 1px solid rgba(57,255,20,0.25);
-            border-radius: 50px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: var(--green);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .copy-btn { margin-top: 18px; display: inline-block; padding: 10px 28px; background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.25); border-radius: 50px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--green); cursor: pointer; transition: all 0.2s; }
         .copy-btn:hover { background: rgba(57,255,20,0.16); }
 
-        /* list */
-        .list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-        }
-        .list-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: var(--gold);
-        }
-        .clear-btn {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 9px;
-            letter-spacing: 1px;
-            color: rgba(255,80,80,0.5);
-            background: none;
-            border: 1px solid rgba(255,80,80,0.18);
-            border-radius: 6px;
-            padding: 5px 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        /* LIST */
+        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+        .list-title { font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--gold); }
+        .list-actions { display: flex; gap: 8px; }
+        .admin-btn { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 1px; background: none; border-radius: 6px; padding: 5px 12px; cursor: pointer; transition: all 0.2s; }
+        .view-all-btn { color: rgba(0,191,255,0.6); border: 1px solid rgba(0,191,255,0.2); }
+        .view-all-btn:hover, .view-all-btn.active { color: var(--accent); border-color: rgba(0,191,255,0.55); background: rgba(0,191,255,0.07); }
+        .clear-btn { color: rgba(255,80,80,0.5); border: 1px solid rgba(255,80,80,0.18); }
         .clear-btn:hover { color: #ff5050; border-color: rgba(255,80,80,0.45); }
 
+        .admin-mode-banner { display: none; background: rgba(198,168,92,0.06); border: 1px solid rgba(198,168,92,0.2); border-radius: 10px; padding: 10px 16px; margin-bottom: 14px; font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 1.5px; color: var(--gold); text-align: center; }
+        .admin-mode-banner.visible { display: block; }
+
         #codesList { display: flex; flex-direction: column; gap: 10px; }
-
-        .code-entry {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            transition: border-color 0.2s;
-            animation: fadeUp 0.3s ease both;
-        }
+        .code-entry { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; transition: border-color 0.2s; animation: fadeUp 0.3s ease both; }
         .code-entry:hover { border-color: rgba(198,168,92,0.18); }
-        .entry-code {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 15px;
-            font-weight: 900;
-            color: var(--green);
-            letter-spacing: 2px;
-            flex-shrink: 0;
-            text-shadow: 0 0 12px rgba(57,255,20,0.2);
-        }
+        .code-entry.mine { border-color: rgba(57,255,20,0.15); }
+        .entry-code { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900; color: var(--green); letter-spacing: 2px; flex-shrink: 0; text-shadow: 0 0 12px rgba(57,255,20,0.2); }
+        .mine-badge { font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 1px; color: var(--green); background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.2); border-radius: 4px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
         .entry-info { flex: 1; min-width: 150px; }
-        .entry-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 3px;
-            letter-spacing: 0.5px;
-        }
+        .entry-name { font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; letter-spacing: 0.5px; }
         .entry-meta { font-size: 12px; color: var(--text-light); line-height: 1.6; }
-        .entry-date {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 9px;
-            color: rgba(148,163,184,0.35);
-            letter-spacing: 1px;
-            flex-shrink: 0;
-            text-align: right;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: rgba(148,163,184,0.25);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            letter-spacing: 2px;
-            border: 1px dashed rgba(255,255,255,0.05);
-            border-radius: 14px;
-        }
+        .entry-date { font-family: 'Orbitron', sans-serif; font-size: 9px; color: rgba(148,163,184,0.35); letter-spacing: 1px; flex-shrink: 0; text-align: right; }
+        .empty-state { text-align: center; padding: 40px 20px; color: rgba(148,163,184,0.25); font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 2px; border: 1px dashed rgba(255,255,255,0.05); border-radius: 14px; }
         .empty-state span { display: block; font-size: 30px; margin-bottom: 12px; }
 
-        .page-footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(198,168,92,0.08);
-            font-size: 11px;
-            color: rgba(148,163,184,0.25);
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 2px;
-        }
+        .page-footer { text-align: center; margin-top: 50px; padding-top: 24px; border-top: 1px solid rgba(198,168,92,0.08); font-size: 11px; color: rgba(148,163,184,0.25); font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -510,39 +138,33 @@
             .form-card { padding: 22px 16px; }
             .code-value { font-size: 26px; letter-spacing: 3px; }
             .existing-code-value { font-size: 24px; }
+            .modal-box { padding: 28px 18px; }
         }
     </style>
 </head>
 <body>
 
     <div class="rings-bg">
-        <div class="ring-el"></div>
-        <div class="ring-el"></div>
-        <div class="ring-el"></div>
+        <div class="ring-el"></div><div class="ring-el"></div><div class="ring-el"></div>
     </div>
 
-    <!-- TOP BAR -->
     <header class="top-bar">
         <a href="https://tresforwrld.github.io/ANICADEtech.net/index.html" class="top-logo">ANICADE<span>.</span>TECH</a>
         <a href="https://tresforwrld.github.io/ANICADEtech.net/login.html" class="top-login-btn">Login</a>
     </header>
 
-    <!-- SCREEN 1: Not logged in -->
+    <!-- NOT LOGGED IN -->
     <div class="overlay-screen" id="blockedScreen">
-        <div class="overlay-logo-ring">
-            <img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH">
-        </div>
-        <div class="overlay-title" style="color: var(--gold);">Access Restricted</div>
+        <div class="overlay-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+        <div class="overlay-title" style="color:var(--gold);">Access Restricted</div>
         <p class="overlay-msg">You need to be logged in to access the Agent Code Generator.</p>
         <a href="https://tresforwrld.github.io/ANICADEtech.net/login.html" class="overlay-btn overlay-btn-cyan">Go to Login →</a>
     </div>
 
-    <!-- SCREEN 2: Already has a code -->
+    <!-- ALREADY HAS CODE -->
     <div class="overlay-screen" id="alreadyHasCode">
-        <div class="overlay-logo-ring">
-            <img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH">
-        </div>
-        <div class="overlay-title" style="color: var(--red);">Code Already Issued</div>
+        <div class="overlay-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+        <div class="overlay-title" style="color:var(--red);">Code Already Issued</div>
         <p class="overlay-msg">A code has already been generated for this account or device. Each agent is only allowed one code.</p>
         <div class="existing-code-box">
             <div class="existing-code-label">Your Agent Code</div>
@@ -552,7 +174,22 @@
         </div>
     </div>
 
-    <!-- MAIN CONTENT -->
+    <!-- ADMIN PASSWORD MODAL -->
+    <div class="modal-backdrop" id="adminModal">
+        <div class="modal-box">
+            <div class="modal-icon">🔑</div>
+            <div class="modal-title" id="modalTitle">Admin Access</div>
+            <div class="modal-sub" id="modalSub">Enter the admin password to continue.</div>
+            <input type="password" class="modal-input" id="adminPassInput" placeholder="••••••••••" autocomplete="off">
+            <div class="modal-error" id="modalError"></div>
+            <div class="modal-btns">
+                <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-confirm" onclick="submitAdminPass()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN -->
     <div id="mainContent">
         <div class="page-header">
             <div class="page-logo-wrap">
@@ -566,43 +203,25 @@
             <div class="divider"></div>
         </div>
 
-        <!-- FORM -->
         <div class="form-card">
             <div class="form-row">
-                <div class="field">
-                    <label>First Name</label>
-                    <input type="text" id="firstName" placeholder="e.g. Tresfor">
-                </div>
-                <div class="field">
-                    <label>Last Name</label>
-                    <input type="text" id="lastName" placeholder="e.g. Banda">
-                </div>
+                <div class="field"><label>First Name</label><input type="text" id="firstName" placeholder="e.g. Tresfor"></div>
+                <div class="field"><label>Last Name</label><input type="text" id="lastName" placeholder="e.g. Banda"></div>
             </div>
             <div class="form-row">
-                <div class="field">
-                    <label>Email Address</label>
-                    <input type="email" id="agentEmail" placeholder="agent@email.com">
-                </div>
-                <div class="field">
-                    <label>Phone Number</label>
-                    <input type="tel" id="agentPhone" placeholder="+260 7XX XXX XXX">
-                </div>
+                <div class="field"><label>Email Address</label><input type="email" id="agentEmail" placeholder="agent@email.com"></div>
+                <div class="field"><label>Phone Number</label><input type="tel" id="agentPhone" placeholder="+260 7XX XXX XXX"></div>
             </div>
             <div class="form-row full">
                 <div class="field">
                     <label>Region / Location</label>
                     <select id="agentRegion">
                         <option value="" disabled selected>Select region...</option>
-                        <option>Lusaka</option>
-                        <option>Copperbelt</option>
-                        <option>Central (Kabwe)</option>
-                        <option>Eastern</option>
-                        <option>Northern</option>
-                        <option>Southern</option>
-                        <option>Western</option>
-                        <option>North-Western</option>
-                        <option>Luapula</option>
-                        <option>Muchinga</option>
+                        <option>Lusaka</option><option>Copperbelt</option>
+                        <option>Central (Kabwe)</option><option>Eastern</option>
+                        <option>Northern</option><option>Southern</option>
+                        <option>Western</option><option>North-Western</option>
+                        <option>Luapula</option><option>Muchinga</option>
                     </select>
                 </div>
             </div>
@@ -610,7 +229,6 @@
             <button class="generate-btn" onclick="generateCode()">⚡ Generate My Agent Code</button>
         </div>
 
-        <!-- CODE RESULT -->
         <div id="codeResult">
             <div class="code-label">Your Agent Code</div>
             <div class="code-value" id="displayCode">ANC-0001</div>
@@ -618,239 +236,219 @@
             <button class="copy-btn" onclick="copyCode()">📋 Copy Code</button>
         </div>
 
-        <!-- ALL CODES — admin can see this -->
         <div class="list-header">
-            <div class="list-title">ALL CODES &nbsp;(<span id="totalCount">0</span>)</div>
-            <button class="clear-btn" onclick="confirmClear()">Clear All</button>
+            <div class="list-title" id="listTitle">MY CODE (0)</div>
+            <div class="list-actions">
+                <button class="admin-btn view-all-btn" id="viewAllBtn" onclick="handleViewAll()">🔑 View All Codes</button>
+                <button class="admin-btn clear-btn" onclick="handleClearAll()">Clear All</button>
+            </div>
         </div>
+        <div class="admin-mode-banner" id="adminBanner">⚡ ADMIN MODE — VIEWING ALL CODES</div>
         <div id="codesList"></div>
 
         <div class="page-footer">ANICADE TECH &nbsp;·&nbsp; AGENT PORTAL &nbsp;·&nbsp; INTERNAL USE ONLY</div>
     </div>
 
     <script>
-        const STORAGE_KEY    = 'anicade_agent_codes';
-        const DEVICE_KEY     = 'anicade_device_code';   // stores fingerprint → code mapping
-        const LOGIN_URL      = 'https://tresforwrld.github.io/ANICADEtech.net/login.html';
+        const STORAGE_KEY = 'anicade_agent_codes';
+        const ADMIN_PASS  = 'Krsten2044';
 
-        /* =============================================
-           BROWSER FINGERPRINT
-           Combines stable browser signals into a hash
-        ============================================= */
+        let adminUnlocked = false;
+        let pendingAction = null;
+        let currentUser   = null;
+        let currentFP     = null;
+
+        /* FINGERPRINT */
         async function getFingerprint() {
             const raw = [
-                navigator.userAgent,
-                navigator.language,
-                navigator.hardwareConcurrency,
-                navigator.deviceMemory || '',
-                screen.width + 'x' + screen.height,
-                screen.colorDepth,
+                navigator.userAgent, navigator.language,
+                navigator.hardwareConcurrency, navigator.deviceMemory || '',
+                screen.width + 'x' + screen.height, screen.colorDepth,
                 Intl.DateTimeFormat().resolvedOptions().timeZone,
-                navigator.platform,
-                navigator.vendor || ''
+                navigator.platform, navigator.vendor || ''
             ].join('|');
-
-            // Simple hash
-            let hash = 0;
-            for (let i = 0; i < raw.length; i++) {
-                hash = ((hash << 5) - hash) + raw.charCodeAt(i);
-                hash |= 0;
-            }
-            return 'FP-' + Math.abs(hash).toString(36).toUpperCase();
+            let h = 0;
+            for (let i = 0; i < raw.length; i++) { h = ((h << 5) - h) + raw.charCodeAt(i); h |= 0; }
+            return 'FP-' + Math.abs(h).toString(36).toUpperCase();
         }
 
-        /* =============================================
-           CHECK: has this device OR account generated?
-        ============================================= */
-        async function getExistingCode() {
+        /* STORAGE */
+        function getCodes() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } }
+        function saveCodes(c) { localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); }
+        function getNextNum() {
+            const c = getCodes();
+            return c.length ? Math.max(...c.map(x => parseInt(x.code.replace('ANC-',''),10))) + 1 : 1;
+        }
+
+        /* DUPLICATE CHECK */
+        function getExistingCode() {
             const codes = getCodes();
-            const currentUser = localStorage.getItem('anicade_current_user');
-            const fp = await getFingerprint();
-
-            // Check by account username
-            const byAccount = codes.find(c => c.generatedBy === currentUser);
-            if (byAccount) return byAccount;
-
-            // Check by device fingerprint
-            const byDevice = codes.find(c => c.fingerprint === fp);
-            if (byDevice) return byDevice;
-
-            return null;
+            return codes.find(c => c.generatedBy === currentUser) ||
+                   codes.find(c => c.fingerprint === currentFP) || null;
         }
 
-        /* =============================================
-           LOGIN GUARD + DUPLICATE CHECK ON LOAD
-        ============================================= */
-        window.addEventListener('DOMContentLoaded', async function () {
-            const loggedIn = !!localStorage.getItem('anicade_current_user');
-
-            if (!loggedIn) {
-                document.getElementById('blockedScreen').classList.add('active');
-                return;
-            }
-
-            const existing = await getExistingCode();
-            if (existing) {
-                showAlreadyHasCode(existing);
-                return;
-            }
-
-            // All clear — show the form
+        /* ON LOAD */
+        window.addEventListener('DOMContentLoaded', async () => {
+            currentUser = localStorage.getItem('anicade_current_user');
+            if (!currentUser) { document.getElementById('blockedScreen').classList.add('active'); return; }
+            currentFP = await getFingerprint();
+            const existing = getExistingCode();
+            if (existing) { showAlreadyHasCode(existing); return; }
             document.getElementById('mainContent').style.display = 'block';
             renderList();
         });
 
-        /* =============================================
-           SHOW "ALREADY HAS CODE" SCREEN
-        ============================================= */
-        function showAlreadyHasCode(entry) {
-            document.getElementById('existingCodeDisplay').textContent = entry.code;
-            document.getElementById('existingCodeDetails').innerHTML = `
-                <strong>${entry.firstName} ${entry.lastName}</strong><br>
-                📧 ${entry.email}<br>
-                📱 ${entry.phone}<br>
-                📍 ${entry.region}<br>
-                🗓️ ${entry.date}
-            `;
+        /* ALREADY HAS CODE */
+        function showAlreadyHasCode(e) {
+            document.getElementById('existingCodeDisplay').textContent = e.code;
+            document.getElementById('existingCodeDetails').innerHTML =
+                `<strong>${e.firstName} ${e.lastName}</strong><br>📧 ${e.email}<br>📱 ${e.phone}<br>📍 ${e.region}<br>🗓️ ${e.date}`;
             document.getElementById('alreadyHasCode').classList.add('active');
         }
-
         function copyExistingCode() {
-            const code = document.getElementById('existingCodeDisplay').textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const btn = document.querySelector('.copy-existing-btn');
-                btn.textContent = '✅ Copied!';
-                setTimeout(() => btn.textContent = '📋 Copy My Code', 2000);
+            navigator.clipboard.writeText(document.getElementById('existingCodeDisplay').textContent).then(() => {
+                const b = document.querySelector('.copy-existing-btn');
+                b.textContent = '✅ Copied!';
+                setTimeout(() => b.textContent = '📋 Copy My Code', 2000);
             });
         }
 
-        /* =============================================
-           STORAGE HELPERS
-        ============================================= */
-        function getCodes() {
-            try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-            catch { return []; }
-        }
-        function saveCodes(codes) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(codes));
-        }
-        function getNextNumber() {
-            const codes = getCodes();
-            if (codes.length === 0) return 1;
-            const nums = codes.map(c => parseInt(c.code.replace('ANC-', ''), 10));
-            return Math.max(...nums) + 1;
-        }
-
-        /* =============================================
-           GENERATE CODE
-        ============================================= */
-        async function generateCode() {
-            const firstName = document.getElementById('firstName').value.trim();
-            const lastName  = document.getElementById('lastName').value.trim();
-            const email     = document.getElementById('agentEmail').value.trim();
-            const phone     = document.getElementById('agentPhone').value.trim();
-            const region    = document.getElementById('agentRegion').value;
-            const errorEl   = document.getElementById('formError');
-
-            errorEl.textContent = '';
-
-            if (!firstName || !lastName || !email || !phone || !region) {
-                errorEl.textContent = 'Please fill in all fields before generating.';
-                return;
-            }
-
-            // Double-check before saving (race condition guard)
-            const existing = await getExistingCode();
+        /* GENERATE */
+        function generateCode() {
+            const fn = document.getElementById('firstName').value.trim();
+            const ln = document.getElementById('lastName').value.trim();
+            const em = document.getElementById('agentEmail').value.trim();
+            const ph = document.getElementById('agentPhone').value.trim();
+            const rg = document.getElementById('agentRegion').value;
+            const err = document.getElementById('formError');
+            err.textContent = '';
+            if (!fn || !ln || !em || !ph || !rg) { err.textContent = 'Please fill in all fields before generating.'; return; }
+            const existing = getExistingCode();
             if (existing) { showAlreadyHasCode(existing); return; }
 
-            const fp   = await getFingerprint();
-            const user = localStorage.getItem('anicade_current_user');
-            const code = `ANC-${String(getNextNumber()).padStart(4, '0')}`;
-            const date = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            const code  = `ANC-${String(getNextNum()).padStart(4,'0')}`;
+            const date  = new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'});
+            const entry = { code, firstName:fn, lastName:ln, email:em, phone:ph, region:rg, date, fingerprint:currentFP, generatedBy:currentUser };
+            const codes = getCodes(); codes.unshift(entry); saveCodes(codes);
 
-            const entry = { code, firstName, lastName, email, phone, region, date, fingerprint: fp, generatedBy: user };
-
-            const codes = getCodes();
-            codes.unshift(entry);
-            saveCodes(codes);
-
-            // Show result
             document.getElementById('displayCode').textContent = code;
-            document.getElementById('displayDetails').innerHTML = `
-                <strong>${firstName} ${lastName}</strong><br>
-                📧 ${email}<br>
-                📱 ${phone}<br>
-                📍 ${region}<br>
-                🗓️ ${date}
-            `;
-            const result = document.getElementById('codeResult');
-            result.style.display = 'block';
-            result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('displayDetails').innerHTML =
+                `<strong>${fn} ${ln}</strong><br>📧 ${em}<br>📱 ${ph}<br>📍 ${rg}<br>🗓️ ${date}`;
+            const res = document.getElementById('codeResult');
+            res.style.display = 'block';
+            res.scrollIntoView({behavior:'smooth', block:'center'});
 
-            // Lock the form — they've used their one shot
-            document.querySelector('.generate-btn').disabled = true;
-            document.querySelector('.generate-btn').textContent = '✅ Code Issued';
-            document.querySelector('.generate-btn').style.opacity = '0.5';
-            document.querySelector('.generate-btn').style.cursor = 'not-allowed';
-
-            ['firstName','lastName','agentEmail','agentPhone'].forEach(id => {
-                document.getElementById(id).disabled = true;
-            });
-            document.getElementById('agentRegion').disabled = true;
-
+            const btn = document.querySelector('.generate-btn');
+            btn.disabled = true; btn.textContent = '✅ Code Issued';
+            btn.style.opacity = '0.45'; btn.style.cursor = 'not-allowed';
+            ['firstName','lastName','agentEmail','agentPhone','agentRegion'].forEach(id =>
+                document.getElementById(id).disabled = true);
             renderList();
         }
 
-        /* =============================================
-           COPY
-        ============================================= */
         function copyCode() {
-            const code = document.getElementById('displayCode').textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                btn.textContent = '✅ Copied!';
-                setTimeout(() => btn.textContent = '📋 Copy Code', 2000);
+            navigator.clipboard.writeText(document.getElementById('displayCode').textContent).then(() => {
+                const b = document.querySelector('.copy-btn');
+                b.textContent = '✅ Copied!';
+                setTimeout(() => b.textContent = '📋 Copy Code', 2000);
             });
         }
 
-        /* =============================================
-           RENDER LIST
-        ============================================= */
+        /* RENDER LIST
+           — Default: only show the current user's own code
+           — Admin mode: show all codes                      */
         function renderList() {
-            const codes = getCodes();
-            document.getElementById('totalCount').textContent = codes.length;
+            const all = getCodes();
             const container = document.getElementById('codesList');
+            const titleEl   = document.getElementById('listTitle');
+            let toShow;
 
-            if (codes.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <span>📋</span>
-                        NO AGENT CODES GENERATED YET
-                    </div>`;
+            if (adminUnlocked) {
+                toShow = all;
+                titleEl.textContent = `ALL CODES (${all.length})`;
+            } else {
+                toShow = all.filter(c => c.generatedBy === currentUser || c.fingerprint === currentFP);
+                titleEl.textContent = `MY CODE (${toShow.length})`;
+            }
+
+            if (!toShow.length) {
+                container.innerHTML = `<div class="empty-state"><span>📋</span>${adminUnlocked ? 'NO CODES GENERATED YET' : 'YOUR CODE WILL APPEAR HERE AFTER GENERATING'}</div>`;
                 return;
             }
 
-            container.innerHTML = codes.map(c => `
-                <div class="code-entry">
-                    <div class="entry-code">${c.code}</div>
+            container.innerHTML = toShow.map(c => {
+                const mine = c.generatedBy === currentUser || c.fingerprint === currentFP;
+                return `<div class="code-entry ${mine ? 'mine' : ''}">
+                    <div class="entry-code">${c.code}${mine && adminUnlocked ? '<span class="mine-badge">MINE</span>' : ''}</div>
                     <div class="entry-info">
                         <div class="entry-name">${c.firstName} ${c.lastName}</div>
                         <div class="entry-meta">📧 ${c.email} &nbsp;·&nbsp; 📱 ${c.phone} &nbsp;·&nbsp; 📍 ${c.region}</div>
                     </div>
                     <div class="entry-date">${c.date}</div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
 
-        /* =============================================
-           CLEAR ALL
-        ============================================= */
-        function confirmClear() {
-            if (confirm('Delete ALL agent codes? This cannot be undone.')) {
+        /* ADMIN MODAL */
+        function openModal(action, title, sub) {
+            pendingAction = action;
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalSub').textContent = sub;
+            document.getElementById('adminPassInput').value = '';
+            document.getElementById('modalError').textContent = '';
+            document.getElementById('adminModal').classList.add('active');
+            setTimeout(() => document.getElementById('adminPassInput').focus(), 120);
+        }
+        function closeModal() {
+            document.getElementById('adminModal').classList.remove('active');
+            pendingAction = null;
+        }
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && document.getElementById('adminModal').classList.contains('active')) submitAdminPass();
+            if (e.key === 'Escape') closeModal();
+        });
+        function submitAdminPass() {
+            const val = document.getElementById('adminPassInput').value;
+            if (val !== ADMIN_PASS) {
+                document.getElementById('modalError').textContent = 'Incorrect password. Try again.';
+                document.getElementById('adminPassInput').value = '';
+                document.getElementById('adminPassInput').focus();
+                return;
+            }
+            closeModal();
+            if (pendingAction === 'viewAll') {
+                adminUnlocked = true;
+                document.getElementById('adminBanner').classList.add('visible');
+                document.getElementById('viewAllBtn').textContent = '🔓 Viewing All';
+                document.getElementById('viewAllBtn').classList.add('active');
+                renderList();
+            }
+            if (pendingAction === 'clearAll') {
                 localStorage.removeItem(STORAGE_KEY);
+                adminUnlocked = false;
+                document.getElementById('adminBanner').classList.remove('visible');
+                document.getElementById('viewAllBtn').textContent = '🔑 View All Codes';
+                document.getElementById('viewAllBtn').classList.remove('active');
                 document.getElementById('codeResult').style.display = 'none';
                 renderList();
             }
+        }
+
+        /* BUTTON HANDLERS */
+        function handleViewAll() {
+            if (adminUnlocked) {
+                // Toggle back to personal view
+                adminUnlocked = false;
+                document.getElementById('adminBanner').classList.remove('visible');
+                document.getElementById('viewAllBtn').textContent = '🔑 View All Codes';
+                document.getElementById('viewAllBtn').classList.remove('active');
+                renderList();
+            } else {
+                openModal('viewAll', 'Admin Access', 'Enter the admin password to view all agent codes.');
+            }
+        }
+        function handleClearAll() {
+            openModal('clearAll', 'Clear All Codes', 'Enter the admin password to permanently delete all agent codes. This cannot be undone.');
         }
     </script>
 </body>
