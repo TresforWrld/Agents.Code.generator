@@ -18,6 +18,7 @@
             --border: rgba(255,255,255,0.07);
             --card-bg: rgba(15, 30, 48, 0.92);
             --green: #39ff14;
+            --red: #ff4d4d;
         }
 
         html, body {
@@ -88,13 +89,13 @@
         }
         .top-login-btn:hover { background: rgba(198,168,92,0.2); color: #fff; }
 
-        /* ===== BLOCKED SCREEN ===== */
-        #blockedScreen {
+        /* ===== SHARED OVERLAY STYLES ===== */
+        .overlay-screen {
             position: fixed;
             inset: 0;
             z-index: 999;
             background: var(--primary);
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -102,76 +103,120 @@
             padding: 24px;
             gap: 18px;
         }
+        .overlay-screen.active { display: flex; }
 
-        .blocked-logo-ring {
+        .overlay-logo-ring {
             position: relative;
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
+            width: 100px; height: 100px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 6px;
         }
-        .blocked-logo-ring::before {
+        .overlay-logo-ring::before {
             content: '';
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
             border: 2px solid rgba(198,168,92,0.5);
             animation: spin1 6s linear infinite;
         }
-        .blocked-logo-ring::after {
+        .overlay-logo-ring::after {
             content: '';
-            position: absolute;
-            inset: 7px;
+            position: absolute; inset: 7px;
             border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%;
             border: 1.5px solid rgba(0,191,255,0.4);
             animation: spin2 4s linear infinite;
         }
-        .blocked-logo-ring img {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            object-fit: cover;
-            position: relative;
-            z-index: 2;
+        .overlay-logo-ring img {
+            width: 72px; height: 72px;
+            border-radius: 50%; object-fit: cover;
+            position: relative; z-index: 2;
             border: 2px solid rgba(198,168,92,0.3);
             box-shadow: 0 0 24px rgba(198,168,92,0.2);
         }
-
-        #blockedScreen h2 {
+        .overlay-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 18px;
             font-weight: 900;
-            color: var(--gold);
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
         }
-        #blockedScreen p {
+        .overlay-msg {
             font-size: 15px;
             color: var(--text-light);
-            max-width: 300px;
+            max-width: 320px;
             line-height: 1.7;
         }
-        .blocked-btn {
+        .overlay-btn {
             display: inline-block;
             padding: 13px 36px;
-            background: linear-gradient(135deg, rgba(0,191,255,0.15), rgba(198,168,92,0.1));
-            border: 1px solid rgba(0,191,255,0.35);
             border-radius: 50px;
-            color: var(--accent);
-            text-decoration: none;
             font-family: 'Orbitron', sans-serif;
             font-size: 11px;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
+            text-decoration: none;
             transition: all 0.3s;
+            cursor: pointer;
+            border: none;
         }
-        .blocked-btn:hover {
+        .overlay-btn-cyan {
+            background: linear-gradient(135deg, rgba(0,191,255,0.15), rgba(198,168,92,0.1));
+            border: 1px solid rgba(0,191,255,0.35) !important;
+            color: var(--accent);
+        }
+        .overlay-btn-cyan:hover {
             background: linear-gradient(135deg, rgba(0,191,255,0.25), rgba(198,168,92,0.18));
             box-shadow: 0 0 24px rgba(0,191,255,0.15);
             transform: translateY(-2px);
         }
+
+        /* existing code display on blocked screen */
+        .existing-code-box {
+            background: rgba(57,255,20,0.05);
+            border: 1px solid rgba(57,255,20,0.2);
+            border-radius: 16px;
+            padding: 20px 28px;
+            max-width: 340px;
+            width: 100%;
+        }
+        .existing-code-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: var(--green);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+        .existing-code-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 30px;
+            font-weight: 900;
+            color: var(--green);
+            text-shadow: 0 0 24px rgba(57,255,20,0.35);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+        .existing-code-details {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+        .existing-code-details strong { color: var(--text); }
+        .copy-existing-btn {
+            margin-top: 14px;
+            display: inline-block;
+            padding: 9px 24px;
+            background: rgba(57,255,20,0.08);
+            border: 1px solid rgba(57,255,20,0.22);
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--green);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .copy-existing-btn:hover { background: rgba(57,255,20,0.16); }
 
         /* ===== MAIN CONTENT ===== */
         #mainContent {
@@ -183,7 +228,6 @@
             padding: 100px 24px 60px;
         }
 
-        /* page header */
         .page-header { text-align: center; margin-bottom: 40px; }
         .page-logo-wrap { display: flex; justify-content: center; margin-bottom: 22px; }
         .page-logo-ring {
@@ -209,8 +253,7 @@
         }
         .page-logo-ring img {
             width: 80px; height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
+            border-radius: 50%; object-fit: cover;
             position: relative; z-index: 2;
             border: 2px solid rgba(198,168,92,0.4);
             box-shadow: 0 0 30px rgba(198,168,92,0.25), 0 0 60px rgba(0,191,255,0.1);
@@ -241,7 +284,7 @@
             border-radius: 2px;
         }
 
-        /* form card */
+        /* form */
         .form-card {
             background: var(--card-bg);
             border: 1px solid rgba(198,168,92,0.15);
@@ -249,12 +292,7 @@
             padding: 32px 28px;
             margin-bottom: 28px;
         }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
         .form-row.full { grid-template-columns: 1fr; }
 
         .field label {
@@ -287,7 +325,7 @@
         .field select option { background: #0d2035; color: var(--text); }
 
         #formError {
-            color: #ff5050;
+            color: var(--red);
             font-size: 13px;
             text-align: center;
             min-height: 18px;
@@ -470,7 +508,8 @@
             .top-bar { padding: 14px 18px; }
             .form-row { grid-template-columns: 1fr; }
             .form-card { padding: 22px 16px; }
-            .code-value { font-size: 28px; letter-spacing: 3px; }
+            .code-value { font-size: 26px; letter-spacing: 3px; }
+            .existing-code-value { font-size: 24px; }
         }
     </style>
 </head>
@@ -488,19 +527,33 @@
         <a href="https://tresforwrld.github.io/ANICADEtech.net/login.html" class="top-login-btn">Login</a>
     </header>
 
-    <!-- BLOCKED SCREEN -->
-    <div id="blockedScreen">
-        <div class="blocked-logo-ring">
+    <!-- SCREEN 1: Not logged in -->
+    <div class="overlay-screen" id="blockedScreen">
+        <div class="overlay-logo-ring">
             <img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH">
         </div>
-        <h2>Access Restricted</h2>
-        <p>You need to be logged in to access the Agent Code Generator.</p>
-        <a href="https://tresforwrld.github.io/ANICADEtech.net/login.html" class="blocked-btn">Go to Login →</a>
+        <div class="overlay-title" style="color: var(--gold);">Access Restricted</div>
+        <p class="overlay-msg">You need to be logged in to access the Agent Code Generator.</p>
+        <a href="https://tresforwrld.github.io/ANICADEtech.net/login.html" class="overlay-btn overlay-btn-cyan">Go to Login →</a>
+    </div>
+
+    <!-- SCREEN 2: Already has a code -->
+    <div class="overlay-screen" id="alreadyHasCode">
+        <div class="overlay-logo-ring">
+            <img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH">
+        </div>
+        <div class="overlay-title" style="color: var(--red);">Code Already Issued</div>
+        <p class="overlay-msg">A code has already been generated for this account or device. Each agent is only allowed one code.</p>
+        <div class="existing-code-box">
+            <div class="existing-code-label">Your Agent Code</div>
+            <div class="existing-code-value" id="existingCodeDisplay">—</div>
+            <div class="existing-code-details" id="existingCodeDetails"></div>
+            <button class="copy-existing-btn" onclick="copyExistingCode()">📋 Copy My Code</button>
+        </div>
     </div>
 
     <!-- MAIN CONTENT -->
     <div id="mainContent">
-
         <div class="page-header">
             <div class="page-logo-wrap">
                 <div class="page-logo-ring">
@@ -509,7 +562,7 @@
             </div>
             <div class="page-eyebrow">ANICADE TECH — Internal Tool</div>
             <div class="page-title">Agent Code Generator</div>
-            <div class="page-sub">Generate unique codes for new agents</div>
+            <div class="page-sub">Generate your unique agent code below</div>
             <div class="divider"></div>
         </div>
 
@@ -554,18 +607,18 @@
                 </div>
             </div>
             <div id="formError"></div>
-            <button class="generate-btn" onclick="generateCode()">⚡ Generate Agent Code</button>
+            <button class="generate-btn" onclick="generateCode()">⚡ Generate My Agent Code</button>
         </div>
 
         <!-- CODE RESULT -->
         <div id="codeResult">
-            <div class="code-label">Agent Code Generated</div>
+            <div class="code-label">Your Agent Code</div>
             <div class="code-value" id="displayCode">ANC-0001</div>
             <div class="code-details" id="displayDetails"></div>
             <button class="copy-btn" onclick="copyCode()">📋 Copy Code</button>
         </div>
 
-        <!-- ALL CODES LIST -->
+        <!-- ALL CODES — admin can see this -->
         <div class="list-header">
             <div class="list-title">ALL CODES &nbsp;(<span id="totalCount">0</span>)</div>
             <button class="clear-btn" onclick="confirmClear()">Clear All</button>
@@ -576,33 +629,111 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'anicade_agent_codes';
-        const LOGIN_URL   = 'https://tresforwrld.github.io/ANICADEtech.net/login.html';
+        const STORAGE_KEY    = 'anicade_agent_codes';
+        const DEVICE_KEY     = 'anicade_device_code';   // stores fingerprint → code mapping
+        const LOGIN_URL      = 'https://tresforwrld.github.io/ANICADEtech.net/login.html';
 
-        function isLoggedIn() {
-            return !!localStorage.getItem('anicade_current_user');
+        /* =============================================
+           BROWSER FINGERPRINT
+           Combines stable browser signals into a hash
+        ============================================= */
+        async function getFingerprint() {
+            const raw = [
+                navigator.userAgent,
+                navigator.language,
+                navigator.hardwareConcurrency,
+                navigator.deviceMemory || '',
+                screen.width + 'x' + screen.height,
+                screen.colorDepth,
+                Intl.DateTimeFormat().resolvedOptions().timeZone,
+                navigator.platform,
+                navigator.vendor || ''
+            ].join('|');
+
+            // Simple hash
+            let hash = 0;
+            for (let i = 0; i < raw.length; i++) {
+                hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+                hash |= 0;
+            }
+            return 'FP-' + Math.abs(hash).toString(36).toUpperCase();
         }
 
-        window.addEventListener('DOMContentLoaded', function () {
-            if (!isLoggedIn()) {
-                document.getElementById('blockedScreen').style.display = 'flex';
-                document.getElementById('mainContent').style.display = 'none';
-            } else {
-                document.getElementById('blockedScreen').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'block';
-                renderList();
+        /* =============================================
+           CHECK: has this device OR account generated?
+        ============================================= */
+        async function getExistingCode() {
+            const codes = getCodes();
+            const currentUser = localStorage.getItem('anicade_current_user');
+            const fp = await getFingerprint();
+
+            // Check by account username
+            const byAccount = codes.find(c => c.generatedBy === currentUser);
+            if (byAccount) return byAccount;
+
+            // Check by device fingerprint
+            const byDevice = codes.find(c => c.fingerprint === fp);
+            if (byDevice) return byDevice;
+
+            return null;
+        }
+
+        /* =============================================
+           LOGIN GUARD + DUPLICATE CHECK ON LOAD
+        ============================================= */
+        window.addEventListener('DOMContentLoaded', async function () {
+            const loggedIn = !!localStorage.getItem('anicade_current_user');
+
+            if (!loggedIn) {
+                document.getElementById('blockedScreen').classList.add('active');
+                return;
             }
+
+            const existing = await getExistingCode();
+            if (existing) {
+                showAlreadyHasCode(existing);
+                return;
+            }
+
+            // All clear — show the form
+            document.getElementById('mainContent').style.display = 'block';
+            renderList();
         });
 
+        /* =============================================
+           SHOW "ALREADY HAS CODE" SCREEN
+        ============================================= */
+        function showAlreadyHasCode(entry) {
+            document.getElementById('existingCodeDisplay').textContent = entry.code;
+            document.getElementById('existingCodeDetails').innerHTML = `
+                <strong>${entry.firstName} ${entry.lastName}</strong><br>
+                📧 ${entry.email}<br>
+                📱 ${entry.phone}<br>
+                📍 ${entry.region}<br>
+                🗓️ ${entry.date}
+            `;
+            document.getElementById('alreadyHasCode').classList.add('active');
+        }
+
+        function copyExistingCode() {
+            const code = document.getElementById('existingCodeDisplay').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector('.copy-existing-btn');
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = '📋 Copy My Code', 2000);
+            });
+        }
+
+        /* =============================================
+           STORAGE HELPERS
+        ============================================= */
         function getCodes() {
             try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
             catch { return []; }
         }
-
         function saveCodes(codes) {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(codes));
         }
-
         function getNextNumber() {
             const codes = getCodes();
             if (codes.length === 0) return 1;
@@ -610,7 +741,10 @@
             return Math.max(...nums) + 1;
         }
 
-        function generateCode() {
+        /* =============================================
+           GENERATE CODE
+        ============================================= */
+        async function generateCode() {
             const firstName = document.getElementById('firstName').value.trim();
             const lastName  = document.getElementById('lastName').value.trim();
             const email     = document.getElementById('agentEmail').value.trim();
@@ -625,9 +759,16 @@
                 return;
             }
 
+            // Double-check before saving (race condition guard)
+            const existing = await getExistingCode();
+            if (existing) { showAlreadyHasCode(existing); return; }
+
+            const fp   = await getFingerprint();
+            const user = localStorage.getItem('anicade_current_user');
             const code = `ANC-${String(getNextNumber()).padStart(4, '0')}`;
             const date = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-            const entry = { code, firstName, lastName, email, phone, region, date };
+
+            const entry = { code, firstName, lastName, email, phone, region, date, fingerprint: fp, generatedBy: user };
 
             const codes = getCodes();
             codes.unshift(entry);
@@ -646,13 +787,23 @@
             result.style.display = 'block';
             result.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // Clear form
-            ['firstName','lastName','agentEmail','agentPhone'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('agentRegion').value = '';
+            // Lock the form — they've used their one shot
+            document.querySelector('.generate-btn').disabled = true;
+            document.querySelector('.generate-btn').textContent = '✅ Code Issued';
+            document.querySelector('.generate-btn').style.opacity = '0.5';
+            document.querySelector('.generate-btn').style.cursor = 'not-allowed';
+
+            ['firstName','lastName','agentEmail','agentPhone'].forEach(id => {
+                document.getElementById(id).disabled = true;
+            });
+            document.getElementById('agentRegion').disabled = true;
 
             renderList();
         }
 
+        /* =============================================
+           COPY
+        ============================================= */
         function copyCode() {
             const code = document.getElementById('displayCode').textContent;
             navigator.clipboard.writeText(code).then(() => {
@@ -662,6 +813,9 @@
             });
         }
 
+        /* =============================================
+           RENDER LIST
+        ============================================= */
         function renderList() {
             const codes = getCodes();
             document.getElementById('totalCount').textContent = codes.length;
@@ -688,6 +842,9 @@
             `).join('');
         }
 
+        /* =============================================
+           CLEAR ALL
+        ============================================= */
         function confirmClear() {
             if (confirm('Delete ALL agent codes? This cannot be undone.')) {
                 localStorage.removeItem(STORAGE_KEY);
