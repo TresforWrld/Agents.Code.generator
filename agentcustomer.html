@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ANICADE TECH | Referred by Agent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--primary:#0B1C2D;--accent:#00BFFF;--gold:#C6A85C;--text:#F5F7FA;--text-light:#94A3B8;--green:#39ff14;--red:#ff4d4d;--card-bg:rgba(15,30,48,0.92)}
+        html,body{background:var(--primary);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
+        .rings-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden}
+        .ring-el{position:absolute;top:50%;left:50%;border:1.5px solid transparent;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;will-change:transform}
+        .ring-el:nth-child(1){width:900px;height:900px;margin:-450px 0 0 -450px;border-color:rgba(0,191,255,0.09);animation:spin1 22s linear infinite}
+        .ring-el:nth-child(2){width:650px;height:650px;margin:-325px 0 0 -325px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(198,168,92,0.07);animation:spin2 15s linear infinite}
+        .ring-el:nth-child(3){width:430px;height:430px;margin:-215px 0 0 -215px;border-color:rgba(0,191,255,0.05);animation:spin1 32s linear infinite reverse}
+        @keyframes spin1{to{transform:rotate(360deg)}}
+        @keyframes spin2{to{transform:rotate(-360deg)}}
+
+        .page{position:relative;z-index:2;max-width:520px;margin:0 auto;padding:60px 24px 80px;animation:fadeUp .5s ease both}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+        .header{text-align:center;margin-bottom:36px}
+        .logo-ring{position:relative;width:100px;height:100px;display:flex;align-items:center;justify-content:center;margin:0 auto 22px}
+        .logo-ring::before{content:'';position:absolute;inset:0;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border:2px solid rgba(198,168,92,0.5);animation:spin1 6s linear infinite}
+        .logo-ring::after{content:'';position:absolute;inset:8px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border:1.5px solid rgba(0,191,255,0.4);animation:spin2 4s linear infinite}
+        .logo-ring img{width:72px;height:72px;border-radius:50%;object-fit:cover;position:relative;z-index:2;border:2px solid rgba(198,168,92,0.35)}
+        .eyebrow{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;color:var(--accent);opacity:.7;margin-bottom:10px}
+        .h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--gold);text-shadow:0 0 28px rgba(198,168,92,0.3);margin-bottom:6px}
+        .sub{font-size:15px;color:var(--text-light);line-height:1.6}
+        .divider{width:50px;height:2px;background:linear-gradient(90deg,var(--gold),var(--accent));margin:14px auto 0;border-radius:2px}
+
+        /* AGENT CHIP */
+        .agent-chip{display:flex;align-items:center;gap:12px;background:rgba(57,255,20,0.04);border:1px solid rgba(57,255,20,0.18);border-radius:14px;padding:14px 18px;margin-bottom:28px}
+        .agent-chip-avatar{width:42px;height:42px;border-radius:50%;flex-shrink:0;border:2px solid rgba(57,255,20,0.25)}
+        .agent-chip-info{flex:1}
+        .agent-chip-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2.5px;color:var(--green);opacity:.6;margin-bottom:3px}
+        .agent-chip-name{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--text)}
+        .agent-chip-code{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--green);letter-spacing:2px}
+
+        /* FORM */
+        .form-card{background:var(--card-bg);border:1px solid rgba(198,168,92,0.15);border-radius:20px;padding:28px;margin-bottom:20px;position:relative;overflow:hidden}
+        .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--accent),transparent)}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+        .form-row.full{grid-template-columns:1fr}
+        .field label{display:block;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);margin-bottom:7px}
+        .field input,.field select,.field textarea{width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none;resize:none}
+        .field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(0,191,255,0.4);box-shadow:0 0 14px rgba(0,191,255,0.08)}
+        .field input::placeholder{color:rgba(148,163,184,0.35)}
+        .field select option{background:#0d2035;color:var(--text)}
+        #formErr{color:var(--red);font-size:13px;text-align:center;min-height:18px;margin-bottom:10px}
+        .submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,rgba(198,168,92,0.18),rgba(0,191,255,0.12));border:1px solid rgba(198,168,92,0.45);border-radius:12px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);cursor:pointer;transition:all .3s}
+        .submit-btn:hover:not(:disabled){background:linear-gradient(135deg,rgba(198,168,92,0.32),rgba(0,191,255,0.22));box-shadow:0 0 30px rgba(198,168,92,0.18);transform:translateY(-1px);color:#fff}
+        .submit-btn:disabled{opacity:.4;cursor:not-allowed}
+
+        /* SUCCESS */
+        #successScreen{display:none;text-align:center;padding:20px 0;animation:fadeUp .5s ease both}
+        .success-icon{font-size:64px;margin-bottom:16px}
+        .success-title{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--green);text-shadow:0 0 24px rgba(57,255,20,0.35);letter-spacing:2px;margin-bottom:10px}
+        .success-msg{font-size:15px;color:var(--text-light);line-height:1.7;max-width:360px;margin:0 auto 24px}
+        .success-btn{display:inline-block;padding:13px 36px;background:linear-gradient(135deg,rgba(198,168,92,0.18),rgba(0,191,255,0.12));border:1px solid rgba(198,168,92,0.4);border-radius:50px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);cursor:pointer;text-decoration:none;transition:all .3s}
+        .success-btn:hover{background:linear-gradient(135deg,rgba(198,168,92,0.32),rgba(0,191,255,0.22));color:#fff}
+
+        .footer{text-align:center;margin-top:40px;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:rgba(148,163,184,.2)}
+
+        #invalidRef{text-align:center;padding:80px 24px}
+        #invalidRef .inv-icon{font-size:48px;margin-bottom:16px}
+        #invalidRef .inv-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--red);margin-bottom:10px}
+        #invalidRef .inv-msg{font-size:14px;color:var(--text-light);max-width:300px;margin:0 auto}
+
+        @media(max-width:480px){.form-row{grid-template-columns:1fr}.form-card{padding:20px 16px}}
+    </style>
+</head>
+<body>
+<div class="rings-bg"><div class="ring-el"></div><div class="ring-el"></div><div class="ring-el"></div></div>
+
+<div class="page" id="mainPage" style="display:none">
+    <div class="header">
+        <div class="logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+        <div class="eyebrow">ANICADE TECH — REFERRAL</div>
+        <div class="h1">You've Been Referred!</div>
+        <div class="sub">An ANICADE TECH Agent has invited you.<br>Fill in your details below to get started.</div>
+        <div class="divider"></div>
+    </div>
+
+    <div class="agent-chip">
+        <canvas class="agent-chip-avatar" id="agentAvatarCanvas" width="42" height="42"></canvas>
+        <div class="agent-chip-info">
+            <div class="agent-chip-label">Referred By</div>
+            <div class="agent-chip-name" id="agentChipName">—</div>
+            <div class="agent-chip-code" id="agentChipCode">—</div>
+        </div>
+    </div>
+
+    <div class="form-card" id="formCard">
+        <div class="form-row">
+            <div class="field"><label>First Name</label><input type="text" id="cFirstName" placeholder="Your first name"></div>
+            <div class="field"><label>Last Name</label><input type="text" id="cLastName" placeholder="Your last name"></div>
+        </div>
+        <div class="form-row full">
+            <div class="field"><label>Email Address</label><input type="email" id="cEmail" placeholder="your@email.com"></div>
+        </div>
+        <div class="form-row full">
+            <div class="field"><label>Phone Number</label><input type="tel" id="cPhone" placeholder="+260 7XX XXX XXX"></div>
+        </div>
+        <div class="form-row full">
+            <div class="field">
+                <label>Service Interested In</label>
+                <select id="cService">
+                    <option value="" disabled selected>Select a service...</option>
+                    <option>Web Development</option>
+                    <option>Mobile App Development</option>
+                    <option>UI/UX Design</option>
+                    <option>Digital Marketing</option>
+                    <option>IT Consulting</option>
+                    <option>Cloud Services</option>
+                    <option>Cybersecurity</option>
+                    <option>Data Analytics</option>
+                    <option>E-commerce Solutions</option>
+                    <option>Other / Not Sure Yet</option>
+                </select>
+            </div>
+        </div>
+        <div id="formErr"></div>
+        <button class="submit-btn" id="submitBtn" onclick="submitReferral()">✅ Submit My Details</button>
+    </div>
+
+    <div id="successScreen">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">You're Registered!</div>
+        <div class="success-msg">Your details have been submitted successfully.<br>An ANICADE TECH representative will be in touch with you shortly.</div>
+        <a href="https://tresforwrld.github.io/ANICADEtech.net/" class="success-btn">Visit ANICADE TECH →</a>
+    </div>
+
+    <div class="footer">ANICADE TECH · POWERED BY AGENT REFERRAL SYSTEM</div>
+</div>
+
+<div id="invalidRef" style="display:none">
+    <div class="inv-icon">⚠️</div>
+    <div class="inv-title">Invalid Referral Link</div>
+    <div class="inv-msg">This referral link is invalid or the agent code does not exist.</div>
+</div>
+
+<script>
+const STORAGE_KEY  = 'anicade_agent_codes';
+const REFERRAL_KEY = 'anicade_agent_referrals';
+
+function hashCode(str){let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0}return Math.abs(h)}
+const PALETTES=[['#1a3a5c','#00BFFF'],['#2d1a5c','#a78bfa'],['#1a4a2e','#39ff14'],['#5c1a1a','#ff6b6b'],['#3d2b00','#C6A85C'],['#1a4a4a','#00e5cc'],['#2b1a4a','#f472b6'],['#0d2b3d','#38bdf8'],['#3d1a2b','#fb923c'],['#1a3d2b','#84cc16'],['#2b2b00','#eab308'],['#0d1a3d','#6366f1']];
+function drawAvatar(canvas,name,code,size=42){
+    const ctx=canvas.getContext('2d');canvas.width=size;canvas.height=size;
+    const h=hashCode(code||name),pal=PALETTES[h%PALETTES.length],bg=pal[0],ac=pal[1];
+    const grad=ctx.createRadialGradient(size*.4,size*.35,0,size*.5,size*.5,size*.7);
+    grad.addColorStop(0,bg);grad.addColorStop(1,'#0B1C2D');
+    ctx.beginPath();ctx.arc(size/2,size/2,size/2,0,Math.PI*2);ctx.fillStyle=grad;ctx.fill();
+    const parts=name.trim().split(' ');
+    const ini=parts.length>=2?(parts[0][0]+parts[parts.length-1][0]).toUpperCase():(parts[0]||'A').substring(0,2).toUpperCase();
+    ctx.fillStyle=ac;ctx.font=`bold ${size*.32}px 'Orbitron',sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor=ac;ctx.shadowBlur=8;
+    ctx.fillText(ini,size/2,size/2);
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+    const params = new URLSearchParams(window.location.search);
+    const refCode = params.get('ref');
+    if(!refCode){ document.getElementById('invalidRef').style.display='block'; return; }
+    const codes = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+    const agent = codes.find(c=>c.code===refCode.toUpperCase());
+    if(!agent){ document.getElementById('invalidRef').style.display='block'; return; }
+    document.getElementById('mainPage').style.display='block';
+    document.getElementById('agentChipName').textContent=`${agent.firstName} ${agent.lastName}`;
+    document.getElementById('agentChipCode').textContent=agent.code;
+    drawAvatar(document.getElementById('agentAvatarCanvas'),`${agent.firstName} ${agent.lastName}`,agent.code,42);
+    document.title=`ANICADE TECH | Referred by ${agent.firstName}`;
+    window._agentEntry = agent;
+});
+
+function submitReferral(){
+    const fn=document.getElementById('cFirstName').value.trim();
+    const ln=document.getElementById('cLastName').value.trim();
+    const em=document.getElementById('cEmail').value.trim();
+    const ph=document.getElementById('cPhone').value.trim();
+    const sv=document.getElementById('cService').value;
+    const err=document.getElementById('formErr');
+    err.textContent='';
+    if(!fn||!ln||!em||!ph||!sv){err.textContent='Please fill in all fields.';return;}
+    const agent=window._agentEntry;
+    const referrals=JSON.parse(localStorage.getItem(REFERRAL_KEY)||'[]');
+    // Prevent duplicate email
+    if(referrals.find(r=>r.email===em&&r.agentCode===agent.code)){
+        document.getElementById('formCard').style.display='none';
+        document.getElementById('successScreen').style.display='block';
+        return;
+    }
+    const entry={
+        id:Date.now().toString(36),
+        agentCode:agent.code,
+        firstName:fn,lastName:ln,email:em,phone:ph,service:sv,
+        date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})
+    };
+    referrals.push(entry);
+    localStorage.setItem(REFERRAL_KEY,JSON.stringify(referrals));
+    document.getElementById('formCard').style.display='none';
+    document.getElementById('successScreen').style.display='block';
+}
+</script>
+</body>
+</html>
