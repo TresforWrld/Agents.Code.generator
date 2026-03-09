@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ANICADE tech | Login</title>
+
+    <!-- Open Graph / Link Preview -->
+    <meta property="og:title" content="ANICADE TECH | Professional Tech Solutions Zambia">
+    <meta property="og:description" content="Kabwe's trusted partner for web development, digital marketing, AI automation and design.">
+    <meta property="og:image" content="https://i.imgur.com/RcBmjWM.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://bit.ly/ANICADEtech">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ANICADE TECH | Professional Tech Solutions Zambia">
+    <meta name="twitter:description" content="Kabwe's trusted partner for web development, digital marketing, AI automation and design.">
+    <meta name="twitter:image" content="https://i.imgur.com/RcBmjWM.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0B1C2D;
+        }
+
+        .scene {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .ring-wrap {
+            width: min(500px, 92vw);
+            height: min(500px, 92vw);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ring {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ring i {
+            position: absolute;
+            inset: 0;
+            border: 2px solid transparent;
+            transition: 0.5s;
+        }
+
+        .ring i:nth-child(1) {
+            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+            animation: animate 6s linear infinite;
+        }
+
+        .ring:hover i:nth-child(1) {
+            border: 6px solid lawngreen;
+            filter: drop-shadow(0 0 20px lawngreen);
+        }
+
+        .ring i:nth-child(2) {
+            border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%;
+            animation: animate 4s linear infinite;
+        }
+
+        .ring:hover i:nth-child(2) {
+            border: 6px solid red;
+            filter: drop-shadow(0 0 20px red);
+        }
+
+        .ring i:nth-child(3) {
+            border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%;
+            animation: animate2 10s linear infinite;
+        }
+
+        .ring:hover i:nth-child(3) {
+            border: 6px solid #C6A85C;
+            filter: drop-shadow(0 0 20px #C6A85C);
+        }
+
+        @keyframes animate {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes animate2 {
+            0%   { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .login {
+            position: absolute;
+            width: min(300px, 76vw);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 16px;
+            z-index: 1000;
+        }
+
+        .login h2 {
+            font-size: clamp(1.2em, 5vw, 2em);
+            color: #C6A85C;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(198, 168, 92, 0.5);
+        }
+
+        .inputBx { width: 100%; }
+
+        .inputBx input {
+            width: 100%;
+            padding: 11px 18px;
+            background: transparent;
+            border: 2px solid #1F2E3D;
+            border-radius: 40px;
+            font-size: clamp(0.8em, 3.5vw, 1em);
+            color: #F5F7FA;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .inputBx input:focus {
+            border-color: #00BFFF;
+            box-shadow: 0 0 20px #00BFFF;
+        }
+
+        .inputBx input::placeholder { color: #94A3B8; }
+
+        .inputBx input[type="submit"] {
+            background: #00BFFF;
+            border: none;
+            color: #0B1C2D;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
+            transition: 0.3s;
+        }
+
+        .inputBx input[type="submit"]:hover {
+            background: #C6A85C;
+            box-shadow: 0 0 30px #C6A85C;
+        }
+
+        .links {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 12px;
+        }
+
+        .links a {
+            color: #94A3B8;
+            text-decoration: none;
+            font-size: clamp(0.75em, 3vw, 0.9em);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .links a:hover {
+            color: #00BFFF;
+            text-shadow: 0 0 10px #00BFFF;
+        }
+
+        .message {
+            color: #ff4d4d;
+            font-size: clamp(0.75em, 3vw, 0.9em);
+            min-height: 18px;
+            text-align: center;
+        }
+
+        .success-message {
+            color: lawngreen;
+            font-size: clamp(0.75em, 3vw, 0.9em);
+            min-height: 18px;
+            text-align: center;
+        }
+
+        .footer-bar {
+            position: fixed;
+            bottom: 14px;
+            left: 0; right: 0;
+            text-align: center;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+        .footer-bar a {
+            color: rgba(148,163,184,0.5);
+            font-size: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .footer-bar a:hover { color: #00BFFF; }
+        .footer-bar .sep { color: rgba(255,255,255,0.15); font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <div class="scene">
+        <div class="ring-wrap">
+            <div class="ring">
+                <i></i>
+                <i></i>
+                <i></i>
+                <div class="login" id="loginContainer">
+                    <h2 id="formTitle">Login</h2>
+                    <div class="message" id="message"></div>
+                    <div class="inputBx">
+                        <input type="text" id="username" placeholder="Username">
+                    </div>
+                    <div class="inputBx">
+                        <input type="password" id="password" placeholder="Password">
+                    </div>
+                    <div class="inputBx" id="confirmPasswordContainer" style="display: none;">
+                        <input type="password" id="confirmPassword" placeholder="Confirm Password">
+                    </div>
+                    <div class="inputBx">
+                        <input type="submit" value="Sign In" id="actionButton" onclick="handleAuth()">
+                    </div>
+                    <div class="links">
+                        <a href="#" id="forgotLink" onclick="forgotPassword()">Forgot Password</a>
+                        <a href="#" id="toggleLink" onclick="toggleMode()">Signup</a>
+                    </div>
+                    <div class="success-message" id="successMessage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bar">
+        <a href="terms.html">Terms of Service</a>
+        <span class="sep">·</span>
+        <a href="terms.html#privacy">Privacy Policy</a>
+    </div>
+
+    <script>
+        const DEFAULT_REDIRECT_URL = 'https://tresforwrld.github.io/ANICADEtech.net-in/#';
+
+        function getRedirectURL() {
+            const pending = localStorage.getItem('anicade_login_redirect');
+            if (pending) { localStorage.removeItem('anicade_login_redirect'); return pending; }
+            return DEFAULT_REDIRECT_URL;
+        }
+
+        if (!localStorage.getItem('anicade_users')) {
+            localStorage.setItem('anicade_users', JSON.stringify({
+                'demo': 'password123',
+                'admin': 'admin123',
+                'anicade': 'tech2026',
+                'guest': 'guest123'
+            }));
+        }
+
+        let isLoginMode = true;
+
+        function toggleMode() {
+            isLoginMode = !isLoginMode;
+            const formTitle = document.getElementById('formTitle');
+            const actionButton = document.getElementById('actionButton');
+            const toggleLink = document.getElementById('toggleLink');
+            const confirmPasswordContainer = document.getElementById('confirmPasswordContainer');
+            const message = document.getElementById('message');
+            const forgotLink = document.getElementById('forgotLink');
+
+            if (isLoginMode) {
+                formTitle.textContent = 'Login';
+                actionButton.value = 'Sign In';
+                toggleLink.textContent = 'Signup';
+                confirmPasswordContainer.style.display = 'none';
+                forgotLink.style.display = 'block';
+                message.textContent = '';
+            } else {
+                formTitle.textContent = 'Sign Up';
+                actionButton.value = 'Create Account';
+                toggleLink.textContent = 'Login';
+                confirmPasswordContainer.style.display = 'block';
+                forgotLink.style.display = 'none';
+                message.textContent = '';
+            }
+
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('successMessage').textContent = '';
+        }
+
+        function handleAuth() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const message = document.getElementById('message');
+            const successMessage = document.getElementById('successMessage');
+
+            message.textContent = '';
+            successMessage.textContent = '';
+
+            if (!username || !password) { message.textContent = 'Please fill in all fields'; return; }
+
+            if (isLoginMode) {
+                const users = JSON.parse(localStorage.getItem('anicade_users'));
+                if (users[username] && users[username] === password) {
+                    localStorage.setItem('anicade_current_user', username);
+                    successMessage.textContent = 'Login successful! Redirecting...';
+                    setTimeout(() => { window.location.href = getRedirectURL(); }, 1500);
+                } else {
+                    message.textContent = 'Invalid username or password';
+                }
+            } else {
+                const confirmPassword = document.getElementById('confirmPassword').value.trim();
+                if (password !== confirmPassword) { message.textContent = 'Passwords do not match'; return; }
+                if (password.length < 6) { message.textContent = 'Password must be at least 6 characters'; return; }
+
+                const users = JSON.parse(localStorage.getItem('anicade_users'));
+                if (users[username]) { message.textContent = 'Username already exists'; return; }
+
+                users[username] = password;
+                localStorage.setItem('anicade_users', JSON.stringify(users));
+                localStorage.setItem('anicade_current_user', username);
+                successMessage.textContent = 'Account created! Redirecting...';
+                setTimeout(() => { window.location.href = getRedirectURL(); }, 1500);
+            }
+        }
+
+        function forgotPassword() {
+            const username = document.getElementById('username').value.trim();
+            const message = document.getElementById('message');
+
+            if (!username) { message.textContent = 'Please enter your username'; return; }
+
+            const users = JSON.parse(localStorage.getItem('anicade_users'));
+            if (users[username]) {
+                message.style.color = 'lawngreen';
+                message.textContent = `Your password is: ${users[username]}`;
+                setTimeout(() => { message.style.color = '#ff4d4d'; message.textContent = ''; }, 5000);
+            } else {
+                message.textContent = 'Username not found';
+            }
+        }
+
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleAuth();
+        });
+    </script>
+</body>
+</html>
