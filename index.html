@@ -92,9 +92,14 @@
         .field input:focus, .field select:focus { border-color: rgba(0,191,255,0.4); box-shadow: 0 0 16px rgba(0,191,255,0.08); }
         .field input::placeholder { color: rgba(148,163,184,0.35); }
         .field select option { background: #0d2035; color: var(--text); }
-        #formError { color: var(--red); font-size: 13px; text-align: center; min-height: 18px; margin-bottom: 10px; font-family: 'Rajdhani', sans-serif; }
+
         .generate-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, rgba(198,168,92,0.18), rgba(0,191,255,0.12)); border: 1px solid rgba(198,168,92,0.45); border-radius: 12px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); cursor: pointer; transition: all 0.3s; }
         .generate-btn:hover:not(:disabled) { background: linear-gradient(135deg, rgba(198,168,92,0.32), rgba(0,191,255,0.22)); box-shadow: 0 0 30px rgba(198,168,92,0.2); transform: translateY(-1px); color: #fff; }
+        #formError { color: var(--red); font-size: 13px; text-align: center; min-height: 18px; margin-bottom: 10px; font-family: 'Rajdhani', sans-serif; }
+        .pass-section { background: rgba(198,168,92,0.04); border: 1px solid rgba(198,168,92,0.18); border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; }
+        .pass-section-label { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 3px; color: var(--gold); opacity: 0.7; margin-bottom: 12px; text-transform: uppercase; display: block; }
+        .pass-note { font-size: 12px; color: var(--text-light); margin-top: 8px; line-height: 1.5; }
+        .pass-note strong { color: var(--gold); }
 
         /* CODE RESULT */
         #codeResult { display: none; background: rgba(57,255,20,0.04); border: 1px solid rgba(57,255,20,0.22); border-radius: 18px; padding: 28px 24px; text-align: center; margin-bottom: 28px; animation: fadeUp 0.4s ease both; }
@@ -104,7 +109,7 @@
         .code-details strong { color: var(--text); font-weight: 600; }
         .copy-btn { margin-top: 18px; display: inline-block; padding: 10px 28px; background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.25); border-radius: 50px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--green); cursor: pointer; transition: all 0.2s; }
         .copy-btn:hover { background: rgba(57,255,20,0.16); }
-        .portal-entry-btn { display: none; margin-top: 14px; width: 100%; padding: 15px; background: linear-gradient(135deg, rgba(198,168,92,0.2), rgba(0,191,255,0.12)); border: 1px solid rgba(198,168,92,0.5); border-radius: 12px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); cursor: pointer; transition: all 0.3s; animation: fadeUp 0.4s ease both; }
+        .portal-entry-btn { margin-top: 14px; width: 100%; padding: 15px; background: linear-gradient(135deg, rgba(198,168,92,0.2), rgba(0,191,255,0.12)); border: 1px solid rgba(198,168,92,0.5); border-radius: 12px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); cursor: pointer; transition: all 0.3s; animation: fadeUp 0.4s ease both; }
         .portal-entry-btn:hover { background: linear-gradient(135deg, rgba(198,168,92,0.35), rgba(0,191,255,0.24)); box-shadow: 0 0 30px rgba(198,168,92,0.22); transform: translateY(-1px); color: #fff; }
 
         /* LIST */
@@ -158,7 +163,7 @@
         <div class="overlay-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
         <div class="overlay-title" style="color:var(--gold);">Access Restricted</div>
         <p class="overlay-msg">You need to be logged in to access the Agent Code Generator.</p>
-        <a href="https://tresforwrld.github.io/ANICADEtech.net/login.html" class="overlay-btn overlay-btn-cyan" onclick="setLoginRedirect()">Go to Login →</a>
+        <a href="https://tresforwrld.github.io/ANICADEtech.net/index.html" class="overlay-btn overlay-btn-cyan" onclick="setLoginRedirect()">Go to Login →</a>
     </div>
 
     <!-- OVERLAY: Already has a code — z-index 20 -->
@@ -171,7 +176,7 @@
             <div class="existing-code-value" id="existingCodeDisplay">—</div>
             <div class="existing-code-details" id="existingCodeDetails"></div>
             <button class="copy-existing-btn" onclick="copyExistingCode()">📋 Copy My Code</button>
-            <button class="copy-existing-btn" id="existingPortalBtn" style="display:none;background:rgba(198,168,92,0.08);border-color:rgba(198,168,92,0.3);color:var(--gold)" onclick="enterPortalExisting()">🚀 Enter Agent Portal →</button>
+            <button class="copy-existing-btn" style="margin-top:8px;background:rgba(198,168,92,0.08);border-color:rgba(198,168,92,0.3);color:var(--gold)" onclick="enterPortalExisting()">🚀 Enter Agent Portal →</button>
         </div>
         <button class="overlay-btn overlay-btn-ghost" onclick="handleAdminOverride()">🔑 Admin Override</button>
     </div>
@@ -302,6 +307,25 @@
             </div>
 
             <div id="formError"></div>
+
+            <!-- PORTAL PASSWORD -->
+            <div class="pass-section">
+                <span class="pass-section-label">🔐 Create Your Portal Password</span>
+                <div class="form-row full" style="margin-bottom:0">
+                    <div class="field">
+                        <label>Portal Password</label>
+                        <input type="password" id="portalPass" placeholder="Create a password for your portal" autocomplete="new-password">
+                    </div>
+                </div>
+                <div class="form-row full" style="margin-bottom:0;margin-top:12px">
+                    <div class="field">
+                        <label>Confirm Password</label>
+                        <input type="password" id="portalPassConfirm" placeholder="Confirm your password" autocomplete="new-password">
+                    </div>
+                </div>
+                <div class="pass-note">⚠️ <strong>Remember this password.</strong> You'll need it every time you log into your Agent Portal.</div>
+            </div>
+
             <button class="generate-btn" id="generateBtn" onclick="generateCode()">⚡ Generate My Agent Code</button>
         </div>
 
@@ -323,7 +347,7 @@
         <div class="admin-mode-banner" id="adminBanner">⚡ ADMIN MODE — VIEWING ALL CODES</div>
         <div id="codesList"></div>
 
-        <div class="page-footer">ANICADE TECH &nbsp;·&nbsp; AGENT PORTAL &nbsp;·&nbsp; INTERNAL USE ONLY</div>
+        <div class="page-footer">© 2026 ANICADE TECH &nbsp;·&nbsp; <a href="https://tresforwrld.github.io/ANICADEtech.net/terms.html" style="color:rgba(148,163,184,0.4);text-decoration:none;border-bottom:1px solid rgba(148,163,184,0.15)" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(148,163,184,0.4)'">Terms of Use</a> &nbsp;·&nbsp; AGENT PORTAL &nbsp;·&nbsp; INTERNAL USE ONLY</div>
     </div>
 
     <script>
@@ -455,8 +479,6 @@
             navigator.clipboard.writeText(document.getElementById('existingCodeDisplay').textContent).then(() => {
                 const b = document.querySelector('.copy-existing-btn');
                 b.textContent = '✅ Copied!';
-                // Show portal button
-                document.getElementById('existingPortalBtn').style.display = 'inline-block';
                 setTimeout(() => b.textContent = '📋 Copy My Code', 2500);
             });
         }
@@ -474,19 +496,23 @@
             const em  = document.getElementById('agentEmail').value.trim();
             const ph  = document.getElementById('agentPhone').value.trim();
             const rg  = getLocationString();
+            const pw  = document.getElementById('portalPass').value;
+            const pw2 = document.getElementById('portalPassConfirm').value;
             const err = document.getElementById('formError');
             err.textContent = '';
 
             const country = document.getElementById('agentCountry').value;
             if (!fn||!ln||!em||!ph||!country) { err.textContent = 'Please fill in all fields.'; return; }
             if (!rg) { err.textContent = 'Please select a city / country.'; return; }
+            if (!pw || pw.length < 6) { err.textContent = 'Portal password must be at least 6 characters.'; return; }
+            if (pw !== pw2) { err.textContent = 'Passwords do not match.'; return; }
 
             const existing = getExistingCode();
             if (existing) { showAlreadyHasCode(existing); return; }
 
             const code  = `ANC-${String(getNextNum()).padStart(4,'0')}`;
             const date  = new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'});
-            const entry = { code, firstName:fn, lastName:ln, email:em, phone:ph, region:rg, date, fingerprint:currentFP, generatedBy:currentUser };
+            const entry = { code, firstName:fn, lastName:ln, email:em, phone:ph, region:rg, date, fingerprint:currentFP, generatedBy:currentUser, portalPassword: btoa(pw) };
             const codes = getCodes(); codes.unshift(entry); saveCodes(codes);
 
             document.getElementById('displayCode').textContent = code;
@@ -499,7 +525,7 @@
             const btn = document.getElementById('generateBtn');
             btn.disabled = true; btn.textContent = '✅ Code Issued';
             btn.style.opacity = '0.45'; btn.style.cursor = 'not-allowed';
-            ['firstName','lastName','agentEmail','agentPhone','agentCountry','agentCity','agentAbroadCountry'].forEach(id => {
+            ['firstName','lastName','agentEmail','agentPhone','agentCountry','agentCity','agentAbroadCountry','portalPass','portalPassConfirm'].forEach(id => {
                 const el = document.getElementById(id); if (el) el.disabled = true;
             });
             renderList();
@@ -510,9 +536,6 @@
                 const b = document.getElementById('copyCodeBtn');
                 b.textContent = '✅ Code Copied!';
                 b.style.background = 'rgba(57,255,20,0.14)';
-                // Reveal portal entry button after copy
-                const pb = document.getElementById('portalEntryBtn');
-                pb.style.display = 'block';
                 setTimeout(() => { b.textContent = '📋 Copy Code'; b.style.background = ''; }, 2500);
             });
         }
