@@ -15,7 +15,7 @@
         }
         html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
 
-        /* ── BACKGROUND RINGS ── */
+        /* BG RINGS */
         .bg-rings{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
         .bg-ring{position:absolute;top:50%;left:50%;border:1.5px solid transparent;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;will-change:transform}
         .bg-ring:nth-child(1){width:900px;height:900px;margin:-450px 0 0 -450px;border-color:rgba(0,191,255,0.09);animation:spin1 22s linear infinite}
@@ -24,29 +24,24 @@
         @keyframes spin1{to{transform:rotate(360deg)}}
         @keyframes spin2{to{transform:rotate(-360deg)}}
 
-        /* ── OVERLAY SCREENS ── */
-        .overlay{position:fixed;inset:0;z-index:20;background:rgba(11,28,45,0.97);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 24px 50px;gap:14px;overflow-y:auto}
+        /* OVERLAYS */
+        .overlay{position:fixed;inset:0;z-index:20;background:rgba(11,28,45,0.97);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px 50px;gap:16px;overflow-y:auto}
         .overlay.show{display:flex}
 
-        /* ── LOGO RING (used everywhere) ── */
+        /* LOGO RING — used only on overlays */
         .logo-ring{position:relative;width:100px;height:100px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .logo-ring::before{content:'';position:absolute;inset:0;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border:2px solid rgba(198,168,92,0.55);animation:spin1 6s linear infinite}
         .logo-ring::after{content:'';position:absolute;inset:8px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border:1.5px solid rgba(0,191,255,0.45);animation:spin2 4s linear infinite}
         .logo-ring img{width:72px;height:72px;border-radius:50%;object-fit:cover;position:relative;z-index:2;border:2px solid rgba(198,168,92,0.35);box-shadow:0 0 24px rgba(198,168,92,0.2)}
 
-        /* small logo ring for page header */
-        .logo-ring-lg{width:120px;height:120px}
-        .logo-ring-lg img{width:86px;height:86px}
-
         .ov-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;letter-spacing:1.5px}
         .ov-msg{font-size:15px;color:var(--muted);max-width:340px;line-height:1.75}
-        .ov-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 40px;border-radius:50px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none}
+        .ov-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 40px;border-radius:50px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;border:none}
         .ov-btn-cyan{background:linear-gradient(135deg,rgba(0,191,255,0.15),rgba(198,168,92,0.1));border:1px solid rgba(0,191,255,0.38);color:var(--cyan)}
         .ov-btn-cyan:hover{background:linear-gradient(135deg,rgba(0,191,255,0.28),rgba(198,168,92,0.18));box-shadow:0 0 28px rgba(0,191,255,0.15);transform:translateY(-2px)}
         .ov-btn-ghost{background:none;border:1px solid rgba(198,168,92,0.22);color:rgba(198,168,92,0.55);font-size:10px;padding:10px 24px}
         .ov-btn-ghost:hover{border-color:rgba(198,168,92,0.5);color:var(--gold)}
 
-        /* existing code box */
         .existing-box{background:rgba(57,255,20,0.04);border:1px solid rgba(57,255,20,0.2);border-radius:18px;padding:22px 28px;max-width:360px;width:100%}
         .existing-code-lbl{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--green);opacity:.6;margin-bottom:8px}
         .existing-code-val{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:var(--green);text-shadow:0 0 28px rgba(57,255,20,0.35);letter-spacing:4px;margin-bottom:10px}
@@ -59,7 +54,7 @@
         .portal-btn-sm.show{display:block}
         .portal-btn-sm:hover{background:rgba(198,168,92,0.2);color:#fff}
 
-        /* ── ADMIN MODAL ── */
+        /* ADMIN MODAL */
         #adminModal{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);display:none;justify-content:center;align-items:center;padding:24px}
         #adminModal.show{display:flex}
         .modal-box{background:#0d2035;border:1px solid rgba(198,168,92,0.35);border-radius:22px;padding:38px 34px;max-width:360px;width:100%;text-align:center;animation:fadeUp .25s ease both}
@@ -75,18 +70,30 @@
         .modal-cancel{flex:1;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--muted);cursor:pointer;transition:all .2s}
         .modal-cancel:hover{background:rgba(255,255,255,0.08);color:var(--text)}
 
-        /* ── MAIN CONTENT ── */
+        /* MAIN CONTENT — no topbar offset needed */
         #main{display:none;position:relative;z-index:2;max-width:680px;margin:0 auto;padding:56px 20px 70px}
 
-        /* page logo */
+        /* PAGE LOGO (main content area — larger, no topbar) */
         .page-logo-wrap{display:flex;justify-content:center;margin-bottom:22px}
+        .page-logo-ring{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center}
+        .page-logo-ring::before{content:'';position:absolute;inset:0;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border:2px solid rgba(198,168,92,0.55);animation:spin1 6s linear infinite}
+        .page-logo-ring::after{content:'';position:absolute;inset:8px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border:1.5px solid rgba(0,191,255,0.45);animation:spin2 4s linear infinite}
+        .page-logo-ring img{width:86px;height:86px;border-radius:50%;object-fit:cover;position:relative;z-index:2;border:2px solid rgba(198,168,92,0.35);box-shadow:0 0 30px rgba(198,168,92,0.22)}
 
         .eyebrow{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:5px;color:var(--cyan);opacity:.7;margin-bottom:10px;text-align:center}
         .page-title{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--gold);text-shadow:0 0 32px rgba(198,168,92,0.3);margin-bottom:8px;text-align:center}
         .page-sub{font-size:15px;color:var(--muted);text-align:center}
         .divider{width:50px;height:2px;background:linear-gradient(to right,var(--gold),var(--cyan));margin:14px auto 32px;border-radius:2px}
 
-        /* form card */
+        /* DB status */
+        .db-pill{display:flex;align-items:center;gap:7px;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:50px;padding:6px 14px;margin:0 auto 22px;width:fit-content}
+        .db-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:all .3s}
+        .db-dot.loading{background:var(--gold);box-shadow:0 0 6px rgba(198,168,92,0.5);animation:pulse 1s infinite}
+        .db-dot.ok{background:var(--green);box-shadow:0 0 6px rgba(57,255,20,0.5)}
+        .db-dot.err{background:var(--red);box-shadow:0 0 6px rgba(255,77,77,0.5)}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+        /* FORM */
         .form-card{background:var(--card);border:1px solid rgba(198,168,92,0.15);border-radius:20px;padding:30px 26px;margin-bottom:24px;position:relative;overflow:hidden}
         .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--cyan),transparent)}
         .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
@@ -107,15 +114,13 @@
         .gen-btn:hover:not(:disabled){background:linear-gradient(135deg,rgba(198,168,92,0.32),rgba(0,191,255,0.22));box-shadow:0 0 30px rgba(198,168,92,0.2);transform:translateY(-1px);color:#fff}
         .gen-btn:disabled{opacity:.4;cursor:not-allowed}
 
-        /* ── CODE RESULT ── */
+        /* CODE RESULT */
         #codeResult{display:none;background:rgba(57,255,20,0.04);border:1px solid rgba(57,255,20,0.22);border-radius:20px;padding:30px 24px;text-align:center;margin-bottom:24px;animation:fadeUp .4s ease both;position:relative;overflow:hidden}
         #codeResult::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
         .code-lbl{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;color:var(--green);opacity:.6;margin-bottom:10px}
         .code-val{font-family:'Orbitron',sans-serif;font-size:40px;font-weight:900;color:var(--green);text-shadow:0 0 32px rgba(57,255,20,0.42);letter-spacing:5px;margin-bottom:16px}
         .code-details{font-size:14px;color:var(--muted);line-height:2}
         .code-details strong{color:var(--text)}
-
-        /* step-by-step instructions after code generated */
         .step-instructions{background:rgba(0,191,255,0.04);border:1px solid rgba(0,191,255,0.14);border-radius:14px;padding:16px 20px;margin:18px 0 0;text-align:left}
         .step-instructions-title{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--cyan);opacity:.7;margin-bottom:12px}
         .step-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:13px;color:var(--muted);line-height:1.55}
@@ -123,14 +128,13 @@
         .step-num{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:var(--cyan);background:rgba(0,191,255,0.1);border:1px solid rgba(0,191,255,0.25);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
         .step-item.done .step-num{background:rgba(57,255,20,0.12);border-color:rgba(57,255,20,0.3);color:var(--green)}
         .step-item strong{color:var(--text)}
-
         .copy-code-btn{margin-top:18px;width:100%;padding:13px;background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.28);border-radius:12px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--green);cursor:pointer;transition:all .25s}
         .copy-code-btn:hover{background:rgba(57,255,20,0.16)}
-        .enter-portal-btn{margin-top:10px;width:100%;padding:15px;background:linear-gradient(135deg,rgba(198,168,92,0.2),rgba(0,191,255,0.12));border:1px solid rgba(198,168,92,0.5);border-radius:12px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--gold);cursor:pointer;transition:all .3s;display:none;animation:fadeUp .35s ease both}
+        .enter-portal-btn{margin-top:10px;width:100%;padding:15px;background:linear-gradient(135deg,rgba(198,168,92,0.2),rgba(0,191,255,0.12));border:1px solid rgba(198,168,92,0.5);border-radius:12px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--gold);cursor:pointer;transition:all .3s;display:none}
         .enter-portal-btn.show{display:block}
         .enter-portal-btn:hover{background:linear-gradient(135deg,rgba(198,168,92,0.36),rgba(0,191,255,0.24));box-shadow:0 0 32px rgba(198,168,92,0.22);transform:translateY(-1px);color:#fff}
 
-        /* codes list */
+        /* CODE LIST */
         .list-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
         .list-hdr-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold)}
         .list-actions{display:flex;gap:8px}
@@ -159,22 +163,13 @@
         .page-footer a:hover{color:var(--gold)}
 
         @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-        @media(max-width:500px){
-            .form-row{grid-template-columns:1fr}
-            .form-card{padding:20px 14px}
-            .code-val{font-size:28px;letter-spacing:3px}
-            .modal-box{padding:28px 18px}
-        }
+        @media(max-width:500px){.form-row{grid-template-columns:1fr}.form-card{padding:20px 14px}.code-val{font-size:28px;letter-spacing:3px}.modal-box{padding:28px 18px}}
     </style>
 </head>
 <body>
 
-<!-- BG RINGS -->
 <div class="bg-rings">
-    <div class="bg-ring"></div>
-    <div class="bg-ring"></div>
-    <div class="bg-ring"></div>
+    <div class="bg-ring"></div><div class="bg-ring"></div><div class="bg-ring"></div>
 </div>
 
 <!-- ADMIN MODAL -->
@@ -204,8 +199,7 @@
 <div class="overlay" id="alreadyScreen">
     <div class="logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
     <div class="ov-title" style="color:var(--red)">Code Already Issued</div>
-    <p class="ov-msg">A code has already been generated for this account or device. Each agent is only allowed one code.</p>
-
+    <p class="ov-msg">A code has already been generated for this account. Each agent is only allowed one code.</p>
     <div class="existing-box">
         <div class="existing-code-lbl">Your Agent Code</div>
         <div class="existing-code-val" id="existCode">—</div>
@@ -215,23 +209,27 @@
             <button class="portal-btn-sm" id="existPortalBtn" onclick="goPortalExisting()">🚀 Enter Agent Portal →</button>
         </div>
     </div>
-
     <button class="ov-btn ov-btn-ghost" onclick="openModal('override','Admin Override','Enter admin password to bypass.')">🔑 Admin Override</button>
 </div>
 
 <!-- MAIN -->
 <div id="main">
     <div class="page-logo-wrap">
-        <div class="logo-ring logo-ring-lg"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+        <div class="page-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
     </div>
     <div class="eyebrow">ANICADE TECH — INTERNAL TOOL</div>
     <div class="page-title">Agent Code Generator</div>
     <div class="page-sub">Generate your unique agent code below</div>
     <div class="divider"></div>
 
+    <div class="db-pill">
+        <div class="db-dot loading" id="dbDot"></div>
+        <span id="dbLabel" style="color:var(--muted)">CONNECTING...</span>
+    </div>
+
     <div class="form-card">
         <div class="form-row">
-            <div class="field"><label>First Name</label><input type="text" id="fName" placeholder="e.g. jane"></div>
+            <div class="field"><label>First Name</label><input type="text" id="fName" placeholder="e.g. Jane"></div>
             <div class="field"><label>Last Name</label><input type="text" id="lName" placeholder="e.g. Doe"></div>
         </div>
         <div class="form-row">
@@ -258,7 +256,7 @@
                         <option value="LS">🇱🇸 Lesotho</option><option value="SZ">🇸🇿 Eswatini</option>
                         <option value="MU">🇲🇺 Mauritius</option>
                     </optgroup>
-                    <optgroup label="Outside Africa">
+                    <optgroup label="─── Outside Africa ───">
                         <option value="ABROAD">🌍 Abroad (Outside Africa)</option>
                     </optgroup>
                 </select>
@@ -298,40 +296,27 @@
                     <input type="password" id="pPassC" placeholder="Confirm your password" autocomplete="new-password">
                 </div>
             </div>
-            <div class="pass-note">⚠️ <strong>Save this password.</strong> !You'll need it every time you log into your Agent Portal.</div>
+            <div class="pass-note">⚠️ <strong>Save this password.</strong> You'll need it every time you log into the Agent Portal.</div>
         </div>
 
         <div class="form-err" id="formErr"></div>
         <button class="gen-btn" id="genBtn" onclick="generateCode()">⚡ Generate My Agent Code</button>
     </div>
 
-    <!-- CODE RESULT + STEP INSTRUCTIONS -->
     <div id="codeResult">
         <div class="code-lbl">Your Agent Code</div>
         <div class="code-val" id="displayCode">ANC-0001</div>
         <div class="code-details" id="displayDetails"></div>
-
         <div class="step-instructions">
             <div class="step-instructions-title">📋 NEXT STEPS</div>
-            <div class="step-item" id="step1">
-                <div class="step-num">1</div>
-                <div><strong>Copy your code</strong> — save it somewhere safe. This is your permanent agent identifier.</div>
-            </div>
-            <div class="step-item" id="step2">
-                <div class="step-num">2</div>
-                <div><strong>Enter your Agent Portal</strong> — view your referrals, share your link, and track your progress.</div>
-            </div>
-            <div class="step-item" id="step3">
-                <div class="step-num">3</div>
-                <div><strong>Share your referral link</strong> — send it to customers and watch your referral count grow.</div>
-            </div>
+            <div class="step-item" id="step1"><div class="step-num">1</div><div><strong>Copy your code</strong> — save it somewhere safe. This is your permanent agent identifier.</div></div>
+            <div class="step-item" id="step2"><div class="step-num">2</div><div><strong>Enter your Agent Portal</strong> — view referrals, share your link, track your progress.</div></div>
+            <div class="step-item" id="step3"><div class="step-num">3</div><div><strong>Share your referral link</strong> — send it to customers and grow your count.</div></div>
         </div>
-
         <button class="copy-code-btn" id="copyMainBtn" onclick="copyMainCode()">📋 Copy My Code</button>
         <button class="enter-portal-btn" id="portalBtn" onclick="enterPortal()">🚀 Enter Agent Portal →</button>
     </div>
 
-    <!-- LIST -->
     <div class="list-hdr">
         <div class="list-hdr-title" id="listTitle">MY CODE (0)</div>
         <div class="list-actions">
@@ -343,28 +328,50 @@
     <div id="codesList"></div>
 
     <div class="page-footer">
-        © 2026 ANICADE TECH. all rights reserved &nbsp;·&nbsp;
+        © 2026 ANICADE TECH &nbsp;·&nbsp;
         <a href="https://tresforwrld.github.io/ANICADEtech.net/terms.html">Terms of Use</a>
         &nbsp;·&nbsp; AGENT PORTAL &nbsp;·&nbsp; INTERNAL USE ONLY
     </div>
 </div>
 
 <script>
-const CODES_KEY  = 'anicade_agent_codes';
-const ADMIN_PASS = 'Krsten2044';
-const PORTAL_URL = 'https://tresforwrld.github.io/Agents.Code.generator/agentportal.html';
-const THIS_URL   = 'https://tresforwrld.github.io/Agents.Code.generator/';
+const BIN_ID  = '69af45d3d0ea881f4001fd93';
+const API_KEY = '$2a$10$VJXQzwtVgNhMTIJiiQvpy.hG7XaRD0.H42NyZhKzeLRungeekMmpO';
+
+const ADMIN_PASS  = 'Krsten2044';
+const PORTAL_URL  = 'https://tresforwrld.github.io/Agents.Code.generator/agentportal.html';
+const THIS_URL    = 'https://tresforwrld.github.io/Agents.Code.generator/';
+const LOCAL_CACHE = 'anicade_agent_codes';
 
 let adminUnlocked = false;
 let pendingAction = null;
 let currentUser   = null;
 let currentFP     = null;
-let codeCopied    = false;
+let dbReady       = false;
+let allCodes      = [];
 
-/* ─── CITIES ─── */
+/* ── DB ── */
+const DB_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+async function dbLoad() {
+    const r = await fetch(DB_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j = await r.json();
+    return j.record||{codes:[],referrals:[]};
+}
+async function dbSave(data) {
+    const r = await fetch(DB_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(data)});
+    return r.ok;
+}
+function setDbUI(state,msg){
+    document.getElementById('dbDot').className='db-dot '+state;
+    const lbl=document.getElementById('dbLabel');
+    lbl.textContent=msg;
+    lbl.style.color=state==='ok'?'rgba(57,255,20,0.7)':state==='err'?'rgba(255,77,77,0.7)':'var(--muted)';
+}
+
+/* ── CITIES ── */
 const CITIES={ZM:['Lusaka','Copperbelt (Kitwe)','Copperbelt (Ndola)','Livingstone','Kabwe','Chipata','Solwezi','Kasama','Mongu','Mansa','Choma','Mazabuka','Kafue','Mufulira','Chingola','Luanshya','Kalulushi','Mpika','Petauke','Sesheke'],ZW:['Harare','Bulawayo','Mutare','Gweru','Kwekwe','Kadoma','Masvingo','Chinhoyi','Bindura','Victoria Falls','Hwange','Marondera','Zvishavane','Chegutu','Rusape'],ZA:['Johannesburg','Cape Town','Durban','Pretoria','Port Elizabeth','Bloemfontein','East London','Polokwane','Nelspruit','Kimberley','Pietermaritzburg','Rustenburg','George','Upington','Mahikeng'],NG:['Lagos','Abuja','Kano','Ibadan','Port Harcourt','Benin City','Kaduna','Enugu','Aba','Jos','Ilorin','Onitsha','Warri','Maiduguri','Sokoto'],KE:['Nairobi','Mombasa','Kisumu','Nakuru','Eldoret','Thika','Malindi','Kitale','Garissa','Nyeri','Machakos','Kakamega','Lamu','Kericho','Embu'],GH:['Accra','Kumasi','Tamale','Takoradi','Tema','Cape Coast','Obuasi','Techiman','Koforidua','Wa','Ho','Sunyani','Bolgatanga','Tarkwa','Nkoranza'],TZ:['Dar es Salaam','Dodoma','Mwanza','Arusha','Mbeya','Morogoro','Tanga','Zanzibar City','Kigoma','Tabora','Moshi','Iringa','Musoma','Shinyanga','Singida'],UG:['Kampala','Gulu','Lira','Mbarara','Jinja','Bwizibwera','Mbale','Mukono','Kasese','Masaka','Entebbe','Arua','Fort Portal','Soroti','Kabale'],ET:['Addis Ababa','Dire Dawa',"Mek'ele",'Gondar','Hawassa','Bahir Dar','Dessie','Jimma','Jijiga','Shashamane','Bishoftu','Sodo','Arba Minch','Hosaena','Harar'],EG:['Cairo','Alexandria','Giza','Shubra El-Kheima','Port Said','Suez','Luxor','Aswan','Asyut','Tanta','Mansoura','El-Mahalla El-Kubra','Hurghada','Zagazig','Ismailia'],RW:['Kigali','Butare','Gitarama','Ruhengeri','Gisenyi','Byumba','Cyangugu','Nyamata','Kibuye','Rwamagana'],MZ:['Maputo','Matola','Nampula','Beira','Chimoio','Quelimane','Nacala','Lichinga','Pemba','Tete'],MW:['Lilongwe','Blantyre','Mzuzu','Zomba','Kasungu','Mangochi','Karonga','Salima','Nsanje','Balaka'],BW:['Gaborone','Francistown','Molepolole','Maun','Serowe','Selibe-Phikwe','Kanye','Mahalapye','Lobatse','Palapye'],NA:['Windhoek','Rundu','Walvis Bay','Oshakati','Swakopmund','Katima Mulilo','Grootfontein','Rehoboth','Otjiwarongo','Okahandja'],AO:['Luanda','Huambo','Lobito','Benguela','Kuito','Malanje','Lubango','Namibe','Soyo','Cabinda'],CD:['Kinshasa','Lubumbashi','Mbuji-Mayi','Kananga','Kisangani','Bukavu','Tshikapa','Kolwezi','Likasi','Goma'],CI:['Abidjan','Bouaké','Daloa','San-Pédro','Yamoussoukro','Korhogo','Man','Divo','Gagnoa','Abengourou'],CM:['Douala','Yaoundé','Garoua','Bamenda','Maroua','Bafoussam','Ngaoundéré','Bertoua','Kumba','Nkongsamba'],SN:['Dakar','Touba','Thiès','Rufisque','Kaolack',"M'Bour",'Saint-Louis','Ziguinchor','Diourbel','Louga'],MA:['Casablanca','Rabat','Fes','Marrakesh','Agadir','Tangier','Meknes','Oujda','Kenitra','Tetouan'],TN:['Tunis','Sfax','Sousse','Ettadhamen','Kairouan','Bizerte','Gabès','Aryanah','Gafsa','El Kef'],LS:['Maseru','Teyateyaneng','Mafeteng','Hlotse',"Mohale's Hoek",'Quthing',"Qacha's Nek",'Thaba-Tseka','Butha-Buthe','Mokhotlong'],SZ:['Mbabane','Manzini','Lobamba','Siteki','Nhlangano','Piggs Peak','Mhlume','Tshaneni','Simunye','Big Bend'],MU:['Port Louis','Beau Bassin-Rose Hill','Vacoas-Phoenix','Curepipe','Quatre Bornes','Triolet','Goodlands','Centre de Flacq','Mahébourg','Saint Pierre']};
 
-/* ─── LOCATION ─── */
 function onCountryChange(){
     const v=document.getElementById('aCountry').value;
     const cr=document.getElementById('cityRow'),ar=document.getElementById('abroadRow'),cs=document.getElementById('aCity');
@@ -377,66 +384,69 @@ function getLocation(){
     if(!v)return'';
     if(v==='ABROAD'){const a=document.getElementById('aAbroad').value;return a?`${a} (Abroad)`:'';}
     const city=document.getElementById('aCity').value;
-    const sel=document.getElementById('aCountry');
-    const cname=sel.options[sel.selectedIndex].text.replace(/^.{3}/,'').trim();
+    const cname=document.getElementById('aCountry').options[document.getElementById('aCountry').selectedIndex].text.replace(/^.{3}/,'').trim();
     return city?`${city}, ${cname}`:'';
 }
 
-/* ─── FINGERPRINT ─── */
+/* ── FINGERPRINT ── */
 async function getFingerprint(){
-    const r=[navigator.userAgent,navigator.language,navigator.hardwareConcurrency,navigator.deviceMemory||'',screen.width+'x'+screen.height,screen.colorDepth,Intl.DateTimeFormat().resolvedOptions().timeZone,navigator.platform,navigator.vendor||''].join('|');
+    const r=[navigator.userAgent,navigator.language,navigator.hardwareConcurrency,screen.width+'x'+screen.height,Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
     let h=0;for(let i=0;i<r.length;i++){h=((h<<5)-h)+r.charCodeAt(i);h|=0;}
     return'FP-'+Math.abs(h).toString(36).toUpperCase();
 }
 
-/* ─── STORAGE ─── */
-function getCodes(){try{return JSON.parse(localStorage.getItem(CODES_KEY))||[];}catch{return[];}}
-function saveCodes(c){localStorage.setItem(CODES_KEY,JSON.stringify(c));}
-function getNextNum(){const c=getCodes();return c.length?Math.max(...c.map(x=>parseInt(x.code.replace('ANC-',''),10)))+1:1;}
-function getMyCode(){const c=getCodes();return c.find(x=>x.generatedBy===currentUser)||c.find(x=>x.fingerprint===currentFP)||null;}
-
-/* ─── REDIRECT ─── */
+/* ── HELPERS ── */
+function getNextNum(){if(!allCodes.length)return 1;return Math.max(...allCodes.map(x=>parseInt(x.code.replace('ANC-',''),10)))+1;}
+function getMyCode(){return allCodes.find(c=>c.generatedBy===currentUser)||allCodes.find(c=>c.fingerprint===currentFP)||null;}
 function setRedirect(){localStorage.setItem('anicade_login_redirect',THIS_URL);}
 
-/* ─── ON LOAD ─── */
+/* ── INIT ── */
 window.addEventListener('DOMContentLoaded',async()=>{
     currentUser=localStorage.getItem('anicade_current_user');
-    if(!currentUser){
-        localStorage.setItem('anicade_login_redirect',THIS_URL);
-        document.getElementById('blockedScreen').classList.add('show');
-        return;
-    }
+    if(!currentUser){setRedirect();document.getElementById('blockedScreen').classList.add('show');return;}
     currentFP=await getFingerprint();
-    const existing=getMyCode();
-    if(existing){showAlreadyHasCode(existing);return;}
     document.getElementById('blockedScreen').classList.remove('show');
     document.getElementById('main').style.display='block';
+    setDbUI('loading','CONNECTING...');
+    try{
+        const data=await dbLoad();
+        // Migrate local codes to DB
+        const local=JSON.parse(localStorage.getItem(LOCAL_CACHE)||'[]');
+        let changed=false;
+        for(const lc of local){if(!data.codes.find(c=>c.code===lc.code)){data.codes.push(lc);changed=true;}}
+        if(changed)await dbSave(data);
+        allCodes=data.codes||[];
+        localStorage.setItem(LOCAL_CACHE,JSON.stringify(allCodes));
+        dbReady=true;
+        setDbUI('ok','DATABASE CONNECTED ✓');
+    }catch(e){
+        allCodes=JSON.parse(localStorage.getItem(LOCAL_CACHE)||'[]');
+        dbReady=false;
+        setDbUI('err','OFFLINE — LOCAL CACHE');
+    }
+    const existing=getMyCode();
+    if(existing){showAlreadyHasCode(existing);return;}
     renderList();
 });
 
-/* ─── ALREADY HAS CODE ─── */
+/* ── ALREADY HAS CODE ── */
 function showAlreadyHasCode(e){
     document.getElementById('existCode').textContent=e.code;
     document.getElementById('existDetails').innerHTML=`<strong>${e.firstName} ${e.lastName}</strong><br>📧 ${e.email}<br>📱 ${e.phone}<br>📍 ${e.region}<br>🗓️ ${e.date}`;
-    document.getElementById('blockedScreen').classList.remove('show');
+    document.getElementById('main').style.display='none';
     document.getElementById('alreadyScreen').classList.add('show');
 }
 function copyExisting(){
-    const code=document.getElementById('existCode').textContent;
-    navigator.clipboard.writeText(code).then(()=>{
-        const b=document.getElementById('existCopyBtn');
-        b.textContent='✅ Copied!';
+    navigator.clipboard.writeText(document.getElementById('existCode').textContent).then(()=>{
+        const b=document.getElementById('existCopyBtn');b.textContent='✅ Copied!';
         document.getElementById('existPortalBtn').classList.add('show');
         setTimeout(()=>b.textContent='📋 Copy My Code',2500);
     });
 }
-function goPortalExisting(){
-    localStorage.setItem('anicade_portal_agent',document.getElementById('existCode').textContent);
-    window.location.href=PORTAL_URL;
-}
+function goPortalExisting(){localStorage.setItem('anicade_portal_agent',document.getElementById('existCode').textContent);window.location.href=PORTAL_URL;}
 
-/* ─── GENERATE ─── */
-function generateCode(){
+/* ── GENERATE ── */
+async function generateCode(){
     const fn=document.getElementById('fName').value.trim();
     const ln=document.getElementById('lName').value.trim();
     const em=document.getElementById('aEmail').value.trim();
@@ -452,52 +462,47 @@ function generateCode(){
     if(pw!==pw2){err.textContent='Passwords do not match.';return;}
     const existing=getMyCode();
     if(existing){showAlreadyHasCode(existing);return;}
+    const btn=document.getElementById('genBtn');
+    btn.disabled=true;btn.textContent='⏳ Saving to database...';
+    if(dbReady){try{const fresh=await dbLoad();allCodes=fresh.codes||[];}catch(e){}}
     const code=`ANC-${String(getNextNum()).padStart(4,'0')}`;
     const date=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
     const entry={code,firstName:fn,lastName:ln,email:em,phone:ph,region:rg,date,fingerprint:currentFP,generatedBy:currentUser,portalPassword:btoa(pw)};
-    const codes=getCodes();codes.unshift(entry);saveCodes(codes);
-    // Show result
+    allCodes.unshift(entry);
+    if(dbReady){
+        try{
+            const fresh=await dbLoad();fresh.codes=allCodes;
+            const ok=await dbSave(fresh);
+            if(!ok)throw new Error('save failed');
+            localStorage.setItem(LOCAL_CACHE,JSON.stringify(allCodes));
+        }catch(e){
+            allCodes.shift();btn.disabled=false;btn.textContent='⚡ Generate My Agent Code';
+            err.textContent='⚠️ Failed to save. Check your connection and try again.';return;
+        }
+    }else{localStorage.setItem(LOCAL_CACHE,JSON.stringify(allCodes));}
     document.getElementById('displayCode').textContent=code;
     document.getElementById('displayDetails').innerHTML=`<strong>${fn} ${ln}</strong><br>📧 ${em}<br>📱 ${ph}<br>📍 ${rg}<br>🗓️ ${date}`;
-    const res=document.getElementById('codeResult');
-    res.style.display='block';
-    res.scrollIntoView({behavior:'smooth',block:'center'});
-    // Lock form
-    document.getElementById('genBtn').disabled=true;
-    document.getElementById('genBtn').textContent='✅ Code Issued';
+    const res=document.getElementById('codeResult');res.style.display='block';res.scrollIntoView({behavior:'smooth',block:'center'});
+    btn.textContent='✅ Code Issued';
     ['fName','lName','aEmail','aPhone','aCountry','aCity','aAbroad','pPass','pPassC'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=true;});
     renderList();
 }
-
-/* ─── COPY MAIN CODE ─── */
 function copyMainCode(){
-    const code=document.getElementById('displayCode').textContent;
-    navigator.clipboard.writeText(code).then(()=>{
-        codeCopied=true;
-        const b=document.getElementById('copyMainBtn');
-        b.textContent='✅ Code Copied!';
-        b.style.background='rgba(57,255,20,0.18)';
-        // Mark step 1 done, reveal step 2 hint and portal button
+    navigator.clipboard.writeText(document.getElementById('displayCode').textContent).then(()=>{
+        const b=document.getElementById('copyMainBtn');b.textContent='✅ Code Copied!';b.style.background='rgba(57,255,20,0.18)';
         document.getElementById('step1').classList.add('done');
-        const pb=document.getElementById('portalBtn');
-        pb.classList.add('show');
-        pb.scrollIntoView({behavior:'smooth',block:'nearest'});
+        const pb=document.getElementById('portalBtn');pb.classList.add('show');pb.scrollIntoView({behavior:'smooth',block:'nearest'});
         setTimeout(()=>{b.textContent='📋 Copy My Code';b.style.background='';},2500);
     });
 }
-function enterPortal(){
-    localStorage.setItem('anicade_portal_agent',document.getElementById('displayCode').textContent);
-    window.location.href=PORTAL_URL;
-}
+function enterPortal(){localStorage.setItem('anicade_portal_agent',document.getElementById('displayCode').textContent);window.location.href=PORTAL_URL;}
 
-/* ─── RENDER LIST ─── */
+/* ── RENDER LIST ── */
 function renderList(){
-    const all=getCodes();
-    const el=document.getElementById('codesList');
-    const tl=document.getElementById('listTitle');
-    const show=adminUnlocked?all:all.filter(c=>c.generatedBy===currentUser||c.fingerprint===currentFP);
-    tl.textContent=adminUnlocked?`ALL CODES (${all.length})`:`MY CODE (${show.length})`;
-    if(!show.length){el.innerHTML=`<div class="empty-state"><span>📋</span>${adminUnlocked?'NO CODES YET':'YOUR CODE WILL APPEAR HERE AFTER GENERATING'}</div>`;return;}
+    const el=document.getElementById('codesList'),tl=document.getElementById('listTitle');
+    const show=adminUnlocked?allCodes:allCodes.filter(c=>c.generatedBy===currentUser||c.fingerprint===currentFP);
+    tl.textContent=adminUnlocked?`ALL CODES (${allCodes.length})`:`MY CODE (${show.length})`;
+    if(!show.length){el.innerHTML=`<div class="empty-state"><span>📋</span>${adminUnlocked?'NO CODES IN DATABASE YET':'YOUR CODE WILL APPEAR HERE AFTER GENERATING'}</div>`;return;}
     el.innerHTML=show.map(c=>{
         const mine=c.generatedBy===currentUser||c.fingerprint===currentFP;
         return`<div class="code-entry${mine?' mine':''}">
@@ -508,64 +513,50 @@ function renderList(){
     }).join('');
 }
 
-/* ─── ADMIN MODAL ─── */
+/* ── ADMIN MODAL ── */
 function openModal(action,title,sub){
     pendingAction=action;
-    document.getElementById('modalTitle').textContent=title;
-    document.getElementById('modalSub').textContent=sub;
-    document.getElementById('adminPassInput').value='';
-    document.getElementById('modalErr').textContent='';
+    document.getElementById('modalTitle').textContent=title||'Admin Access';
+    document.getElementById('modalSub').textContent=sub||'Enter admin password.';
+    document.getElementById('adminPassInput').value='';document.getElementById('modalErr').textContent='';
     document.getElementById('adminModal').classList.add('show');
     setTimeout(()=>document.getElementById('adminPassInput').focus(),80);
 }
-function closeModal(){
-    document.getElementById('adminModal').classList.remove('show');
-    pendingAction=null;
-}
+function closeModal(){document.getElementById('adminModal').classList.remove('show');pendingAction=null;}
 document.addEventListener('keydown',e=>{
     if(e.key==='Enter'&&document.getElementById('adminModal').classList.contains('show'))submitAdmin();
     if(e.key==='Escape')closeModal();
 });
 function submitAdmin(){
     const val=document.getElementById('adminPassInput').value;
-    if(val!==ADMIN_PASS){
-        document.getElementById('modalErr').textContent='Incorrect password.';
-        document.getElementById('adminPassInput').value='';
-        document.getElementById('adminPassInput').focus();
-        return;
-    }
+    if(val!==ADMIN_PASS){document.getElementById('modalErr').textContent='Incorrect password.';document.getElementById('adminPassInput').value='';document.getElementById('adminPassInput').focus();return;}
     const action=pendingAction;closeModal();
     if(action==='override'){
         document.getElementById('alreadyScreen').classList.remove('show');
-        adminUnlocked=true;
         document.getElementById('main').style.display='block';
-        document.getElementById('admBanner').classList.add('show');
-        document.getElementById('viewAllBtn').classList.add('on');
-        document.getElementById('viewAllBtn').textContent='🔓 Viewing All';
+        adminUnlocked=true;document.getElementById('admBanner').classList.add('show');
+        document.getElementById('viewAllBtn').classList.add('on');document.getElementById('viewAllBtn').textContent='🔓 Viewing All';
         const btn=document.getElementById('genBtn');btn.disabled=true;btn.textContent='✅ Code Already Issued';
         renderList();
     }
     if(action==='viewAll'){
-        adminUnlocked=true;
-        document.getElementById('admBanner').classList.add('show');
-        document.getElementById('viewAllBtn').classList.add('on');
-        document.getElementById('viewAllBtn').textContent='🔓 Viewing All';
+        adminUnlocked=true;document.getElementById('admBanner').classList.add('show');
+        document.getElementById('viewAllBtn').classList.add('on');document.getElementById('viewAllBtn').textContent='🔓 Viewing All';
         renderList();
     }
     if(action==='clearAll'){
-        localStorage.removeItem(CODES_KEY);adminUnlocked=false;
+        if(dbReady){dbLoad().then(d=>{if(d){d.codes=[];dbSave(d);}});}
+        localStorage.removeItem(LOCAL_CACHE);allCodes=[];adminUnlocked=false;
         document.getElementById('admBanner').classList.remove('show');
-        document.getElementById('viewAllBtn').classList.remove('on');
-        document.getElementById('viewAllBtn').textContent='🔑 View All';
-        document.getElementById('codeResult').style.display='none';
-        renderList();
+        document.getElementById('viewAllBtn').classList.remove('on');document.getElementById('viewAllBtn').textContent='🔑 View All';
+        document.getElementById('codeResult').style.display='none';renderList();
     }
 }
 function handleViewAll(){
     if(adminUnlocked){adminUnlocked=false;document.getElementById('admBanner').classList.remove('show');document.getElementById('viewAllBtn').classList.remove('on');document.getElementById('viewAllBtn').textContent='🔑 View All';renderList();}
     else openModal('viewAll','Admin Access','Enter admin password to view all codes.');
 }
-function handleClearAll(){openModal('clearAll','Clear All Codes','Enter admin password to permanently delete all codes. This cannot be undone.');}
+function handleClearAll(){openModal('clearAll','Clear All Codes','Enter admin password to permanently delete all codes.');}
 </script>
 </body>
 </html>
