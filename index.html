@@ -6,649 +6,566 @@
     <title>ANICADE TECH | Agent Code Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary: #0B1C2D; --accent: #00BFFF; --gold: #C6A85C;
-            --text: #F5F7FA; --text-light: #94A3B8;
-            --border: rgba(255,255,255,0.07); --card-bg: rgba(15,30,48,0.92);
-            --green: #39ff14; --red: #ff4d4d;
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg:#0B1C2D;--gold:#C6A85C;--cyan:#00BFFF;
+            --text:#F5F7FA;--muted:#94A3B8;
+            --card:rgba(15,30,48,0.92);--border:rgba(255,255,255,0.07);
+            --green:#39ff14;--red:#ff4d4d;
         }
-        html, body { background: var(--primary); color: var(--text); font-family: 'Rajdhani', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
 
-        /* ===== BIG BACKGROUND RINGS (z-index 0 — behind everything) ===== */
-        .rings-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
-        .ring-el { position: absolute; top: 50%; left: 50%; border: 1.5px solid transparent; border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; will-change: transform; }
-        .ring-el:nth-child(1) { width: 900px; height: 900px; margin: -450px 0 0 -450px; border-color: rgba(0,191,255,0.09); animation: spin1 22s linear infinite; }
-        .ring-el:nth-child(2) { width: 650px; height: 650px; margin: -325px 0 0 -325px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border-color: rgba(198,168,92,0.07); animation: spin2 15s linear infinite; }
-        .ring-el:nth-child(3) { width: 430px; height: 430px; margin: -215px 0 0 -215px; border-color: rgba(0,191,255,0.05); animation: spin1 32s linear infinite reverse; }
-        @keyframes spin1 { to { transform: rotate(360deg); } }
-        @keyframes spin2 { to { transform: rotate(-360deg); } }
+        /* ── BACKGROUND RINGS ── */
+        .bg-rings{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+        .bg-ring{position:absolute;top:50%;left:50%;border:1.5px solid transparent;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;will-change:transform}
+        .bg-ring:nth-child(1){width:900px;height:900px;margin:-450px 0 0 -450px;border-color:rgba(0,191,255,0.09);animation:spin1 22s linear infinite}
+        .bg-ring:nth-child(2){width:650px;height:650px;margin:-325px 0 0 -325px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(198,168,92,0.07);animation:spin2 15s linear infinite}
+        .bg-ring:nth-child(3){width:430px;height:430px;margin:-215px 0 0 -215px;border-color:rgba(0,191,255,0.05);animation:spin1 32s linear infinite reverse}
+        @keyframes spin1{to{transform:rotate(360deg)}}
+        @keyframes spin2{to{transform:rotate(-360deg)}}
 
-        /* ===== OVERLAY SCREENS (z-index 20 — above bg rings, below modal) ===== */
-        .overlay-screen { position: fixed; inset: 0; z-index: 20; background: rgba(11,28,45,0.96); display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 24px 24px 40px; gap: 16px; overflow-y: auto; }
-        .overlay-screen.active { display: flex; }
+        /* ── OVERLAY SCREENS ── */
+        .overlay{position:fixed;inset:0;z-index:20;background:rgba(11,28,45,0.97);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 24px 50px;gap:14px;overflow-y:auto}
+        .overlay.show{display:flex}
 
-        /* logo ring on overlay */
-        .overlay-logo-ring { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .overlay-logo-ring::before { content: ''; position: absolute; inset: 0; border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; border: 2px solid rgba(198,168,92,0.5); animation: spin1 6s linear infinite; }
-        .overlay-logo-ring::after { content: ''; position: absolute; inset: 7px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border: 1.5px solid rgba(0,191,255,0.4); animation: spin2 4s linear infinite; }
-        .overlay-logo-ring img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; position: relative; z-index: 2; border: 2px solid rgba(198,168,92,0.3); box-shadow: 0 0 24px rgba(198,168,92,0.2); }
+        /* ── LOGO RING (used everywhere) ── */
+        .logo-ring{position:relative;width:100px;height:100px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .logo-ring::before{content:'';position:absolute;inset:0;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border:2px solid rgba(198,168,92,0.55);animation:spin1 6s linear infinite}
+        .logo-ring::after{content:'';position:absolute;inset:8px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border:1.5px solid rgba(0,191,255,0.45);animation:spin2 4s linear infinite}
+        .logo-ring img{width:72px;height:72px;border-radius:50%;object-fit:cover;position:relative;z-index:2;border:2px solid rgba(198,168,92,0.35);box-shadow:0 0 24px rgba(198,168,92,0.2)}
 
-        .overlay-title { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; letter-spacing: 1.5px; }
-        .overlay-msg { font-size: 15px; color: var(--text-light); max-width: 320px; line-height: 1.7; }
+        /* small logo ring for page header */
+        .logo-ring-lg{width:120px;height:120px}
+        .logo-ring-lg img{width:86px;height:86px}
 
-        .overlay-btn { display: inline-block; padding: 13px 36px; border-radius: 50px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: all 0.3s; cursor: pointer; }
-        .overlay-btn-cyan { background: linear-gradient(135deg, rgba(0,191,255,0.15), rgba(198,168,92,0.1)); border: 1px solid rgba(0,191,255,0.35); color: var(--accent); }
-        .overlay-btn-cyan:hover { background: linear-gradient(135deg, rgba(0,191,255,0.25), rgba(198,168,92,0.18)); box-shadow: 0 0 24px rgba(0,191,255,0.15); transform: translateY(-2px); }
-        .overlay-btn-ghost { background: none; border: 1px solid rgba(198,168,92,0.2); color: rgba(198,168,92,0.5); font-size: 10px; padding: 9px 22px; }
-        .overlay-btn-ghost:hover { border-color: rgba(198,168,92,0.45); color: var(--gold); }
+        .ov-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;letter-spacing:1.5px}
+        .ov-msg{font-size:15px;color:var(--muted);max-width:340px;line-height:1.75}
+        .ov-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 40px;border-radius:50px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none}
+        .ov-btn-cyan{background:linear-gradient(135deg,rgba(0,191,255,0.15),rgba(198,168,92,0.1));border:1px solid rgba(0,191,255,0.38);color:var(--cyan)}
+        .ov-btn-cyan:hover{background:linear-gradient(135deg,rgba(0,191,255,0.28),rgba(198,168,92,0.18));box-shadow:0 0 28px rgba(0,191,255,0.15);transform:translateY(-2px)}
+        .ov-btn-ghost{background:none;border:1px solid rgba(198,168,92,0.22);color:rgba(198,168,92,0.55);font-size:10px;padding:10px 24px}
+        .ov-btn-ghost:hover{border-color:rgba(198,168,92,0.5);color:var(--gold)}
 
-        .existing-code-box { background: rgba(57,255,20,0.05); border: 1px solid rgba(57,255,20,0.2); border-radius: 16px; padding: 20px 28px; max-width: 340px; width: 100%; }
-        .existing-code-label { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 3px; color: var(--green); opacity: 0.6; margin-bottom: 8px; }
-        .existing-code-value { font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 900; color: var(--green); text-shadow: 0 0 24px rgba(57,255,20,0.35); letter-spacing: 4px; margin-bottom: 10px; }
-        .existing-code-details { font-size: 13px; color: var(--text-light); line-height: 1.8; }
-        .existing-code-details strong { color: var(--text); }
-        .copy-existing-btn { margin-top: 14px; display: inline-block; padding: 9px 24px; background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.22); border-radius: 50px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--green); cursor: pointer; transition: all 0.2s; }
-        .copy-existing-btn:hover { background: rgba(57,255,20,0.16); }
+        /* existing code box */
+        .existing-box{background:rgba(57,255,20,0.04);border:1px solid rgba(57,255,20,0.2);border-radius:18px;padding:22px 28px;max-width:360px;width:100%}
+        .existing-code-lbl{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--green);opacity:.6;margin-bottom:8px}
+        .existing-code-val{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:var(--green);text-shadow:0 0 28px rgba(57,255,20,0.35);letter-spacing:4px;margin-bottom:10px}
+        .existing-details{font-size:13px;color:var(--muted);line-height:1.9}
+        .existing-details strong{color:var(--text)}
+        .existing-btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+        .copy-btn-sm{padding:10px 20px;background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.25);border-radius:50px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--green);cursor:pointer;transition:all .2s}
+        .copy-btn-sm:hover{background:rgba(57,255,20,0.16)}
+        .portal-btn-sm{padding:10px 20px;background:rgba(198,168,92,0.09);border:1px solid rgba(198,168,92,0.32);border-radius:50px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);cursor:pointer;transition:all .3s;display:none}
+        .portal-btn-sm.show{display:block}
+        .portal-btn-sm:hover{background:rgba(198,168,92,0.2);color:#fff}
 
-        /* ===== ADMIN MODAL (z-index 9999 — always on top) ===== */
-        .modal-backdrop { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; padding: 24px; }
-        .modal-backdrop.active { display: flex; }
-        .modal-box { background: #0d2035; border: 1px solid rgba(198,168,92,0.3); border-radius: 20px; padding: 36px 32px; max-width: 360px; width: 100%; text-align: center; animation: fadeUp 0.3s ease both; }
-        .modal-icon { font-size: 36px; margin-bottom: 12px; }
-        .modal-title { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900; color: var(--gold); letter-spacing: 2px; margin-bottom: 8px; }
-        .modal-sub { font-size: 13px; color: var(--text-light); margin-bottom: 22px; line-height: 1.6; }
-        .modal-input { width: 100%; padding: 13px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--text); font-family: 'Rajdhani', sans-serif; font-size: 16px; outline: none; text-align: center; letter-spacing: 3px; margin-bottom: 8px; transition: border-color 0.2s; -webkit-appearance: none; }
-        .modal-input:focus { border-color: rgba(198,168,92,0.5); box-shadow: 0 0 14px rgba(198,168,92,0.1); }
-        .modal-error { font-size: 12px; color: var(--red); min-height: 16px; margin-bottom: 14px; font-family: 'Rajdhani', sans-serif; }
-        .modal-btns { display: flex; gap: 10px; }
-        .modal-confirm { flex: 1; padding: 12px; background: linear-gradient(135deg, rgba(198,168,92,0.2), rgba(0,191,255,0.12)); border: 1px solid rgba(198,168,92,0.4); border-radius: 10px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold); cursor: pointer; transition: all 0.2s; }
-        .modal-confirm:hover { background: linear-gradient(135deg, rgba(198,168,92,0.35), rgba(0,191,255,0.22)); color: #fff; }
-        .modal-cancel { flex: 1; padding: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-light); cursor: pointer; transition: all 0.2s; }
-        .modal-cancel:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+        /* ── ADMIN MODAL ── */
+        #adminModal{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);display:none;justify-content:center;align-items:center;padding:24px}
+        #adminModal.show{display:flex}
+        .modal-box{background:#0d2035;border:1px solid rgba(198,168,92,0.35);border-radius:22px;padding:38px 34px;max-width:360px;width:100%;text-align:center;animation:fadeUp .25s ease both}
+        .modal-icon{font-size:38px;margin-bottom:14px}
+        .modal-title{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:8px}
+        .modal-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.6}
+        .modal-input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;outline:none;text-align:center;letter-spacing:3px;margin-bottom:8px;-webkit-appearance:none;transition:border-color .2s}
+        .modal-input:focus{border-color:rgba(198,168,92,0.55);box-shadow:0 0 14px rgba(198,168,92,0.1)}
+        .modal-err{font-size:12px;color:var(--red);min-height:16px;margin-bottom:14px;font-family:'Rajdhani',sans-serif}
+        .modal-btns{display:flex;gap:10px}
+        .modal-confirm{flex:1;padding:12px;background:linear-gradient(135deg,rgba(198,168,92,0.2),rgba(0,191,255,0.12));border:1px solid rgba(198,168,92,0.4);border-radius:10px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--gold);cursor:pointer;transition:all .2s}
+        .modal-confirm:hover{background:linear-gradient(135deg,rgba(198,168,92,0.36),rgba(0,191,255,0.22));color:#fff}
+        .modal-cancel{flex:1;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--muted);cursor:pointer;transition:all .2s}
+        .modal-cancel:hover{background:rgba(255,255,255,0.08);color:var(--text)}
 
-        /* ===== MAIN CONTENT (z-index 2) ===== */
-        #mainContent { display: none; position: relative; z-index: 2; max-width: 700px; margin: 0 auto; padding: 60px 24px 60px; }
+        /* ── MAIN CONTENT ── */
+        #main{display:none;position:relative;z-index:2;max-width:680px;margin:0 auto;padding:56px 20px 70px}
 
-        .page-header { text-align: center; margin-bottom: 40px; }
-        .page-logo-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
-        /* Logo spinning rings — identical to other pages */
-        .page-logo-ring { position: relative; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center; }
-        .page-logo-ring::before { content: ''; position: absolute; inset: 0; border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; border: 2px solid rgba(198,168,92,0.5); will-change: transform; animation: spin1 6s linear infinite; }
-        .page-logo-ring::after { content: ''; position: absolute; inset: 8px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border: 1.5px solid rgba(0,191,255,0.4); will-change: transform; animation: spin2 4s linear infinite; }
-        .page-logo-ring img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; position: relative; z-index: 2; border: 2px solid rgba(198,168,92,0.4); box-shadow: 0 0 30px rgba(198,168,92,0.25), 0 0 60px rgba(0,191,255,0.1); }
+        /* page logo */
+        .page-logo-wrap{display:flex;justify-content:center;margin-bottom:22px}
 
-        .page-eyebrow { font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); opacity: 0.7; margin-bottom: 10px; }
-        .page-title { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; color: var(--gold); text-shadow: 0 0 30px rgba(198,168,92,0.3); margin-bottom: 8px; }
-        .page-sub { font-size: 15px; color: var(--text-light); }
-        .divider { width: 50px; height: 2px; background: linear-gradient(to right, var(--gold), var(--accent)); margin: 14px auto 0; border-radius: 2px; }
+        .eyebrow{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:5px;color:var(--cyan);opacity:.7;margin-bottom:10px;text-align:center}
+        .page-title{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--gold);text-shadow:0 0 32px rgba(198,168,92,0.3);margin-bottom:8px;text-align:center}
+        .page-sub{font-size:15px;color:var(--muted);text-align:center}
+        .divider{width:50px;height:2px;background:linear-gradient(to right,var(--gold),var(--cyan));margin:14px auto 32px;border-radius:2px}
 
-        /* FORM */
-        .form-card { background: var(--card-bg); border: 1px solid rgba(198,168,92,0.15); border-radius: 20px; padding: 32px 28px; margin-bottom: 28px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-        .form-row.full { grid-template-columns: 1fr; }
-        .field label { display: block; font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-light); margin-bottom: 7px; }
-        .field input, .field select { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 10px; color: var(--text); font-family: 'Rajdhani', sans-serif; font-size: 15px; outline: none; transition: border-color 0.25s, box-shadow 0.25s; -webkit-appearance: none; }
-        .field input:focus, .field select:focus { border-color: rgba(0,191,255,0.4); box-shadow: 0 0 16px rgba(0,191,255,0.08); }
-        .field input::placeholder { color: rgba(148,163,184,0.35); }
-        .field select option { background: #0d2035; color: var(--text); }
+        /* form card */
+        .form-card{background:var(--card);border:1px solid rgba(198,168,92,0.15);border-radius:20px;padding:30px 26px;margin-bottom:24px;position:relative;overflow:hidden}
+        .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--cyan),transparent)}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+        .form-row.full{grid-template-columns:1fr}
+        .field label{display:block;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:7px}
+        .field input,.field select{width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none}
+        .field input:focus,.field select:focus{border-color:rgba(0,191,255,0.4);box-shadow:0 0 16px rgba(0,191,255,0.08)}
+        .field input::placeholder{color:rgba(148,163,184,0.35)}
+        .field select option{background:#0d2035;color:var(--text)}
 
-        .generate-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, rgba(198,168,92,0.18), rgba(0,191,255,0.12)); border: 1px solid rgba(198,168,92,0.45); border-radius: 12px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); cursor: pointer; transition: all 0.3s; }
-        .generate-btn:hover:not(:disabled) { background: linear-gradient(135deg, rgba(198,168,92,0.32), rgba(0,191,255,0.22)); box-shadow: 0 0 30px rgba(198,168,92,0.2); transform: translateY(-1px); color: #fff; }
-        #formError { color: var(--red); font-size: 13px; text-align: center; min-height: 18px; margin-bottom: 10px; font-family: 'Rajdhani', sans-serif; }
-        .pass-section { background: rgba(198,168,92,0.04); border: 1px solid rgba(198,168,92,0.18); border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; }
-        .pass-section-label { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 3px; color: var(--gold); opacity: 0.7; margin-bottom: 12px; text-transform: uppercase; display: block; }
-        .pass-note { font-size: 12px; color: var(--text-light); margin-top: 8px; line-height: 1.5; }
-        .pass-note strong { color: var(--gold); }
+        .pass-section{background:rgba(198,168,92,0.04);border:1px solid rgba(198,168,92,0.18);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+        .pass-lbl{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.75;margin-bottom:12px;display:block}
+        .pass-note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.55}
+        .pass-note strong{color:var(--gold)}
 
-        /* CODE RESULT */
-        #codeResult { display: none; background: rgba(57,255,20,0.04); border: 1px solid rgba(57,255,20,0.22); border-radius: 18px; padding: 28px 24px; text-align: center; margin-bottom: 28px; animation: fadeUp 0.4s ease both; }
-        .code-label { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--green); opacity: 0.6; margin-bottom: 10px; }
-        .code-value { font-family: 'Orbitron', sans-serif; font-size: 38px; font-weight: 900; color: var(--green); text-shadow: 0 0 30px rgba(57,255,20,0.4); letter-spacing: 5px; margin-bottom: 16px; }
-        .code-details { font-size: 14px; color: var(--text-light); line-height: 2; }
-        .code-details strong { color: var(--text); font-weight: 600; }
-        .copy-btn { margin-top: 18px; display: inline-block; padding: 10px 28px; background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.25); border-radius: 50px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--green); cursor: pointer; transition: all 0.2s; }
-        .copy-btn:hover { background: rgba(57,255,20,0.16); }
-        .portal-entry-btn { margin-top: 14px; width: 100%; padding: 15px; background: linear-gradient(135deg, rgba(198,168,92,0.2), rgba(0,191,255,0.12)); border: 1px solid rgba(198,168,92,0.5); border-radius: 12px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); cursor: pointer; transition: all 0.3s; animation: fadeUp 0.4s ease both; }
-        .portal-entry-btn:hover { background: linear-gradient(135deg, rgba(198,168,92,0.35), rgba(0,191,255,0.24)); box-shadow: 0 0 30px rgba(198,168,92,0.22); transform: translateY(-1px); color: #fff; }
+        .form-err{color:var(--red);font-size:13px;text-align:center;min-height:18px;margin-bottom:10px;font-family:'Rajdhani',sans-serif}
+        .gen-btn{width:100%;padding:16px;background:linear-gradient(135deg,rgba(198,168,92,0.18),rgba(0,191,255,0.12));border:1px solid rgba(198,168,92,0.5);border-radius:12px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--gold);cursor:pointer;transition:all .3s}
+        .gen-btn:hover:not(:disabled){background:linear-gradient(135deg,rgba(198,168,92,0.32),rgba(0,191,255,0.22));box-shadow:0 0 30px rgba(198,168,92,0.2);transform:translateY(-1px);color:#fff}
+        .gen-btn:disabled{opacity:.4;cursor:not-allowed}
 
-        /* LIST */
-        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
-        .list-title { font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--gold); }
-        .list-actions { display: flex; gap: 8px; }
-        .admin-btn { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 1px; background: none; border-radius: 6px; padding: 5px 12px; cursor: pointer; transition: all 0.2s; }
-        .view-all-btn { color: rgba(0,191,255,0.6); border: 1px solid rgba(0,191,255,0.2); }
-        .view-all-btn:hover, .view-all-btn.active { color: var(--accent); border-color: rgba(0,191,255,0.55); background: rgba(0,191,255,0.07); }
-        .clear-btn { color: rgba(255,80,80,0.5); border: 1px solid rgba(255,80,80,0.18); }
-        .clear-btn:hover { color: #ff5050; border-color: rgba(255,80,80,0.45); }
-        .admin-mode-banner { display: none; background: rgba(198,168,92,0.06); border: 1px solid rgba(198,168,92,0.2); border-radius: 10px; padding: 10px 16px; margin-bottom: 14px; font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 1.5px; color: var(--gold); text-align: center; }
-        .admin-mode-banner.visible { display: block; }
+        /* ── CODE RESULT ── */
+        #codeResult{display:none;background:rgba(57,255,20,0.04);border:1px solid rgba(57,255,20,0.22);border-radius:20px;padding:30px 24px;text-align:center;margin-bottom:24px;animation:fadeUp .4s ease both;position:relative;overflow:hidden}
+        #codeResult::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+        .code-lbl{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;color:var(--green);opacity:.6;margin-bottom:10px}
+        .code-val{font-family:'Orbitron',sans-serif;font-size:40px;font-weight:900;color:var(--green);text-shadow:0 0 32px rgba(57,255,20,0.42);letter-spacing:5px;margin-bottom:16px}
+        .code-details{font-size:14px;color:var(--muted);line-height:2}
+        .code-details strong{color:var(--text)}
 
-        #codesList { display: flex; flex-direction: column; gap: 10px; }
-        .code-entry { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; transition: border-color 0.2s; animation: fadeUp 0.3s ease both; }
-        .code-entry:hover { border-color: rgba(198,168,92,0.18); }
-        .code-entry.mine { border-color: rgba(57,255,20,0.15); }
-        .entry-code { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900; color: var(--green); letter-spacing: 2px; flex-shrink: 0; text-shadow: 0 0 12px rgba(57,255,20,0.2); }
-        .mine-badge { font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 1px; color: var(--green); background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.2); border-radius: 4px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
-        .entry-info { flex: 1; min-width: 150px; }
-        .entry-name { font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; letter-spacing: 0.5px; }
-        .entry-meta { font-size: 12px; color: var(--text-light); line-height: 1.6; }
-        .entry-date { font-family: 'Orbitron', sans-serif; font-size: 9px; color: rgba(148,163,184,0.35); letter-spacing: 1px; flex-shrink: 0; text-align: right; }
-        .empty-state { text-align: center; padding: 40px 20px; color: rgba(148,163,184,0.25); font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 2px; border: 1px dashed rgba(255,255,255,0.05); border-radius: 14px; }
-        .empty-state span { display: block; font-size: 30px; margin-bottom: 12px; }
-        .page-footer { text-align: center; margin-top: 50px; padding-top: 24px; border-top: 1px solid rgba(198,168,92,0.08); font-size: 11px; color: rgba(148,163,184,0.25); font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+        /* step-by-step instructions after code generated */
+        .step-instructions{background:rgba(0,191,255,0.04);border:1px solid rgba(0,191,255,0.14);border-radius:14px;padding:16px 20px;margin:18px 0 0;text-align:left}
+        .step-instructions-title{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--cyan);opacity:.7;margin-bottom:12px}
+        .step-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:13px;color:var(--muted);line-height:1.55}
+        .step-item:last-child{margin-bottom:0}
+        .step-num{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:var(--cyan);background:rgba(0,191,255,0.1);border:1px solid rgba(0,191,255,0.25);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+        .step-item.done .step-num{background:rgba(57,255,20,0.12);border-color:rgba(57,255,20,0.3);color:var(--green)}
+        .step-item strong{color:var(--text)}
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        .copy-code-btn{margin-top:18px;width:100%;padding:13px;background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.28);border-radius:12px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--green);cursor:pointer;transition:all .25s}
+        .copy-code-btn:hover{background:rgba(57,255,20,0.16)}
+        .enter-portal-btn{margin-top:10px;width:100%;padding:15px;background:linear-gradient(135deg,rgba(198,168,92,0.2),rgba(0,191,255,0.12));border:1px solid rgba(198,168,92,0.5);border-radius:12px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--gold);cursor:pointer;transition:all .3s;display:none;animation:fadeUp .35s ease both}
+        .enter-portal-btn.show{display:block}
+        .enter-portal-btn:hover{background:linear-gradient(135deg,rgba(198,168,92,0.36),rgba(0,191,255,0.24));box-shadow:0 0 32px rgba(198,168,92,0.22);transform:translateY(-1px);color:#fff}
 
-        @media (max-width: 500px) {
-            .form-row { grid-template-columns: 1fr; }
-            .form-card { padding: 22px 16px; }
-            .code-value { font-size: 26px; letter-spacing: 3px; }
-            .existing-code-value { font-size: 24px; }
-            .modal-box { padding: 28px 18px; }
+        /* codes list */
+        .list-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+        .list-hdr-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold)}
+        .list-actions{display:flex;gap:8px}
+        .adm-btn{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;background:none;border-radius:6px;padding:5px 12px;cursor:pointer;transition:all .2s}
+        .adm-view{color:rgba(0,191,255,0.6);border:1px solid rgba(0,191,255,0.2)}
+        .adm-view:hover,.adm-view.on{color:var(--cyan);border-color:rgba(0,191,255,0.55);background:rgba(0,191,255,0.07)}
+        .adm-clear{color:rgba(255,80,80,0.5);border:1px solid rgba(255,80,80,0.18)}
+        .adm-clear:hover{color:#ff5050;border-color:rgba(255,80,80,0.45)}
+        .adm-banner{display:none;background:rgba(198,168,92,0.06);border:1px solid rgba(198,168,92,0.2);border-radius:10px;padding:10px 16px;margin-bottom:12px;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--gold);text-align:center}
+        .adm-banner.show{display:block}
+        #codesList{display:flex;flex-direction:column;gap:9px}
+        .code-entry{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;transition:border-color .2s;animation:fadeUp .3s ease both}
+        .code-entry:hover{border-color:rgba(198,168,92,0.18)}
+        .code-entry.mine{border-color:rgba(57,255,20,0.15)}
+        .ce-code{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--green);letter-spacing:2px;flex-shrink:0;text-shadow:0 0 12px rgba(57,255,20,0.2)}
+        .mine-badge{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--green);background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.2);border-radius:4px;padding:2px 6px;margin-left:6px;vertical-align:middle}
+        .ce-info{flex:1;min-width:140px}
+        .ce-name{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--text);margin-bottom:3px}
+        .ce-meta{font-size:12px;color:var(--muted);line-height:1.6}
+        .ce-date{font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(148,163,184,0.3);letter-spacing:1px;flex-shrink:0}
+        .empty-state{text-align:center;padding:36px 16px;color:rgba(148,163,184,0.22);font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;border:1px dashed rgba(255,255,255,0.05);border-radius:14px}
+        .empty-state span{display:block;font-size:28px;margin-bottom:10px}
+
+        .page-footer{text-align:center;margin-top:50px;padding-top:22px;border-top:1px solid rgba(198,168,92,0.08);font-size:11px;color:rgba(148,163,184,0.22);font-family:'Orbitron',sans-serif;letter-spacing:2px}
+        .page-footer a{color:rgba(148,163,184,0.35);text-decoration:none;border-bottom:1px solid rgba(148,163,184,0.12);transition:color .2s}
+        .page-footer a:hover{color:var(--gold)}
+
+        @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+        @media(max-width:500px){
+            .form-row{grid-template-columns:1fr}
+            .form-card{padding:20px 14px}
+            .code-val{font-size:28px;letter-spacing:3px}
+            .modal-box{padding:28px 18px}
         }
     </style>
 </head>
 <body>
 
-    <!-- BIG BACKGROUND RINGS — z-index 0 -->
-    <div class="rings-bg">
-        <div class="ring-el"></div>
-        <div class="ring-el"></div>
-        <div class="ring-el"></div>
-    </div>
+<!-- BG RINGS -->
+<div class="bg-rings">
+    <div class="bg-ring"></div>
+    <div class="bg-ring"></div>
+    <div class="bg-ring"></div>
+</div>
 
-    <!-- OVERLAY: Not logged in — z-index 20 -->
-    <div class="overlay-screen" id="blockedScreen">
-        <div class="overlay-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
-        <div class="overlay-title" style="color:var(--gold);">Access Restricted</div>
-        <p class="overlay-msg">You need to be logged in to access the Agent Code Generator.</p>
-        <a href="https://tresforwrld.github.io/ANICADEtech.net/index.html" class="overlay-btn overlay-btn-cyan" onclick="setLoginRedirect()">Go to Login →</a>
-    </div>
-
-    <!-- OVERLAY: Already has a code — z-index 20 -->
-    <div class="overlay-screen" id="alreadyHasCode">
-        <div class="overlay-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
-        <div class="overlay-title" style="color:var(--red);">Code Already Issued</div>
-        <p class="overlay-msg">A code has already been generated for this account or device. Each agent is only allowed one code.</p>
-        <div class="existing-code-box">
-            <div class="existing-code-label">Your Agent Code</div>
-            <div class="existing-code-value" id="existingCodeDisplay">—</div>
-            <div class="existing-code-details" id="existingCodeDetails"></div>
-            <button class="copy-existing-btn" onclick="copyExistingCode()">📋 Copy My Code</button>
-            <button class="copy-existing-btn" style="margin-top:8px;background:rgba(198,168,92,0.08);border-color:rgba(198,168,92,0.3);color:var(--gold)" onclick="enterPortalExisting()">🚀 Enter Agent Portal →</button>
-        </div>
-        <button class="overlay-btn overlay-btn-ghost" onclick="handleAdminOverride()">🔑 Admin Override</button>
-    </div>
-
-    <!-- ADMIN PASSWORD MODAL — z-index 9999, always on top -->
-    <div class="modal-backdrop" id="adminModal">
-        <div class="modal-box">
-            <div class="modal-icon">🔑</div>
-            <div class="modal-title" id="modalTitle">Admin Access</div>
-            <div class="modal-sub" id="modalSub">Enter the admin password to continue.</div>
-            <input type="password" class="modal-input" id="adminPassInput" placeholder="••••••••••" autocomplete="off">
-            <div class="modal-error" id="modalError"></div>
-            <div class="modal-btns">
-                <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-                <button class="modal-confirm" onclick="submitAdminPass()">Confirm</button>
-            </div>
+<!-- ADMIN MODAL -->
+<div id="adminModal">
+    <div class="modal-box">
+        <div class="modal-icon">🔑</div>
+        <div class="modal-title" id="modalTitle">Admin Access</div>
+        <div class="modal-sub" id="modalSub">Enter the admin password to continue.</div>
+        <input type="password" class="modal-input" id="adminPassInput" placeholder="••••••••••" autocomplete="off">
+        <div class="modal-err" id="modalErr"></div>
+        <div class="modal-btns">
+            <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+            <button class="modal-confirm" onclick="submitAdmin()">Confirm</button>
         </div>
     </div>
+</div>
 
-    <!-- MAIN CONTENT — z-index 2 -->
-    <div id="mainContent">
-        <div class="page-header">
-            <div class="page-logo-wrap">
-                <div class="page-logo-ring">
-                    <img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH">
-                </div>
-            </div>
-            <div class="page-eyebrow">ANICADE TECH — Internal Tool</div>
-            <div class="page-title">Agent Code Generator</div>
-            <div class="page-sub">Generate your unique agent code below</div>
-            <div class="divider"></div>
+<!-- OVERLAY: Not logged in -->
+<div class="overlay show" id="blockedScreen">
+    <div class="logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+    <div class="ov-title" style="color:var(--gold)">Access Restricted</div>
+    <p class="ov-msg">You need to be logged in to access the Agent Code Generator.</p>
+    <a href="https://tresforwrld.github.io/ANICADEtech.net/" class="ov-btn ov-btn-cyan" onclick="setRedirect()">Go to Login →</a>
+</div>
+
+<!-- OVERLAY: Already has a code -->
+<div class="overlay" id="alreadyScreen">
+    <div class="logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+    <div class="ov-title" style="color:var(--red)">Code Already Issued</div>
+    <p class="ov-msg">A code has already been generated for this account or device. Each agent is only allowed one code.</p>
+
+    <div class="existing-box">
+        <div class="existing-code-lbl">Your Agent Code</div>
+        <div class="existing-code-val" id="existCode">—</div>
+        <div class="existing-details" id="existDetails"></div>
+        <div class="existing-btns">
+            <button class="copy-btn-sm" id="existCopyBtn" onclick="copyExisting()">📋 Copy My Code</button>
+            <button class="portal-btn-sm" id="existPortalBtn" onclick="goPortalExisting()">🚀 Enter Agent Portal →</button>
         </div>
-
-        <div class="form-card">
-            <div class="form-row">
-                <div class="field"><label>First Name</label><input type="text" id="firstName" placeholder="e.g. Tresfor"></div>
-                <div class="field"><label>Last Name</label><input type="text" id="lastName" placeholder="e.g. Banda"></div>
-            </div>
-            <div class="form-row">
-                <div class="field"><label>Email Address</label><input type="email" id="agentEmail" placeholder="agent@email.com"></div>
-                <div class="field"><label>Phone Number</label><input type="tel" id="agentPhone" placeholder="+260 7XX XXX XXX"></div>
-            </div>
-
-            <!-- COUNTRY + CITY/REGION cascading dropdowns -->
-            <div class="form-row full">
-                <div class="field">
-                    <label>Country</label>
-                    <select id="agentCountry" onchange="onCountryChange()">
-                        <option value="" disabled selected>Select country...</option>
-                        <optgroup label="─── African Countries ───">
-                            <option value="ZM">🇿🇲 Zambia</option>
-                            <option value="ZW">🇿🇼 Zimbabwe</option>
-                            <option value="ZA">🇿🇦 South Africa</option>
-                            <option value="NG">🇳🇬 Nigeria</option>
-                            <option value="KE">🇰🇪 Kenya</option>
-                            <option value="GH">🇬🇭 Ghana</option>
-                            <option value="TZ">🇹🇿 Tanzania</option>
-                            <option value="UG">🇺🇬 Uganda</option>
-                            <option value="ET">🇪🇹 Ethiopia</option>
-                            <option value="EG">🇪🇬 Egypt</option>
-                            <option value="RW">🇷🇼 Rwanda</option>
-                            <option value="MZ">🇲🇿 Mozambique</option>
-                            <option value="MW">🇲🇼 Malawi</option>
-                            <option value="BW">🇧🇼 Botswana</option>
-                            <option value="NA">🇳🇦 Namibia</option>
-                            <option value="AO">🇦🇴 Angola</option>
-                            <option value="CD">🇨🇩 DR Congo</option>
-                            <option value="CI">🇨🇮 Côte d'Ivoire</option>
-                            <option value="CM">🇨🇲 Cameroon</option>
-                            <option value="SN">🇸🇳 Senegal</option>
-                            <option value="MA">🇲🇦 Morocco</option>
-                            <option value="TN">🇹🇳 Tunisia</option>
-                            <option value="LS">🇱🇸 Lesotho</option>
-                            <option value="SZ">🇸🇿 Eswatini</option>
-                            <option value="MU">🇲🇺 Mauritius</option>
-                        </optgroup>
-                        <optgroup label="─── Outside Africa ───">
-                            <option value="ABROAD">🌍 Abroad (Outside Africa)</option>
-                        </optgroup>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row full" id="cityRow" style="display:none;">
-                <div class="field">
-                    <label id="cityLabel">City / Region</label>
-                    <select id="agentCity">
-                        <option value="" disabled selected>Select city...</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row full" id="abroadRow" style="display:none;">
-                <div class="field">
-                    <label>Country (Outside Africa)</label>
-                    <select id="agentAbroadCountry">
-                        <option value="" disabled selected>Select country...</option>
-                        <option>United Kingdom</option>
-                        <option>United States</option>
-                        <option>Canada</option>
-                        <option>Australia</option>
-                        <option>Germany</option>
-                        <option>France</option>
-                        <option>Netherlands</option>
-                        <option>Sweden</option>
-                        <option>Norway</option>
-                        <option>Denmark</option>
-                        <option>Finland</option>
-                        <option>Belgium</option>
-                        <option>Switzerland</option>
-                        <option>Austria</option>
-                        <option>Portugal</option>
-                        <option>Spain</option>
-                        <option>Italy</option>
-                        <option>Poland</option>
-                        <option>New Zealand</option>
-                        <option>Japan</option>
-                        <option>China</option>
-                        <option>India</option>
-                        <option>United Arab Emirates</option>
-                        <option>Saudi Arabia</option>
-                        <option>Qatar</option>
-                        <option>Brazil</option>
-                        <option>Argentina</option>
-                        <option>Other</option>
-                    </select>
-                </div>
-            </div>
-
-            <div id="formError"></div>
-
-            <!-- PORTAL PASSWORD -->
-            <div class="pass-section">
-                <span class="pass-section-label">🔐 Create Your Portal Password</span>
-                <div class="form-row full" style="margin-bottom:0">
-                    <div class="field">
-                        <label>Portal Password</label>
-                        <input type="password" id="portalPass" placeholder="Create a password for your portal" autocomplete="new-password">
-                    </div>
-                </div>
-                <div class="form-row full" style="margin-bottom:0;margin-top:12px">
-                    <div class="field">
-                        <label>Confirm Password</label>
-                        <input type="password" id="portalPassConfirm" placeholder="Confirm your password" autocomplete="new-password">
-                    </div>
-                </div>
-                <div class="pass-note">⚠️ <strong>Remember this password.</strong> You'll need it every time you log into your Agent Portal.</div>
-            </div>
-
-            <button class="generate-btn" id="generateBtn" onclick="generateCode()">⚡ Generate My Agent Code</button>
-        </div>
-
-        <div id="codeResult">
-            <div class="code-label">Your Agent Code</div>
-            <div class="code-value" id="displayCode">ANC-0001</div>
-            <div class="code-details" id="displayDetails"></div>
-            <button class="copy-btn" id="copyCodeBtn" onclick="copyCode()">📋 Copy Code</button>
-            <button class="portal-entry-btn" id="portalEntryBtn" onclick="enterPortal()">🚀 Enter Agent Portal →</button>
-        </div>
-
-        <div class="list-header">
-            <div class="list-title" id="listTitle">MY CODE (0)</div>
-            <div class="list-actions">
-                <button class="admin-btn view-all-btn" id="viewAllBtn" onclick="handleViewAll()">🔑 View All Codes</button>
-                <button class="admin-btn clear-btn" onclick="handleClearAll()">Clear All</button>
-            </div>
-        </div>
-        <div class="admin-mode-banner" id="adminBanner">⚡ ADMIN MODE — VIEWING ALL CODES</div>
-        <div id="codesList"></div>
-
-        <div class="page-footer">© 2026 ANICADE TECH &nbsp;·&nbsp; <a href="https://tresforwrld.github.io/ANICADEtech.net/terms.html" style="color:rgba(148,163,184,0.4);text-decoration:none;border-bottom:1px solid rgba(148,163,184,0.15)" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(148,163,184,0.4)'">Terms of Use</a> &nbsp;·&nbsp; AGENT PORTAL &nbsp;·&nbsp; INTERNAL USE ONLY</div>
     </div>
 
-    <script>
-        const STORAGE_KEY = 'anicade_agent_codes';
-        const ADMIN_PASS  = 'Krsten2044';
-        const THIS_PAGE   = 'https://tresforwrld.github.io/Agents.Code.generator/';
+    <button class="ov-btn ov-btn-ghost" onclick="openModal('override','Admin Override','Enter admin password to bypass.')">🔑 Admin Override</button>
+</div>
 
-        function setLoginRedirect() {
-            localStorage.setItem('anicade_login_redirect', THIS_PAGE);
-        }
+<!-- MAIN -->
+<div id="main">
+    <div class="page-logo-wrap">
+        <div class="logo-ring logo-ring-lg"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+    </div>
+    <div class="eyebrow">ANICADE TECH — INTERNAL TOOL</div>
+    <div class="page-title">Agent Code Generator</div>
+    <div class="page-sub">Generate your unique agent code below</div>
+    <div class="divider"></div>
 
-        let adminUnlocked = false;
-        let pendingAction = null;
-        let currentUser   = null;
-        let currentFP     = null;
+    <div class="form-card">
+        <div class="form-row">
+            <div class="field"><label>First Name</label><input type="text" id="fName" placeholder="e.g. Tresfor"></div>
+            <div class="field"><label>Last Name</label><input type="text" id="lName" placeholder="e.g. Banda"></div>
+        </div>
+        <div class="form-row">
+            <div class="field"><label>Email Address</label><input type="email" id="aEmail" placeholder="agent@email.com"></div>
+            <div class="field"><label>Phone Number</label><input type="tel" id="aPhone" placeholder="+260 7XX XXX XXX"></div>
+        </div>
+        <div class="form-row full">
+            <div class="field">
+                <label>Country</label>
+                <select id="aCountry" onchange="onCountryChange()">
+                    <option value="" disabled selected>Select country...</option>
+                    <optgroup label="─── African Countries ───">
+                        <option value="ZM">🇿🇲 Zambia</option><option value="ZW">🇿🇼 Zimbabwe</option>
+                        <option value="ZA">🇿🇦 South Africa</option><option value="NG">🇳🇬 Nigeria</option>
+                        <option value="KE">🇰🇪 Kenya</option><option value="GH">🇬🇭 Ghana</option>
+                        <option value="TZ">🇹🇿 Tanzania</option><option value="UG">🇺🇬 Uganda</option>
+                        <option value="ET">🇪🇹 Ethiopia</option><option value="EG">🇪🇬 Egypt</option>
+                        <option value="RW">🇷🇼 Rwanda</option><option value="MZ">🇲🇿 Mozambique</option>
+                        <option value="MW">🇲🇼 Malawi</option><option value="BW">🇧🇼 Botswana</option>
+                        <option value="NA">🇳🇦 Namibia</option><option value="AO">🇦🇴 Angola</option>
+                        <option value="CD">🇨🇩 DR Congo</option><option value="CI">🇨🇮 Côte d'Ivoire</option>
+                        <option value="CM">🇨🇲 Cameroon</option><option value="SN">🇸🇳 Senegal</option>
+                        <option value="MA">🇲🇦 Morocco</option><option value="TN">🇹🇳 Tunisia</option>
+                        <option value="LS">🇱🇸 Lesotho</option><option value="SZ">🇸🇿 Eswatini</option>
+                        <option value="MU">🇲🇺 Mauritius</option>
+                    </optgroup>
+                    <optgroup label="─── Outside Africa ───">
+                        <option value="ABROAD">🌍 Abroad (Outside Africa)</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+        <div class="form-row full" id="cityRow" style="display:none">
+            <div class="field"><label id="cityLbl">City / Region</label>
+                <select id="aCity"><option value="" disabled selected>Select city...</option></select>
+            </div>
+        </div>
+        <div class="form-row full" id="abroadRow" style="display:none">
+            <div class="field"><label>Country (Outside Africa)</label>
+                <select id="aAbroad">
+                    <option value="" disabled selected>Select country...</option>
+                    <option>United Kingdom</option><option>United States</option><option>Canada</option>
+                    <option>Australia</option><option>Germany</option><option>France</option>
+                    <option>Netherlands</option><option>Sweden</option><option>Norway</option>
+                    <option>Denmark</option><option>Finland</option><option>Belgium</option>
+                    <option>Switzerland</option><option>Austria</option><option>Portugal</option>
+                    <option>Spain</option><option>Italy</option><option>Poland</option>
+                    <option>New Zealand</option><option>Japan</option><option>China</option>
+                    <option>India</option><option>United Arab Emirates</option><option>Saudi Arabia</option>
+                    <option>Qatar</option><option>Brazil</option><option>Argentina</option><option>Other</option>
+                </select>
+            </div>
+        </div>
 
-        /* ── CITY DATA ── */
-        const CITIES = {
-            ZM: ['Lusaka','Copperbelt (Kitwe)','Copperbelt (Ndola)','Livingstone','Kabwe','Chipata','Solwezi','Kasama','Mongu','Mansa','Choma','Mazabuka','Kafue','Mufulira','Chingola','Luanshya','Kalulushi','Mpika','Petauke','Sesheke'],
-            ZW: ['Harare','Bulawayo','Mutare','Gweru','Kwekwe','Kadoma','Masvingo','Chinhoyi','Bindura','Victoria Falls','Hwange','Marondera','Zvishavane','Chegutu','Rusape'],
-            ZA: ['Johannesburg','Cape Town','Durban','Pretoria','Port Elizabeth','Bloemfontein','East London','Polokwane','Nelspruit','Kimberley','Pietermaritzburg','Rustenburg','George','Upington','Mahikeng'],
-            NG: ['Lagos','Abuja','Kano','Ibadan','Port Harcourt','Benin City','Kaduna','Enugu','Aba','Jos','Ilorin','Onitsha','Warri','Maiduguri','Sokoto'],
-            KE: ['Nairobi','Mombasa','Kisumu','Nakuru','Eldoret','Thika','Malindi','Kitale','Garissa','Nyeri','Machakos','Kakamega','Lamu','Kericho','Embu'],
-            GH: ['Accra','Kumasi','Tamale','Takoradi','Tema','Cape Coast','Obuasi','Techiman','Koforidua','Wa','Ho','Sunyani','Bolgatanga','Tarkwa','Nkoranza'],
-            TZ: ['Dar es Salaam','Dodoma','Mwanza','Arusha','Mbeya','Morogoro','Tanga','Zanzibar City','Kigoma','Tabora','Moshi','Iringa','Musoma','Shinyanga','Singida'],
-            UG: ['Kampala','Gulu','Lira','Mbarara','Jinja','Bwizibwera','Mbale','Mukono','Kasese','Masaka','Entebbe','Arua','Fort Portal','Soroti','Kabale'],
-            ET: ['Addis Ababa','Dire Dawa','Mek\'ele','Gondar','Hawassa','Bahir Dar','Dessie','Jimma','Jijiga','Shashamane','Bishoftu','Sodo','Arba Minch','Hosaena','Harar'],
-            EG: ['Cairo','Alexandria','Giza','Shubra El-Kheima','Port Said','Suez','Luxor','Aswan','Asyut','Tanta','Mansoura','El-Mahalla El-Kubra','Hurghada','Zagazig','Ismailia'],
-            RW: ['Kigali','Butare','Gitarama','Ruhengeri','Gisenyi','Byumba','Cyangugu','Nyamata','Kibuye','Rwamagana'],
-            MZ: ['Maputo','Matola','Nampula','Beira','Chimoio','Quelimane','Nacala','Lichinga','Pemba','Tete'],
-            MW: ['Lilongwe','Blantyre','Mzuzu','Zomba','Kasungu','Mangochi','Karonga','Salima','Nsanje','Balaka'],
-            BW: ['Gaborone','Francistown','Molepolole','Maun','Serowe','Selibe-Phikwe','Kanye','Mahalapye','Lobatse','Palapye'],
-            NA: ['Windhoek','Rundu','Walvis Bay','Oshakati','Swakopmund','Katima Mulilo','Grootfontein','Rehoboth','Otjiwarongo','Okahandja'],
-            AO: ['Luanda','Huambo','Lobito','Benguela','Kuito','Malanje','Lubango','Namibe','Soyo','Cabinda'],
-            CD: ['Kinshasa','Lubumbashi','Mbuji-Mayi','Kananga','Kisangani','Bukavu','Tshikapa','Kolwezi','Likasi','Goma'],
-            CI: ['Abidjan','Bouaké','Daloa','San-Pédro','Yamoussoukro','Korhogo','Man','Divo','Gagnoa','Abengourou'],
-            CM: ['Douala','Yaoundé','Garoua','Bamenda','Maroua','Bafoussam','Ngaoundéré','Bertoua','Kumba','Nkongsamba'],
-            SN: ['Dakar','Touba','Thiès','Rufisque','Kaolack','M\'Bour','Saint-Louis','Ziguinchor','Diourbel','Louga'],
-            MA: ['Casablanca','Rabat','Fes','Marrakesh','Agadir','Tangier','Meknes','Oujda','Kenitra','Tetouan'],
-            TN: ['Tunis','Sfax','Sousse','Ettadhamen','Kairouan','Bizerte','Gabès','Aryanah','Gafsa','El Kef'],
-            LS: ['Maseru','Teyateyaneng','Mafeteng','Hlotse','Mohale\'s Hoek','Quthing','Qacha\'s Nek','Thaba-Tseka','Butha-Buthe','Mokhotlong'],
-            SZ: ['Mbabane','Manzini','Lobamba','Siteki','Nhlangano','Piggs Peak','Mhlume','Tshaneni','Simunye','Big Bend'],
-            MU: ['Port Louis','Beau Bassin-Rose Hill','Vacoas-Phoenix','Curepipe','Quatre Bornes','Triolet','Goodlands','Centre de Flacq','Mahébourg','Saint Pierre'],
-        };
+        <div class="pass-section">
+            <span class="pass-lbl">🔐 Create Your Portal Password</span>
+            <div class="form-row full" style="margin-bottom:12px">
+                <div class="field"><label>Portal Password</label>
+                    <input type="password" id="pPass" placeholder="Min. 6 characters" autocomplete="new-password">
+                </div>
+            </div>
+            <div class="form-row full" style="margin-bottom:0">
+                <div class="field"><label>Confirm Password</label>
+                    <input type="password" id="pPassC" placeholder="Confirm your password" autocomplete="new-password">
+                </div>
+            </div>
+            <div class="pass-note">⚠️ <strong>Save this password.</strong> You'll need it every time you log into your Agent Portal.</div>
+        </div>
 
-        function onCountryChange() {
-            const country = document.getElementById('agentCountry').value;
-            const cityRow   = document.getElementById('cityRow');
-            const abroadRow = document.getElementById('abroadRow');
-            const citySelect = document.getElementById('agentCity');
+        <div class="form-err" id="formErr"></div>
+        <button class="gen-btn" id="genBtn" onclick="generateCode()">⚡ Generate My Agent Code</button>
+    </div>
 
-            if (country === 'ABROAD') {
-                cityRow.style.display = 'none';
-                abroadRow.style.display = 'grid';
-                document.getElementById('agentAbroadCountry').value = '';
-            } else if (CITIES[country]) {
-                abroadRow.style.display = 'none';
-                cityRow.style.display = 'grid';
-                document.getElementById('cityLabel').textContent = 'City / Region';
-                citySelect.innerHTML = '<option value="" disabled selected>Select city...</option>' +
-                    CITIES[country].map(c => `<option>${c}</option>`).join('');
-                citySelect.value = '';
-            } else {
-                cityRow.style.display = 'none';
-                abroadRow.style.display = 'none';
-            }
-        }
+    <!-- CODE RESULT + STEP INSTRUCTIONS -->
+    <div id="codeResult">
+        <div class="code-lbl">Your Agent Code</div>
+        <div class="code-val" id="displayCode">ANC-0001</div>
+        <div class="code-details" id="displayDetails"></div>
 
-        function getLocationString() {
-            const country = document.getElementById('agentCountry').value;
-            if (!country) return '';
-            if (country === 'ABROAD') {
-                const abroad = document.getElementById('agentAbroadCountry').value;
-                return abroad ? `${abroad} (Abroad)` : '';
-            }
-            const city = document.getElementById('agentCity').value;
-            const countryName = document.getElementById('agentCountry').options[document.getElementById('agentCountry').selectedIndex].text.replace(/^.{2}\s/, '');
-            return city ? `${city}, ${countryName}` : '';
-        }
+        <div class="step-instructions">
+            <div class="step-instructions-title">📋 NEXT STEPS</div>
+            <div class="step-item" id="step1">
+                <div class="step-num">1</div>
+                <div><strong>Copy your code</strong> — save it somewhere safe. This is your permanent agent identifier.</div>
+            </div>
+            <div class="step-item" id="step2">
+                <div class="step-num">2</div>
+                <div><strong>Enter your Agent Portal</strong> — view your referrals, share your link, and track your progress.</div>
+            </div>
+            <div class="step-item" id="step3">
+                <div class="step-num">3</div>
+                <div><strong>Share your referral link</strong> — send it to customers and watch your referral count grow.</div>
+            </div>
+        </div>
 
-        /* ── FINGERPRINT ── */
-        async function getFingerprint() {
-            const raw = [navigator.userAgent, navigator.language, navigator.hardwareConcurrency,
-                navigator.deviceMemory || '', screen.width+'x'+screen.height, screen.colorDepth,
-                Intl.DateTimeFormat().resolvedOptions().timeZone, navigator.platform, navigator.vendor||''].join('|');
-            let h = 0;
-            for (let i = 0; i < raw.length; i++) { h = ((h<<5)-h) + raw.charCodeAt(i); h |= 0; }
-            return 'FP-' + Math.abs(h).toString(36).toUpperCase();
-        }
+        <button class="copy-code-btn" id="copyMainBtn" onclick="copyMainCode()">📋 Copy My Code</button>
+        <button class="enter-portal-btn" id="portalBtn" onclick="enterPortal()">🚀 Enter Agent Portal →</button>
+    </div>
 
-        /* ── STORAGE ── */
-        function getCodes() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } }
-        function saveCodes(c) { localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); }
-        function getNextNum() {
-            const c = getCodes();
-            return c.length ? Math.max(...c.map(x => parseInt(x.code.replace('ANC-',''),10))) + 1 : 1;
-        }
+    <!-- LIST -->
+    <div class="list-hdr">
+        <div class="list-hdr-title" id="listTitle">MY CODE (0)</div>
+        <div class="list-actions">
+            <button class="adm-btn adm-view" id="viewAllBtn" onclick="handleViewAll()">🔑 View All</button>
+            <button class="adm-btn adm-clear" onclick="handleClearAll()">Clear All</button>
+        </div>
+    </div>
+    <div class="adm-banner" id="admBanner">⚡ ADMIN MODE — VIEWING ALL CODES</div>
+    <div id="codesList"></div>
 
-        /* ── DUPLICATE CHECK ── */
-        function getExistingCode() {
-            const codes = getCodes();
-            return codes.find(c => c.generatedBy === currentUser) ||
-                   codes.find(c => c.fingerprint === currentFP) || null;
-        }
+    <div class="page-footer">
+        © 2026 ANICADE TECH &nbsp;·&nbsp;
+        <a href="https://tresforwrld.github.io/ANICADEtech.net/terms.html">Terms of Use</a>
+        &nbsp;·&nbsp; AGENT PORTAL &nbsp;·&nbsp; INTERNAL USE ONLY
+    </div>
+</div>
 
-        /* ── ON LOAD ── */
-        window.addEventListener('DOMContentLoaded', async () => {
-            currentUser = localStorage.getItem('anicade_current_user');
-            if (!currentUser) {
-                setLoginRedirect();
-                document.getElementById('blockedScreen').classList.add('active');
-                return;
-            }
-            currentFP = await getFingerprint();
-            const existing = getExistingCode();
-            if (existing) { showAlreadyHasCode(existing); return; }
-            document.getElementById('mainContent').style.display = 'block';
-            renderList();
-        });
+<script>
+const CODES_KEY  = 'anicade_agent_codes';
+const ADMIN_PASS = 'Krsten2044';
+const PORTAL_URL = 'https://tresforwrld.github.io/Agents.Code.generator/portal.html';
+const THIS_URL   = 'https://tresforwrld.github.io/Agents.Code.generator/';
 
-        /* ── ALREADY HAS CODE ── */
-        function showAlreadyHasCode(e) {
-            document.getElementById('existingCodeDisplay').textContent = e.code;
-            document.getElementById('existingCodeDetails').innerHTML =
-                `<strong>${e.firstName} ${e.lastName}</strong><br>📧 ${e.email}<br>📱 ${e.phone}<br>📍 ${e.region}<br>🗓️ ${e.date}`;
-            document.getElementById('alreadyHasCode').classList.add('active');
-        }
-        function copyExistingCode() {
-            navigator.clipboard.writeText(document.getElementById('existingCodeDisplay').textContent).then(() => {
-                const b = document.querySelector('.copy-existing-btn');
-                b.textContent = '✅ Copied!';
-                setTimeout(() => b.textContent = '📋 Copy My Code', 2500);
-            });
-        }
+let adminUnlocked = false;
+let pendingAction = null;
+let currentUser   = null;
+let currentFP     = null;
+let codeCopied    = false;
 
-        function enterPortalExisting() {
-            const code = document.getElementById('existingCodeDisplay').textContent;
-            localStorage.setItem('anicade_portal_agent', code);
-            window.location.href = 'https://tresforwrld.github.io/Agents.Code.generator/portal.html';
-        }
+/* ─── CITIES ─── */
+const CITIES={ZM:['Lusaka','Copperbelt (Kitwe)','Copperbelt (Ndola)','Livingstone','Kabwe','Chipata','Solwezi','Kasama','Mongu','Mansa','Choma','Mazabuka','Kafue','Mufulira','Chingola','Luanshya','Kalulushi','Mpika','Petauke','Sesheke'],ZW:['Harare','Bulawayo','Mutare','Gweru','Kwekwe','Kadoma','Masvingo','Chinhoyi','Bindura','Victoria Falls','Hwange','Marondera','Zvishavane','Chegutu','Rusape'],ZA:['Johannesburg','Cape Town','Durban','Pretoria','Port Elizabeth','Bloemfontein','East London','Polokwane','Nelspruit','Kimberley','Pietermaritzburg','Rustenburg','George','Upington','Mahikeng'],NG:['Lagos','Abuja','Kano','Ibadan','Port Harcourt','Benin City','Kaduna','Enugu','Aba','Jos','Ilorin','Onitsha','Warri','Maiduguri','Sokoto'],KE:['Nairobi','Mombasa','Kisumu','Nakuru','Eldoret','Thika','Malindi','Kitale','Garissa','Nyeri','Machakos','Kakamega','Lamu','Kericho','Embu'],GH:['Accra','Kumasi','Tamale','Takoradi','Tema','Cape Coast','Obuasi','Techiman','Koforidua','Wa','Ho','Sunyani','Bolgatanga','Tarkwa','Nkoranza'],TZ:['Dar es Salaam','Dodoma','Mwanza','Arusha','Mbeya','Morogoro','Tanga','Zanzibar City','Kigoma','Tabora','Moshi','Iringa','Musoma','Shinyanga','Singida'],UG:['Kampala','Gulu','Lira','Mbarara','Jinja','Bwizibwera','Mbale','Mukono','Kasese','Masaka','Entebbe','Arua','Fort Portal','Soroti','Kabale'],ET:['Addis Ababa','Dire Dawa',"Mek'ele",'Gondar','Hawassa','Bahir Dar','Dessie','Jimma','Jijiga','Shashamane','Bishoftu','Sodo','Arba Minch','Hosaena','Harar'],EG:['Cairo','Alexandria','Giza','Shubra El-Kheima','Port Said','Suez','Luxor','Aswan','Asyut','Tanta','Mansoura','El-Mahalla El-Kubra','Hurghada','Zagazig','Ismailia'],RW:['Kigali','Butare','Gitarama','Ruhengeri','Gisenyi','Byumba','Cyangugu','Nyamata','Kibuye','Rwamagana'],MZ:['Maputo','Matola','Nampula','Beira','Chimoio','Quelimane','Nacala','Lichinga','Pemba','Tete'],MW:['Lilongwe','Blantyre','Mzuzu','Zomba','Kasungu','Mangochi','Karonga','Salima','Nsanje','Balaka'],BW:['Gaborone','Francistown','Molepolole','Maun','Serowe','Selibe-Phikwe','Kanye','Mahalapye','Lobatse','Palapye'],NA:['Windhoek','Rundu','Walvis Bay','Oshakati','Swakopmund','Katima Mulilo','Grootfontein','Rehoboth','Otjiwarongo','Okahandja'],AO:['Luanda','Huambo','Lobito','Benguela','Kuito','Malanje','Lubango','Namibe','Soyo','Cabinda'],CD:['Kinshasa','Lubumbashi','Mbuji-Mayi','Kananga','Kisangani','Bukavu','Tshikapa','Kolwezi','Likasi','Goma'],CI:['Abidjan','Bouaké','Daloa','San-Pédro','Yamoussoukro','Korhogo','Man','Divo','Gagnoa','Abengourou'],CM:['Douala','Yaoundé','Garoua','Bamenda','Maroua','Bafoussam','Ngaoundéré','Bertoua','Kumba','Nkongsamba'],SN:['Dakar','Touba','Thiès','Rufisque','Kaolack',"M'Bour",'Saint-Louis','Ziguinchor','Diourbel','Louga'],MA:['Casablanca','Rabat','Fes','Marrakesh','Agadir','Tangier','Meknes','Oujda','Kenitra','Tetouan'],TN:['Tunis','Sfax','Sousse','Ettadhamen','Kairouan','Bizerte','Gabès','Aryanah','Gafsa','El Kef'],LS:['Maseru','Teyateyaneng','Mafeteng','Hlotse',"Mohale's Hoek",'Quthing',"Qacha's Nek",'Thaba-Tseka','Butha-Buthe','Mokhotlong'],SZ:['Mbabane','Manzini','Lobamba','Siteki','Nhlangano','Piggs Peak','Mhlume','Tshaneni','Simunye','Big Bend'],MU:['Port Louis','Beau Bassin-Rose Hill','Vacoas-Phoenix','Curepipe','Quatre Bornes','Triolet','Goodlands','Centre de Flacq','Mahébourg','Saint Pierre']};
 
-        /* ── GENERATE ── */
-        function generateCode() {
-            const fn  = document.getElementById('firstName').value.trim();
-            const ln  = document.getElementById('lastName').value.trim();
-            const em  = document.getElementById('agentEmail').value.trim();
-            const ph  = document.getElementById('agentPhone').value.trim();
-            const rg  = getLocationString();
-            const pw  = document.getElementById('portalPass').value;
-            const pw2 = document.getElementById('portalPassConfirm').value;
-            const err = document.getElementById('formError');
-            err.textContent = '';
+/* ─── LOCATION ─── */
+function onCountryChange(){
+    const v=document.getElementById('aCountry').value;
+    const cr=document.getElementById('cityRow'),ar=document.getElementById('abroadRow'),cs=document.getElementById('aCity');
+    if(v==='ABROAD'){cr.style.display='none';ar.style.display='grid';document.getElementById('aAbroad').value='';}
+    else if(CITIES[v]){ar.style.display='none';cr.style.display='grid';cs.innerHTML='<option value="" disabled selected>Select city...</option>'+CITIES[v].map(c=>`<option>${c}</option>`).join('');cs.value='';}
+    else{cr.style.display='none';ar.style.display='none';}
+}
+function getLocation(){
+    const v=document.getElementById('aCountry').value;
+    if(!v)return'';
+    if(v==='ABROAD'){const a=document.getElementById('aAbroad').value;return a?`${a} (Abroad)`:'';}
+    const city=document.getElementById('aCity').value;
+    const sel=document.getElementById('aCountry');
+    const cname=sel.options[sel.selectedIndex].text.replace(/^.{3}/,'').trim();
+    return city?`${city}, ${cname}`:'';
+}
 
-            const country = document.getElementById('agentCountry').value;
-            if (!fn||!ln||!em||!ph||!country) { err.textContent = 'Please fill in all fields.'; return; }
-            if (!rg) { err.textContent = 'Please select a city / country.'; return; }
-            if (!pw || pw.length < 6) { err.textContent = 'Portal password must be at least 6 characters.'; return; }
-            if (pw !== pw2) { err.textContent = 'Passwords do not match.'; return; }
+/* ─── FINGERPRINT ─── */
+async function getFingerprint(){
+    const r=[navigator.userAgent,navigator.language,navigator.hardwareConcurrency,navigator.deviceMemory||'',screen.width+'x'+screen.height,screen.colorDepth,Intl.DateTimeFormat().resolvedOptions().timeZone,navigator.platform,navigator.vendor||''].join('|');
+    let h=0;for(let i=0;i<r.length;i++){h=((h<<5)-h)+r.charCodeAt(i);h|=0;}
+    return'FP-'+Math.abs(h).toString(36).toUpperCase();
+}
 
-            const existing = getExistingCode();
-            if (existing) { showAlreadyHasCode(existing); return; }
+/* ─── STORAGE ─── */
+function getCodes(){try{return JSON.parse(localStorage.getItem(CODES_KEY))||[];}catch{return[];}}
+function saveCodes(c){localStorage.setItem(CODES_KEY,JSON.stringify(c));}
+function getNextNum(){const c=getCodes();return c.length?Math.max(...c.map(x=>parseInt(x.code.replace('ANC-',''),10)))+1:1;}
+function getMyCode(){const c=getCodes();return c.find(x=>x.generatedBy===currentUser)||c.find(x=>x.fingerprint===currentFP)||null;}
 
-            const code  = `ANC-${String(getNextNum()).padStart(4,'0')}`;
-            const date  = new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'});
-            const entry = { code, firstName:fn, lastName:ln, email:em, phone:ph, region:rg, date, fingerprint:currentFP, generatedBy:currentUser, portalPassword: btoa(pw) };
-            const codes = getCodes(); codes.unshift(entry); saveCodes(codes);
+/* ─── REDIRECT ─── */
+function setRedirect(){localStorage.setItem('anicade_login_redirect',THIS_URL);}
 
-            document.getElementById('displayCode').textContent = code;
-            document.getElementById('displayDetails').innerHTML =
-                `<strong>${fn} ${ln}</strong><br>📧 ${em}<br>📱 ${ph}<br>📍 ${rg}<br>🗓️ ${date}`;
-            const res = document.getElementById('codeResult');
-            res.style.display = 'block';
-            res.scrollIntoView({behavior:'smooth', block:'center'});
+/* ─── ON LOAD ─── */
+window.addEventListener('DOMContentLoaded',async()=>{
+    currentUser=localStorage.getItem('anicade_current_user');
+    if(!currentUser){
+        localStorage.setItem('anicade_login_redirect',THIS_URL);
+        document.getElementById('blockedScreen').classList.add('show');
+        return;
+    }
+    currentFP=await getFingerprint();
+    const existing=getMyCode();
+    if(existing){showAlreadyHasCode(existing);return;}
+    document.getElementById('blockedScreen').classList.remove('show');
+    document.getElementById('main').style.display='block';
+    renderList();
+});
 
-            const btn = document.getElementById('generateBtn');
-            btn.disabled = true; btn.textContent = '✅ Code Issued';
-            btn.style.opacity = '0.45'; btn.style.cursor = 'not-allowed';
-            ['firstName','lastName','agentEmail','agentPhone','agentCountry','agentCity','agentAbroadCountry','portalPass','portalPassConfirm'].forEach(id => {
-                const el = document.getElementById(id); if (el) el.disabled = true;
-            });
-            renderList();
-        }
+/* ─── ALREADY HAS CODE ─── */
+function showAlreadyHasCode(e){
+    document.getElementById('existCode').textContent=e.code;
+    document.getElementById('existDetails').innerHTML=`<strong>${e.firstName} ${e.lastName}</strong><br>📧 ${e.email}<br>📱 ${e.phone}<br>📍 ${e.region}<br>🗓️ ${e.date}`;
+    document.getElementById('blockedScreen').classList.remove('show');
+    document.getElementById('alreadyScreen').classList.add('show');
+}
+function copyExisting(){
+    const code=document.getElementById('existCode').textContent;
+    navigator.clipboard.writeText(code).then(()=>{
+        const b=document.getElementById('existCopyBtn');
+        b.textContent='✅ Copied!';
+        document.getElementById('existPortalBtn').classList.add('show');
+        setTimeout(()=>b.textContent='📋 Copy My Code',2500);
+    });
+}
+function goPortalExisting(){
+    localStorage.setItem('anicade_portal_agent',document.getElementById('existCode').textContent);
+    window.location.href=PORTAL_URL;
+}
 
-        function copyCode() {
-            navigator.clipboard.writeText(document.getElementById('displayCode').textContent).then(() => {
-                const b = document.getElementById('copyCodeBtn');
-                b.textContent = '✅ Code Copied!';
-                b.style.background = 'rgba(57,255,20,0.14)';
-                setTimeout(() => { b.textContent = '📋 Copy Code'; b.style.background = ''; }, 2500);
-            });
-        }
+/* ─── GENERATE ─── */
+function generateCode(){
+    const fn=document.getElementById('fName').value.trim();
+    const ln=document.getElementById('lName').value.trim();
+    const em=document.getElementById('aEmail').value.trim();
+    const ph=document.getElementById('aPhone').value.trim();
+    const rg=getLocation();
+    const pw=document.getElementById('pPass').value;
+    const pw2=document.getElementById('pPassC').value;
+    const err=document.getElementById('formErr');
+    err.textContent='';
+    if(!fn||!ln||!em||!ph||!document.getElementById('aCountry').value){err.textContent='Please fill in all fields.';return;}
+    if(!rg){err.textContent='Please select your city / country.';return;}
+    if(!pw||pw.length<6){err.textContent='Portal password must be at least 6 characters.';return;}
+    if(pw!==pw2){err.textContent='Passwords do not match.';return;}
+    const existing=getMyCode();
+    if(existing){showAlreadyHasCode(existing);return;}
+    const code=`ANC-${String(getNextNum()).padStart(4,'0')}`;
+    const date=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    const entry={code,firstName:fn,lastName:ln,email:em,phone:ph,region:rg,date,fingerprint:currentFP,generatedBy:currentUser,portalPassword:btoa(pw)};
+    const codes=getCodes();codes.unshift(entry);saveCodes(codes);
+    // Show result
+    document.getElementById('displayCode').textContent=code;
+    document.getElementById('displayDetails').innerHTML=`<strong>${fn} ${ln}</strong><br>📧 ${em}<br>📱 ${ph}<br>📍 ${rg}<br>🗓️ ${date}`;
+    const res=document.getElementById('codeResult');
+    res.style.display='block';
+    res.scrollIntoView({behavior:'smooth',block:'center'});
+    // Lock form
+    document.getElementById('genBtn').disabled=true;
+    document.getElementById('genBtn').textContent='✅ Code Issued';
+    ['fName','lName','aEmail','aPhone','aCountry','aCity','aAbroad','pPass','pPassC'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=true;});
+    renderList();
+}
 
-        function enterPortal() {
-            const code = document.getElementById('displayCode').textContent;
-            localStorage.setItem('anicade_portal_agent', code);
-            window.location.href = 'https://tresforwrld.github.io/Agents.Code.generator/portal.html';
-        }
+/* ─── COPY MAIN CODE ─── */
+function copyMainCode(){
+    const code=document.getElementById('displayCode').textContent;
+    navigator.clipboard.writeText(code).then(()=>{
+        codeCopied=true;
+        const b=document.getElementById('copyMainBtn');
+        b.textContent='✅ Code Copied!';
+        b.style.background='rgba(57,255,20,0.18)';
+        // Mark step 1 done, reveal step 2 hint and portal button
+        document.getElementById('step1').classList.add('done');
+        const pb=document.getElementById('portalBtn');
+        pb.classList.add('show');
+        pb.scrollIntoView({behavior:'smooth',block:'nearest'});
+        setTimeout(()=>{b.textContent='📋 Copy My Code';b.style.background='';},2500);
+    });
+}
+function enterPortal(){
+    localStorage.setItem('anicade_portal_agent',document.getElementById('displayCode').textContent);
+    window.location.href=PORTAL_URL;
+}
 
-        /* ── RENDER LIST ── */
-        function renderList() {
-            const all = getCodes();
-            const container = document.getElementById('codesList');
-            const titleEl   = document.getElementById('listTitle');
-            let toShow = adminUnlocked ? all : all.filter(c => c.generatedBy === currentUser || c.fingerprint === currentFP);
-            titleEl.textContent = adminUnlocked ? `ALL CODES (${all.length})` : `MY CODE (${toShow.length})`;
+/* ─── RENDER LIST ─── */
+function renderList(){
+    const all=getCodes();
+    const el=document.getElementById('codesList');
+    const tl=document.getElementById('listTitle');
+    const show=adminUnlocked?all:all.filter(c=>c.generatedBy===currentUser||c.fingerprint===currentFP);
+    tl.textContent=adminUnlocked?`ALL CODES (${all.length})`:`MY CODE (${show.length})`;
+    if(!show.length){el.innerHTML=`<div class="empty-state"><span>📋</span>${adminUnlocked?'NO CODES YET':'YOUR CODE WILL APPEAR HERE AFTER GENERATING'}</div>`;return;}
+    el.innerHTML=show.map(c=>{
+        const mine=c.generatedBy===currentUser||c.fingerprint===currentFP;
+        return`<div class="code-entry${mine?' mine':''}">
+            <div class="ce-code">${c.code}${mine&&adminUnlocked?'<span class="mine-badge">MINE</span>':''}</div>
+            <div class="ce-info"><div class="ce-name">${c.firstName} ${c.lastName}</div><div class="ce-meta">📧 ${c.email} · 📱 ${c.phone} · 📍 ${c.region}</div></div>
+            <div class="ce-date">${c.date}</div>
+        </div>`;
+    }).join('');
+}
 
-            if (!toShow.length) {
-                container.innerHTML = `<div class="empty-state"><span>📋</span>${adminUnlocked ? 'NO CODES GENERATED YET' : 'YOUR CODE WILL APPEAR HERE AFTER GENERATING'}</div>`;
-                return;
-            }
-            container.innerHTML = toShow.map(c => {
-                const mine = c.generatedBy === currentUser || c.fingerprint === currentFP;
-                return `<div class="code-entry ${mine?'mine':''}">
-                    <div class="entry-code">${c.code}${mine&&adminUnlocked?'<span class="mine-badge">MINE</span>':''}</div>
-                    <div class="entry-info">
-                        <div class="entry-name">${c.firstName} ${c.lastName}</div>
-                        <div class="entry-meta">📧 ${c.email} &nbsp;·&nbsp; 📱 ${c.phone} &nbsp;·&nbsp; 📍 ${c.region}</div>
-                    </div>
-                    <div class="entry-date">${c.date}</div>
-                </div>`;
-            }).join('');
-        }
-
-        /* ── ADMIN MODAL ── */
-        function openModal(action, title, sub) {
-            pendingAction = action;
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalSub').textContent   = sub;
-            document.getElementById('adminPassInput').value   = '';
-            document.getElementById('modalError').textContent = '';
-            document.getElementById('adminModal').classList.add('active');
-            setTimeout(() => document.getElementById('adminPassInput').focus(), 100);
-        }
-        function closeModal() {
-            document.getElementById('adminModal').classList.remove('active');
-            pendingAction = null;
-        }
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Enter' && document.getElementById('adminModal').classList.contains('active')) submitAdminPass();
-            if (e.key === 'Escape') closeModal();
-        });
-        function submitAdminPass() {
-            const val = document.getElementById('adminPassInput').value;
-            if (val !== ADMIN_PASS) {
-                document.getElementById('modalError').textContent = 'Incorrect password. Try again.';
-                document.getElementById('adminPassInput').value = '';
-                document.getElementById('adminPassInput').focus();
-                return;
-            }
-            // Save action BEFORE closeModal() nulls pendingAction
-            const action = pendingAction;
-            closeModal();
-
-            if (action === 'adminOverride') {
-                document.getElementById('alreadyHasCode').classList.remove('active');
-                adminUnlocked = true;
-                document.getElementById('mainContent').style.display = 'block';
-                document.getElementById('adminBanner').classList.add('visible');
-                document.getElementById('viewAllBtn').textContent = '🔓 Viewing All';
-                document.getElementById('viewAllBtn').classList.add('active');
-                const btn = document.getElementById('generateBtn');
-                btn.disabled = true; btn.textContent = '✅ Code Already Issued';
-                btn.style.opacity = '0.45'; btn.style.cursor = 'not-allowed';
-                renderList();
-            }
-            if (action === 'viewAll') {
-                adminUnlocked = true;
-                document.getElementById('adminBanner').classList.add('visible');
-                document.getElementById('viewAllBtn').textContent = '🔓 Viewing All';
-                document.getElementById('viewAllBtn').classList.add('active');
-                renderList();
-            }
-            if (action === 'clearAll') {
-                localStorage.removeItem(STORAGE_KEY);
-                adminUnlocked = false;
-                document.getElementById('adminBanner').classList.remove('visible');
-                document.getElementById('viewAllBtn').textContent = '🔑 View All Codes';
-                document.getElementById('viewAllBtn').classList.remove('active');
-                document.getElementById('codeResult').style.display = 'none';
-                renderList();
-            }
-        }
-
-        /* ── BUTTON HANDLERS ── */
-        function handleAdminOverride() {
-            openModal('adminOverride','Admin Override','Enter the admin password to access the full page.');
-        }
-        function handleViewAll() {
-            if (adminUnlocked) {
-                adminUnlocked = false;
-                document.getElementById('adminBanner').classList.remove('visible');
-                document.getElementById('viewAllBtn').textContent = '🔑 View All Codes';
-                document.getElementById('viewAllBtn').classList.remove('active');
-                renderList();
-            } else {
-                openModal('viewAll','Admin Access','Enter the admin password to view all agent codes.');
-            }
-        }
-        function handleClearAll() {
-            openModal('clearAll','Clear All Codes','Enter the admin password to permanently delete all agent codes. This cannot be undone.');
-        }
-    </script>
+/* ─── ADMIN MODAL ─── */
+function openModal(action,title,sub){
+    pendingAction=action;
+    document.getElementById('modalTitle').textContent=title;
+    document.getElementById('modalSub').textContent=sub;
+    document.getElementById('adminPassInput').value='';
+    document.getElementById('modalErr').textContent='';
+    document.getElementById('adminModal').classList.add('show');
+    setTimeout(()=>document.getElementById('adminPassInput').focus(),80);
+}
+function closeModal(){
+    document.getElementById('adminModal').classList.remove('show');
+    pendingAction=null;
+}
+document.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&document.getElementById('adminModal').classList.contains('show'))submitAdmin();
+    if(e.key==='Escape')closeModal();
+});
+function submitAdmin(){
+    const val=document.getElementById('adminPassInput').value;
+    if(val!==ADMIN_PASS){
+        document.getElementById('modalErr').textContent='Incorrect password.';
+        document.getElementById('adminPassInput').value='';
+        document.getElementById('adminPassInput').focus();
+        return;
+    }
+    const action=pendingAction;closeModal();
+    if(action==='override'){
+        document.getElementById('alreadyScreen').classList.remove('show');
+        adminUnlocked=true;
+        document.getElementById('main').style.display='block';
+        document.getElementById('admBanner').classList.add('show');
+        document.getElementById('viewAllBtn').classList.add('on');
+        document.getElementById('viewAllBtn').textContent='🔓 Viewing All';
+        const btn=document.getElementById('genBtn');btn.disabled=true;btn.textContent='✅ Code Already Issued';
+        renderList();
+    }
+    if(action==='viewAll'){
+        adminUnlocked=true;
+        document.getElementById('admBanner').classList.add('show');
+        document.getElementById('viewAllBtn').classList.add('on');
+        document.getElementById('viewAllBtn').textContent='🔓 Viewing All';
+        renderList();
+    }
+    if(action==='clearAll'){
+        localStorage.removeItem(CODES_KEY);adminUnlocked=false;
+        document.getElementById('admBanner').classList.remove('show');
+        document.getElementById('viewAllBtn').classList.remove('on');
+        document.getElementById('viewAllBtn').textContent='🔑 View All';
+        document.getElementById('codeResult').style.display='none';
+        renderList();
+    }
+}
+function handleViewAll(){
+    if(adminUnlocked){adminUnlocked=false;document.getElementById('admBanner').classList.remove('show');document.getElementById('viewAllBtn').classList.remove('on');document.getElementById('viewAllBtn').textContent='🔑 View All';renderList();}
+    else openModal('viewAll','Admin Access','Enter admin password to view all codes.');
+}
+function handleClearAll(){openModal('clearAll','Clear All Codes','Enter admin password to permanently delete all codes. This cannot be undone.');}
+</script>
 </body>
 </html>
