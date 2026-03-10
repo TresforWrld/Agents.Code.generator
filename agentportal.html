@@ -16,13 +16,13 @@
         }
         html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
 
-        /* BG RINGS — match login.html exactly */
+        /* BG RINGS — always visible, brand colors */
         .bg-rings{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;display:flex;justify-content:center;align-items:center}
-        .bg-ring-wrap{position:absolute;width:min(620px,95vw);height:min(620px,95vw);display:flex;justify-content:center;align-items:center}
+        .bg-ring-wrap{position:absolute;width:min(680px,98vw);height:min(680px,98vw);display:flex;justify-content:center;align-items:center}
         .bg-ring-i{position:absolute;inset:0;border:2px solid transparent;transition:0.5s}
-        .bg-ring-i:nth-child(1){border-radius:38% 62% 63% 37%/41% 44% 56% 59%;animation:spin1 6s linear infinite}
-        .bg-ring-i:nth-child(2){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;animation:spin2 4s linear infinite}
-        .bg-ring-i:nth-child(3){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;animation:spin3 10s linear infinite}
+        .bg-ring-i:nth-child(1){border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border-color:rgba(0,191,255,0.18);animation:spin1 6s linear infinite}
+        .bg-ring-i:nth-child(2){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(198,168,92,0.14);animation:spin2 4s linear infinite}
+        .bg-ring-i:nth-child(3){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(0,191,255,0.08);animation:spin3 10s linear infinite}
         @keyframes spin1{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
         @keyframes spin2{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
         @keyframes spin3{0%{transform:rotate(360deg)}100%{transform:rotate(0deg)}}
@@ -31,15 +31,15 @@
         .overlay{position:fixed;inset:0;z-index:50;background:rgba(11,28,45,0.97);display:none;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 24px 50px;gap:16px;overflow-y:auto}
         .overlay.show{display:flex}
 
-        /* LOGO RING — with hover glow matching login.html */
+        /* LOGO RING — always visible, brand colors, hover glow */
         .ov-ring-wrap{position:relative;width:180px;height:180px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:default}
         .ov-ring-i{position:absolute;inset:0;border:2px solid transparent;transition:0.5s}
-        .ov-ring-i:nth-child(1){border-radius:38% 62% 63% 37%/41% 44% 56% 59%;animation:spin1 6s linear infinite}
-        .ov-ring-i:nth-child(2){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;animation:spin2 4s linear infinite}
-        .ov-ring-i:nth-child(3){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;animation:spin3 10s linear infinite}
-        .ov-ring-wrap:hover .ov-ring-i:nth-child(1){border:5px solid lawngreen;filter:drop-shadow(0 0 18px lawngreen)}
-        .ov-ring-wrap:hover .ov-ring-i:nth-child(2){border:5px solid red;filter:drop-shadow(0 0 18px red)}
-        .ov-ring-wrap:hover .ov-ring-i:nth-child(3){border:5px solid #C6A85C;filter:drop-shadow(0 0 18px #C6A85C)}
+        .ov-ring-i:nth-child(1){border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border-color:rgba(198,168,92,0.55);animation:spin1 6s linear infinite}
+        .ov-ring-i:nth-child(2){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(0,191,255,0.45);animation:spin2 4s linear infinite}
+        .ov-ring-i:nth-child(3){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(198,168,92,0.2);animation:spin3 10s linear infinite}
+        .ov-ring-wrap:hover .ov-ring-i:nth-child(1){border:4px solid var(--gold);filter:drop-shadow(0 0 16px var(--gold))}
+        .ov-ring-wrap:hover .ov-ring-i:nth-child(2){border:4px solid var(--accent);filter:drop-shadow(0 0 16px var(--accent))}
+        .ov-ring-wrap:hover .ov-ring-i:nth-child(3){border:4px solid rgba(198,168,92,0.6);filter:drop-shadow(0 0 12px var(--gold))}
         .ov-ring-img{width:100px;height:100px;border-radius:50%;object-fit:cover;position:relative;z-index:2;border:2px solid rgba(198,168,92,0.3);box-shadow:0 0 24px rgba(198,168,92,0.18)}
 
         .ov-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--gold);letter-spacing:2px}
@@ -222,6 +222,42 @@
         .page-footer a{color:rgba(148,163,184,.3);text-decoration:none;border-bottom:1px solid rgba(148,163,184,0.12);transition:color .2s}
         .page-footer a:hover{color:var(--gold)}
 
+        /* ── GLOBAL CHAT ── */
+        .chat-fab{position:fixed;bottom:28px;right:24px;z-index:500;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--accent));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 24px rgba(0,191,255,0.35),0 2px 8px rgba(0,0,0,0.4);transition:transform .2s,box-shadow .2s}
+        .chat-fab:hover{transform:scale(1.08);box-shadow:0 6px 32px rgba(0,191,255,0.5)}
+        .chat-fab .chat-badge{position:absolute;top:-3px;right:-3px;background:var(--red);color:#fff;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;min-width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;border:2px solid var(--bg);padding:0 3px}
+        .chat-fab .chat-badge.show{display:flex}
+        .chat-panel{position:fixed;bottom:94px;right:24px;z-index:499;width:340px;max-width:calc(100vw - 32px);background:#0d1f33;border:1px solid rgba(198,168,92,0.25);border-radius:20px;box-shadow:0 16px 60px rgba(0,0,0,0.6);display:none;flex-direction:column;overflow:hidden;animation:fadeUp .25s ease both}
+        .chat-panel.open{display:flex}
+        .chat-header{background:linear-gradient(135deg,rgba(198,168,92,0.12),rgba(0,191,255,0.08));border-bottom:1px solid rgba(198,168,92,0.15);padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+        .chat-header-left{display:flex;align-items:center;gap:8px}
+        .chat-online-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(57,255,20,0.6);animation:pulse 2s infinite;flex-shrink:0}
+        .chat-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold)}
+        .chat-online-count{font-size:11px;color:var(--muted)}
+        .chat-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;transition:color .2s;line-height:1;padding:0}
+        .chat-close:hover{color:var(--text)}
+        .chat-messages{height:280px;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+        .chat-messages::-webkit-scrollbar{width:4px}
+        .chat-messages::-webkit-scrollbar-track{background:transparent}
+        .chat-messages::-webkit-scrollbar-thumb{background:rgba(198,168,92,0.2);border-radius:2px}
+        .chat-msg{display:flex;flex-direction:column;gap:3px;max-width:86%}
+        .chat-msg.me{align-self:flex-end;align-items:flex-end}
+        .chat-msg.them{align-self:flex-start;align-items:flex-start}
+        .chat-msg-meta{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:rgba(148,163,184,.4)}
+        .chat-msg.me .chat-msg-meta{color:rgba(198,168,92,0.45)}
+        .chat-bubble{padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.5;word-break:break-word;max-width:100%}
+        .chat-msg.me .chat-bubble{background:linear-gradient(135deg,rgba(198,168,92,0.22),rgba(0,191,255,0.14));border:1px solid rgba(198,168,92,0.3);color:var(--text);border-bottom-right-radius:4px}
+        .chat-msg.them .chat-bubble{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:var(--text);border-bottom-left-radius:4px}
+        .chat-system{text-align:center;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1.5px;color:rgba(148,163,184,0.3);padding:4px 0}
+        .chat-empty{text-align:center;padding:40px 16px;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:rgba(148,163,184,0.2)}
+        .chat-input-row{border-top:1px solid rgba(255,255,255,0.06);padding:12px 14px;display:flex;gap:8px;align-items:center}
+        .chat-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:9px 14px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;outline:none;transition:border-color .2s}
+        .chat-input:focus{border-color:rgba(0,191,255,0.4)}
+        .chat-input::placeholder{color:rgba(148,163,184,0.35)}
+        .chat-send{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--accent));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:transform .15s,opacity .15s}
+        .chat-send:hover{transform:scale(1.08)}
+        .chat-send:disabled{opacity:.4;cursor:not-allowed}
+
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
         @media(max-width:680px){
@@ -232,6 +268,8 @@
             #portal{padding:28px 16px 60px}
             .profile-code{font-size:20px}
             .portal-header{margin-bottom:22px}
+            .chat-panel{bottom:90px;right:12px;width:calc(100vw - 24px)}
+            .chat-fab{bottom:22px;right:16px}
         }
     </style>
 </head>
@@ -425,6 +463,32 @@
     <div class="page-footer">© 2026 ANICADE TECH · <a href="https://tresforwrld.github.io/ANICADEtech.net/terms.html">Terms of Use</a> · AGENT PORTAL · INTERNAL USE ONLY</div>
 </div>
 
+<!-- GLOBAL CHAT -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()" style="display:none">
+    💬
+    <span class="chat-badge" id="chatBadge"></span>
+</button>
+
+<div class="chat-panel" id="chatPanel">
+    <div class="chat-header">
+        <div class="chat-header-left">
+            <div class="chat-online-dot"></div>
+            <div>
+                <div class="chat-title">AGENT CHAT</div>
+                <div class="chat-online-count" id="chatOnlineCount">Global · All Agents</div>
+            </div>
+        </div>
+        <button class="chat-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+        <div class="chat-empty">No messages yet. Say hello! 👋</div>
+    </div>
+    <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" placeholder="Type a message…" maxlength="300" autocomplete="off">
+        <button class="chat-send" id="chatSend" onclick="sendChatMsg()">➤</button>
+    </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -520,8 +584,12 @@ window.addEventListener('DOMContentLoaded',async()=>{
     if(code){
         const entry=_codes.find(c=>c.code===code.toUpperCase());
         if(entry){
-            if(!entry.portalPassword){renderPortal(entry,false);return;}
-            pendingLoginEntry=entry;showPasswordStep(entry);return;
+            // If coming from URL param, still require password
+            // If restoring a saved session (stored key), skip password — already authenticated
+            if(urlCode && entry.portalPassword){
+                pendingLoginEntry=entry;showPasswordStep(entry);return;
+            }
+            renderPortal(entry,false);return;
         }
     }
     showLoginForm();
@@ -626,6 +694,8 @@ function renderPortal(entry,adminMode=false){
     }
     ['loginScreen','passwordScreen','wrongCodeScreen'].forEach(id=>document.getElementById(id).classList.remove('show'));
     document.getElementById('portal').style.display='block';
+    // Start chat (only once)
+    if(!chatSender) initChat(entry);
 }
 
 function renderCustomers(refs){
@@ -708,7 +778,107 @@ function shareNative(){const l=document.getElementById('refLink').dataset.href;i
 /* ── LOGOUT ── */
 function logout(){localStorage.removeItem('anicade_portal_agent');location.reload();}
 
-/* ── TOAST ── */
+/* ── GLOBAL CHAT ── */
+const CHAT_BIN_ID  = '69af45d3d0ea881f4001fd93'; // same bin, chat key inside
+let chatOpen = false;
+let chatLastCount = 0;
+let chatPollTimer = null;
+let chatSender = null; // {name, code, color}
+
+const MSG_COLORS = ['#00BFFF','#C6A85C','#39ff14','#a78bfa','#f472b6','#fb923c','#38bdf8','#84cc16'];
+function agentColor(code){ let h=0;for(let i=0;i<code.length;i++){h=((h<<5)-h)+code.charCodeAt(i);h|=0;}return MSG_COLORS[Math.abs(h)%MSG_COLORS.length]; }
+function timeStr(ts){ const d=new Date(ts),h=d.getHours(),m=d.getMinutes();return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`; }
+
+async function chatLoad(){
+    try{
+        const r=await fetch(`https://api.jsonbin.io/v3/b/${CHAT_BIN_ID}/latest`,{headers:{'X-Master-Key':API_KEY}});
+        const j=await r.json();
+        return j.record?.chat||[];
+    }catch{ return []; }
+}
+async function chatSave(msgs){
+    try{
+        const r=await fetch(`https://api.jsonbin.io/v3/b/${CHAT_BIN_ID}/latest`,{headers:{'X-Master-Key':API_KEY}});
+        const j=await r.json();
+        const record=j.record||{codes:[],referrals:[]};
+        record.chat=(msgs||[]).slice(-120); // keep last 120 messages
+        await fetch(`https://api.jsonbin.io/v3/b/${CHAT_BIN_ID}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(record)});
+    }catch(e){ console.warn('chat save failed',e); }
+}
+
+function renderChatMsgs(msgs){
+    const box=document.getElementById('chatMessages');
+    if(!msgs.length){ box.innerHTML='<div class="chat-empty">No messages yet. Say hello! 👋</div>'; return; }
+    const myCode=chatSender?.code;
+    let html='';
+    msgs.forEach((m,i)=>{
+        if(m.type==='system'){
+            html+=`<div class="chat-system">${m.text}</div>`;return;
+        }
+        const isMe=m.code===myCode;
+        const prev=msgs[i-1];
+        const showName=!prev||prev.code!==m.code||prev.type==='system';
+        const col=agentColor(m.code);
+        html+=`<div class="chat-msg ${isMe?'me':'them'}">
+            ${showName&&!isMe?`<div class="chat-msg-meta" style="color:${col}">${m.name} · ${m.code}</div>`:''}
+            ${showName&&isMe?`<div class="chat-msg-meta">${m.name} · ${timeStr(m.ts)}</div>`:''}
+            <div class="chat-bubble" style="${isMe?'':'border-left:2px solid '+col+'44'}">${escapeHtml(m.text)}</div>
+            ${!showName?'<div class="chat-msg-meta" style="font-size:7px">'+timeStr(m.ts)+'</div>':''}
+        </div>`;
+    });
+    box.innerHTML=html;
+    box.scrollTop=box.scrollHeight;
+}
+function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+async function chatPoll(){
+    const msgs=await chatLoad();
+    renderChatMsgs(msgs);
+    // Unread badge
+    if(!chatOpen && msgs.length>chatLastCount){
+        const diff=msgs.length-chatLastCount;
+        const badge=document.getElementById('chatBadge');
+        badge.textContent=diff>9?'9+':diff;
+        badge.classList.add('show');
+    }
+    chatLastCount=msgs.length;
+}
+
+function toggleChat(){
+    chatOpen=!chatOpen;
+    const panel=document.getElementById('chatPanel');
+    panel.classList.toggle('open',chatOpen);
+    if(chatOpen){
+        document.getElementById('chatBadge').classList.remove('show');
+        chatPoll();
+        setTimeout(()=>document.getElementById('chatInput').focus(),120);
+    }
+}
+
+async function sendChatMsg(){
+    const input=document.getElementById('chatInput');
+    const text=input.value.trim();
+    if(!text||!chatSender)return;
+    input.value='';
+    document.getElementById('chatSend').disabled=true;
+    const msgs=await chatLoad();
+    msgs.push({type:'msg',name:chatSender.name,code:chatSender.code,text,ts:Date.now()});
+    chatLastCount=msgs.length;
+    renderChatMsgs(msgs);
+    await chatSave(msgs);
+    document.getElementById('chatSend').disabled=false;
+    input.focus();
+}
+
+function initChat(entry){
+    chatSender={name:`${entry.firstName} ${entry.lastName}`,code:entry.code,color:agentColor(entry.code)};
+    document.getElementById('chatFab').style.display='flex';
+    document.getElementById('chatInput').addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChatMsg();} });
+    chatPoll();
+    chatPollTimer=setInterval(chatPoll,8000); // poll every 8 seconds
+}
+
+
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 </script>
 </body>
