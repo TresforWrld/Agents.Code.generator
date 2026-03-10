@@ -458,7 +458,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 .pe-cancel:hover{color:var(--text)}
 
 /* TOAST */
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(13,32,53,0.97);border:1px solid rgba(198,168,92,0.25);border-radius:50px;padding:10px 20px;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--text);z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s,transform .3s;white-space:nowrap;max-width:90vw;text-align:center}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(13,32,53,0.97);border:1px solid rgba(198,168,92,0.25);border-radius:16px;padding:11px 18px;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--text);z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s,transform .3s;white-space:normal;word-break:break-word;max-width:min(340px,88vw);text-align:center;line-height:1.45}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 @media(max-width:680px){
@@ -1193,7 +1193,7 @@ function renderChatMsgs(msgs){
     const col=agentColor(m.code);
     let bHtml='';
     if(m.msgType==='image'){bHtml=`<div class="chat-bubble img-bubble"><img src="${m.data}" alt="Image" onclick="openLightbox('${m.data}')" loading="lazy"></div>`;}
-    else if(m.msgType==='video'){bHtml=`<div class="chat-bubble img-bubble"><video src="${m.data}" controls style="max-width:220px;max-height:190px;border-radius:12px;display:block"></video></div>`;}
+    else if(m.msgType==='video'){bHtml=`<div class="chat-bubble img-bubble"><video src="${m.data}" controls playsinline preload="metadata" style="max-width:220px;max-height:200px;width:220px;border-radius:12px;display:block;border:1px solid rgba(255,255,255,0.09);background:#000"></video></div>`;}
     else if(m.msgType==='voice'){
       const bars=Array.from({length:20},(_,bi)=>{const bh=4+Math.abs(Math.sin(bi*0.7+(m.ts%100))*18);return`<div class="voice-bar" style="height:${bh}px;background:${isMe?'rgba(198,168,92,0.6)':'rgba(0,191,255,0.45)'}"></div>`;}).join('');
       bHtml=`<div class="chat-bubble voice-bubble"><button class="voice-play-btn" onclick="playVoice(this,'${m.data}')">&#9654;</button><div class="voice-waveform">${bars}</div><div class="voice-duration">${fmtSec(m.dur||0)}</div></div>`;
@@ -1358,7 +1358,8 @@ function initChat(entry){
   inp.oninput=()=>autoResize(inp);
   if(chatPollTimer)clearInterval(chatPollTimer);
   chatPoll();chatPollTimer=setInterval(chatPoll,8000);
-  setTimeout(renderStatusRow,400);
+  // Load statuses from DB then render
+  loadStatusesFromDB().then(()=>renderStatusRow());
 }
 
 /* ─────────────────────────────────────────
@@ -1444,48 +1445,82 @@ function closeAgentProfile(){document.getElementById('agentProfileModal').classL
 function openDmFromProfile(){if(!_profileTargetCode||!chatSender)return;const code=_profileTargetCode;closeAgentProfile();openDmPanel(code);}
 
 /* ─────────────────────────────────────────
-   PRIVATE DM — localStorage only
+   PRIVATE DM — DB-backed so both agents see messages
 ───────────────────────────────────────── */
-let dmPeerCode=null,dmPollTimer=null;
+let dmPeerCode=null,dmPollTimer=null,_dmMsgs=[];
 function dmKey(a,b){return[a,b].sort().join('::');}
-function loadDms(key){try{const all=JSON.parse(localStorage.getItem(DM_STORE)||'{}');return all[key]||[];}catch{return[];}}
-function saveDms(key,msgs){try{const all=JSON.parse(localStorage.getItem(DM_STORE)||'{}');all[key]=msgs.slice(-300);localStorage.setItem(DM_STORE,JSON.stringify(all));}catch{}}
+
+async function loadDmsFromDB(key){
+  try{
+    const r=await fetch(DB_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    const j=await r.json();
+    const all=j.record?.dms||{};
+    return all[key]||[];
+  }catch{
+    // fallback to localStorage cache
+    try{const all=JSON.parse(localStorage.getItem(DM_STORE)||'{}');return all[key]||[];}catch{return[];}
+  }
+}
+async function saveDmsToDB(key,msgs){
+  try{
+    const r=await fetch(DB_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    const j=await r.json();
+    const record=j.record||{codes:[],referrals:[],chat:[]};
+    if(!record.dms)record.dms={};
+    record.dms[key]=msgs.slice(-200);
+    // cache locally too
+    try{const all=JSON.parse(localStorage.getItem(DM_STORE)||'{}');all[key]=record.dms[key];localStorage.setItem(DM_STORE,JSON.stringify(all));}catch{}
+    await fetch(DB_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(record)});
+  }catch(e){
+    // fallback: save to localStorage only
+    try{const all=JSON.parse(localStorage.getItem(DM_STORE)||'{}');all[key]=msgs.slice(-200);localStorage.setItem(DM_STORE,JSON.stringify(all));}catch{}
+  }
+}
 
 function openDmPanel(peerCode){
   const peer=_codes.find(c=>c.code===peerCode);if(!peer)return;
-  dmPeerCode=peerCode;
+  dmPeerCode=peerCode;_dmMsgs=[];
   document.getElementById('dmPeerName').textContent=`${peer.firstName} ${peer.lastName}`;
   drawAvatar(document.getElementById('dmAvCanvas'),`${peer.firstName} ${peer.lastName}`,peerCode,38);
-  renderDmMsgs();
+  document.getElementById('dmMessages').innerHTML='<div class="dm-empty" style="opacity:.5;font-size:11px">Loading…</div>';
   document.getElementById('dmPanel').classList.add('open');document.body.style.overflow='hidden';
   const inp=document.getElementById('dmInput');
   inp.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();dmSend();}};
   inp.oninput=()=>autoResize(inp);
+  // Load from DB then poll
+  pollDms();
   if(dmPollTimer)clearInterval(dmPollTimer);
-  dmPollTimer=setInterval(renderDmMsgs,4000);
-  setTimeout(()=>{inp.focus();document.getElementById('dmMessages').scrollTop=9999;},120);
+  dmPollTimer=setInterval(pollDms,5000);
+  setTimeout(()=>inp.focus(),120);
 }
 function closeDmPanel(){document.getElementById('dmPanel').classList.remove('open');document.body.style.overflow='';if(dmPollTimer){clearInterval(dmPollTimer);dmPollTimer=null;}dmPeerCode=null;}
 
-function renderDmMsgs(){
+async function pollDms(){
   if(!dmPeerCode||!chatSender)return;
   const key=dmKey(chatSender.code,dmPeerCode);
-  const msgs=loadDms(key);
+  const msgs=await loadDmsFromDB(key);
+  if(msgs.length!==_dmMsgs.length||(msgs.length&&msgs[msgs.length-1]?.id!==_dmMsgs[_dmMsgs.length-1]?.id)){
+    _dmMsgs=msgs;renderDmMsgs();
+  }
+}
+
+function renderDmMsgs(){
   const box=document.getElementById('dmMessages');
-  if(!msgs.length){box.innerHTML='<div class="dm-empty">&#x1F4AC; Start the conversation</div>';return;}
+  if(!_dmMsgs.length){box.innerHTML='<div class="dm-empty">&#x1F4AC; Start the conversation</div>';return;}
   const wasBot=box.scrollHeight-box.scrollTop-box.clientHeight<80;
-  box.innerHTML=msgs.map(m=>{const isMe=m.from===chatSender.code;return`<div class="dm-msg ${isMe?'me':'them'}"><div class="dm-bubble">${escapeHtml(m.text)}</div><div class="dm-ts">${timeStr(m.ts)}</div></div>`;}).join('');
+  box.innerHTML=_dmMsgs.map(m=>{const isMe=m.from===chatSender?.code;return`<div class="dm-msg ${isMe?'me':'them'}"><div class="dm-bubble">${escapeHtml(m.text)}</div><div class="dm-ts">${timeStr(m.ts)}</div></div>`;}).join('');
   if(wasBot)box.scrollTop=box.scrollHeight;
 }
 
-function dmSend(){
+async function dmSend(){
   const inp=document.getElementById('dmInput');const text=inp.value.trim();
   if(!text||!dmPeerCode||!chatSender)return;
   inp.value='';inp.style.height='auto';
   const key=dmKey(chatSender.code,dmPeerCode);
-  const msgs=loadDms(key);
-  msgs.push({id:Date.now().toString(36),from:chatSender.code,text,ts:Date.now()});
-  saveDms(key,msgs);renderDmMsgs();inp.focus();
+  const msg={id:Date.now().toString(36)+Math.random().toString(36).slice(2),from:chatSender.code,text,ts:Date.now()};
+  // Optimistic render
+  _dmMsgs=[..._dmMsgs,msg];renderDmMsgs();inp.focus();
+  await saveDmsToDB(key,_dmMsgs);
 }
 
 /* ─────────────────────────────────────────
@@ -1515,21 +1550,48 @@ function saveProfilePhoto(){
 }
 
 /* ─────────────────────────────────────────
-   STATUS STORIES
+   STATUS STORIES — DB-backed so all agents see each other's statuses
 ───────────────────────────────────────── */
 let _svOwner=null,_svIdx=0,_svTimer=null;
 let _scMedia=null,_scMediaType=null;
+let _allStatuses={}; // local cache of all statuses from DB
 
-function loadStatuses(){try{return JSON.parse(localStorage.getItem(STATUS_STORE)||'{}');}catch{return{};}}
-function saveStatuses(d){localStorage.setItem(STATUS_STORE,JSON.stringify(d));}
+async function loadStatusesFromDB(){
+  try{
+    const r=await fetch(DB_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    const j=await r.json();
+    _allStatuses=j.record?.statuses||{};
+    // prune expired locally
+    Object.keys(_allStatuses).forEach(code=>{_allStatuses[code]=(_allStatuses[code]||[]).filter(s=>Date.now()-s.ts<86400000);});
+    return _allStatuses;
+  }catch{
+    // fallback: try localStorage
+    try{_allStatuses=JSON.parse(localStorage.getItem(STATUS_STORE)||'{}');}catch{_allStatuses={};}
+    return _allStatuses;
+  }
+}
+async function saveStatusesToDB(data){
+  try{
+    const r=await fetch(DB_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    const j=await r.json();
+    const record=j.record||{codes:[],referrals:[],chat:[]};
+    record.statuses=data;
+    localStorage.setItem(STATUS_STORE,JSON.stringify(data));
+    await fetch(DB_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(record)});
+  }catch(e){
+    localStorage.setItem(STATUS_STORE,JSON.stringify(data));
+  }
+}
+// Seen IDs stay in localStorage (per-device, intentional)
+function getSeenIds(){try{return JSON.parse(localStorage.getItem('anicade_status_seen')||'{}');}catch{return{};}}
+function markSeen(id){try{const s=getSeenIds();s[id]=true;localStorage.setItem('anicade_status_seen',JSON.stringify(s));}catch{}}
 
-function renderStatusRow(){
+async function renderStatusRow(){
   if(!chatSender)return;
-  const all=loadStatuses();
+  // Use cached statuses for instant render, then refresh from DB quietly
+  const all=_allStatuses;
+  const seen=getSeenIds();
   const row=document.getElementById('statusRow');
-  const seenKey='anicade_status_seen';
-  const seen=JSON.parse(localStorage.getItem(seenKey)||'{}');
-  // My status
   const mySts=(all[chatSender.code]||[]).filter(s=>Date.now()-s.ts<86400000);
   let html=`<div class="status-item" onclick="onMyStatusClick()">
     <div class="status-ring ${mySts.length?'my-status':'no-status'}">
@@ -1538,7 +1600,6 @@ function renderStatusRow(){
     </div>
     <span class="status-label">My Status</span>
   </div>`;
-  // Others
   _codes.forEach(c=>{
     if(c.code===chatSender.code)return;
     const sts=(all[c.code]||[]).filter(s=>Date.now()-s.ts<86400000);
@@ -1556,15 +1617,17 @@ function renderStatusRow(){
     const myAv=document.getElementById('srMyAv');if(myAv)drawAvatar(myAv,chatSender.name,chatSender.code,44);
     _codes.forEach(c=>{const cv=document.getElementById('srAv-'+c.code);if(cv)drawAvatar(cv,`${c.firstName} ${c.lastName}`,c.code,44);});
   },50);
+  // Refresh from DB in background
+  loadStatusesFromDB().then(()=>renderStatusRow());
 }
+
 function onMyStatusClick(){
-  const all=loadStatuses();const mySts=(all[chatSender?.code]||[]).filter(s=>Date.now()-s.ts<86400000);
+  const mySts=(_allStatuses[chatSender?.code]||[]).filter(s=>Date.now()-s.ts<86400000);
   if(mySts.length)viewStatus(chatSender.code);else openStatusComposer();
 }
 
 function viewStatus(ownerCode){
-  const all=loadStatuses();
-  const sts=(all[ownerCode]||[]).filter(s=>Date.now()-s.ts<86400000);
+  const sts=(_allStatuses[ownerCode]||[]).filter(s=>Date.now()-s.ts<86400000);
   if(!sts.length){if(ownerCode===chatSender?.code)openStatusComposer();return;}
   _svOwner=ownerCode;_svIdx=0;
   const owner=ownerCode===chatSender?.code?{firstName:chatSender.name.split(' ')[0],lastName:'',code:ownerCode}:_codes.find(c=>c.code===ownerCode);
@@ -1575,30 +1638,25 @@ function viewStatus(ownerCode){
 }
 function renderStatusViewer(sts){
   const s=sts[_svIdx];if(!s)return;
-  const seenKey='anicade_status_seen';const seen=JSON.parse(localStorage.getItem(seenKey)||'{}');
-  seen[s.id]=true;localStorage.setItem(seenKey,JSON.stringify(seen));
-  // Progress
+  markSeen(s.id);
   const bar=document.getElementById('statusProgressBar');
   bar.innerHTML=sts.map((_,i)=>`<div class="status-seg"><div class="status-seg-fill" id="ssf-${i}" style="width:${i<_svIdx?'100%':'0%'}"></div></div>`).join('');
   document.getElementById('svTime').textContent=timeStr2(s.ts);
-  // Content
   const contentEl=document.getElementById('statusContent');
-  // Remove old content (keep nav buttons)
   Array.from(contentEl.children).forEach(ch=>{if(!ch.classList.contains('sv-nav'))ch.remove();});
   const wrap=document.createElement('div');wrap.style.cssText='position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none';
   if(s.type==='image'){const img=document.createElement('img');img.src=s.data;img.style.cssText='max-width:100%;max-height:70vh;border-radius:8px;object-fit:contain';wrap.appendChild(img);}
-  else if(s.type==='video'){const vid=document.createElement('video');vid.src=s.data;vid.autoplay=true;vid.muted=true;vid.loop=true;vid.playsInline=true;vid.style.cssText='max-width:100%;max-height:70vh;border-radius:8px';wrap.appendChild(vid);}
+  else if(s.type==='video'){const vid=document.createElement('video');vid.src=s.data;vid.autoplay=true;vid.muted=false;vid.controls=true;vid.playsInline=true;vid.style.cssText='max-width:100%;max-height:70vh;border-radius:8px';wrap.appendChild(vid);}
   else{const t=document.createElement('div');t.className='status-text-card';t.textContent=s.caption||'';wrap.appendChild(t);}
-  if(s.caption&&s.type!=='text'){const cap=document.createElement('div');cap.style.cssText='position:absolute;bottom:12px;left:12px;right:12px;background:rgba(0,0,0,0.5);padding:8px 12px;border-radius:9px;color:#fff;font-family:Rajdhani,sans-serif;font-size:14px;text-align:center;pointer-events:none';cap.textContent=s.caption;wrap.appendChild(cap);}
+  if(s.caption&&s.type!=='text'){const cap=document.createElement('div');cap.style.cssText='position:absolute;bottom:12px;left:12px;right:12px;background:rgba(0,0,0,0.55);padding:8px 12px;border-radius:9px;color:#fff;font-family:Rajdhani,sans-serif;font-size:14px;text-align:center;pointer-events:none';cap.textContent=s.caption;wrap.appendChild(cap);}
   contentEl.insertBefore(wrap,contentEl.firstChild);
-  // Timer
   if(_svTimer)clearInterval(_svTimer);
-  let elapsed=0;const duration=s.type==='video'?12000:5000;const tick=80;
+  let elapsed=0;const duration=s.type==='video'?15000:5000;const tick=80;
   const fill=document.getElementById('ssf-'+_svIdx);
   _svTimer=setInterval(()=>{elapsed+=tick;if(fill)fill.style.width=(elapsed/duration*100)+'%';if(elapsed>=duration){clearInterval(_svTimer);statusNext();}},tick);
 }
-function statusNext(){const all=loadStatuses();const sts=(all[_svOwner]||[]).filter(s=>Date.now()-s.ts<86400000);if(_svIdx<sts.length-1){_svIdx++;renderStatusViewer(sts);}else closeStatusViewer();}
-function statusPrev(){if(_svIdx>0){_svIdx--;const all=loadStatuses();renderStatusViewer((all[_svOwner]||[]).filter(s=>Date.now()-s.ts<86400000));}}
+function statusNext(){const sts=(_allStatuses[_svOwner]||[]).filter(s=>Date.now()-s.ts<86400000);if(_svIdx<sts.length-1){_svIdx++;renderStatusViewer(sts);}else closeStatusViewer();}
+function statusPrev(){if(_svIdx>0){_svIdx--;renderStatusViewer((_allStatuses[_svOwner]||[]).filter(s=>Date.now()-s.ts<86400000));}}
 function closeStatusViewer(){if(_svTimer)clearInterval(_svTimer);document.getElementById('statusViewer').classList.remove('open');document.body.style.overflow='';renderStatusRow();}
 
 function openStatusComposer(){_scMedia=null;_scMediaType=null;document.getElementById('scPlaceholder').style.display='flex';Array.from(document.getElementById('scPreview').querySelectorAll('img,video')).forEach(e=>e.remove());document.getElementById('scCaption').value='';document.getElementById('statusComposer').classList.add('open');document.body.style.overflow='hidden';}
@@ -1618,19 +1676,24 @@ function scPreviewMedia(e){
   reader.readAsDataURL(file);
 }
 
-function postStatus(){
+async function postStatus(){
   if(!chatSender)return;
   const caption=document.getElementById('scCaption').value.trim();
-  if(!_scMedia&&!caption){showToast('Add a photo, video, or text caption.');return;}
+  if(!_scMedia&&!caption){showToast('Add a photo, video, or caption.');return;}
   document.getElementById('scPostBtn').disabled=true;
-  const all=loadStatuses();if(!all[chatSender.code])all[chatSender.code]=[];
+  showToast('Posting status…');
+  await loadStatusesFromDB();
+  const all=_allStatuses;
+  if(!all[chatSender.code])all[chatSender.code]=[];
   const entry={id:Date.now().toString(36)+Math.random().toString(36).slice(2),ts:Date.now(),caption};
   if(_scMedia){entry.data=_scMedia;entry.type=_scMediaType;}else{entry.type='text';}
   all[chatSender.code].push(entry);
   all[chatSender.code]=all[chatSender.code].filter(s=>Date.now()-s.ts<86400000).slice(-10);
-  saveStatuses(all);closeStatusComposer();showToast('Status posted!');renderStatusRow();
+  _allStatuses=all;
+  await saveStatusesToDB(all);
+  document.getElementById('scPostBtn').disabled=false;
+  closeStatusComposer();showToast('Status posted!');renderStatusRow();
 }
-
 /* ─────────────────────────────────────────
    SCROLL FADE IN
 ───────────────────────────────────────── */
