@@ -142,8 +142,21 @@
 </div>
 
 <script>
-const STORAGE_KEY  = 'anicade_agent_codes';
-const REFERRAL_KEY = 'anicade_agent_referrals';
+const BIN_ID  = '69af45d3d0ea881f4001fd93';
+const API_KEY = '$2a$10$VJXQzwtVgNhMTIJiiQvpy.hG7XaRD0.H42NyZhKzeLRungeekMmpO';
+const LOCAL_CACHE = 'anicade_agent_codes';
+const LOCAL_REFS  = 'anicade_agent_referrals';
+const DB_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
+async function dbLoad(){
+    const r=await fetch(DB_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const j=await r.json();return j.record||{codes:[],referrals:[]};
+}
+async function dbSave(data){
+    const r=await fetch(DB_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(data)});
+    return r.ok;
+}
 
 function hashCode(str){let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0}return Math.abs(h)}
 const PALETTES=[['#1a3a5c','#00BFFF'],['#2d1a5c','#a78bfa'],['#1a4a2e','#39ff14'],['#5c1a1a','#ff6b6b'],['#3d2b00','#C6A85C'],['#1a4a4a','#00e5cc'],['#2b1a4a','#f472b6'],['#0d2b3d','#38bdf8'],['#3d1a2b','#fb923c'],['#1a3d2b','#84cc16'],['#2b2b00','#eab308'],['#0d1a3d','#6366f1']];
@@ -160,13 +173,28 @@ function drawAvatar(canvas,name,code,size=42){
     ctx.fillText(ini,size/2,size/2);
 }
 
-window.addEventListener('DOMContentLoaded',()=>{
+let _dbData = null; // cached full DB record
+
+window.addEventListener('DOMContentLoaded', async ()=>{
     const params = new URLSearchParams(window.location.search);
     const refCode = params.get('ref');
     if(!refCode){ document.getElementById('invalidRef').style.display='block'; return; }
-    const codes = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+
+    // Try DB first, fall back to localStorage cache
+    let codes = [];
+    try {
+        _dbData = await dbLoad();
+        codes = _dbData.codes || [];
+        // Update local cache
+        localStorage.setItem(LOCAL_CACHE, JSON.stringify(codes));
+    } catch(e) {
+        codes = JSON.parse(localStorage.getItem(LOCAL_CACHE)||'[]');
+        _dbData = null;
+    }
+
     const agent = codes.find(c=>c.code===refCode.toUpperCase());
     if(!agent){ document.getElementById('invalidRef').style.display='block'; return; }
+
     document.getElementById('mainPage').style.display='block';
     document.getElementById('agentChipName').textContent=`${agent.firstName} ${agent.lastName}`;
     document.getElementById('agentChipCode').textContent=agent.code;
@@ -175,7 +203,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     window._agentEntry = agent;
 });
 
-function submitReferral(){
+async function submitReferral(){
     const fn=document.getElementById('cFirstName').value.trim();
     const ln=document.getElementById('cLastName').value.trim();
     const em=document.getElementById('cEmail').value.trim();
@@ -184,22 +212,37 @@ function submitReferral(){
     const err=document.getElementById('formErr');
     err.textContent='';
     if(!fn||!ln||!em||!ph||!sv){err.textContent='Please fill in all fields.';return;}
+
     const agent=window._agentEntry;
-    const referrals=JSON.parse(localStorage.getItem(REFERRAL_KEY)||'[]');
-    // Prevent duplicate email
-    if(referrals.find(r=>r.email===em&&r.agentCode===agent.code)){
-        document.getElementById('formCard').style.display='none';
-        document.getElementById('successScreen').style.display='block';
-        return;
-    }
     const entry={
         id:Date.now().toString(36),
         agentCode:agent.code,
         firstName:fn,lastName:ln,email:em,phone:ph,service:sv,
         date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})
     };
-    referrals.push(entry);
-    localStorage.setItem(REFERRAL_KEY,JSON.stringify(referrals));
+
+    const btn = document.querySelector('.submit-btn') || document.getElementById('submitBtn');
+    if(btn){btn.disabled=true;btn.textContent='Saving...';}
+
+    // Save to DB
+    try {
+        const fresh = _dbData || await dbLoad();
+        // Prevent duplicate email per agent
+        if(fresh.referrals.find(r=>r.email===em&&r.agentCode===agent.code)){
+            document.getElementById('formCard').style.display='none';
+            document.getElementById('successScreen').style.display='block';
+            return;
+        }
+        fresh.referrals.push(entry);
+        await dbSave(fresh);
+        localStorage.setItem(LOCAL_REFS, JSON.stringify(fresh.referrals));
+    } catch(e) {
+        // Offline fallback — save to localStorage so portal can sync later
+        const refs = JSON.parse(localStorage.getItem(LOCAL_REFS)||'[]');
+        if(!refs.find(r=>r.email===em&&r.agentCode===agent.code)) refs.push(entry);
+        localStorage.setItem(LOCAL_REFS, JSON.stringify(refs));
+    }
+
     document.getElementById('formCard').style.display='none';
     document.getElementById('successScreen').style.display='block';
 }
