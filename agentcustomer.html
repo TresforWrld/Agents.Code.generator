@@ -306,37 +306,82 @@ function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').
 window.addEventListener('DOMContentLoaded',async()=>{
     const params=new URLSearchParams(window.location.search);
     const refCode=params.get('ref');
-    const chatId=params.get('chat'); // returning customer with chat session
+    const chatId=params.get('chat');
 
-    // If returning to existing chat session
+    // ── FAST PATH: returning customer with stored chat session ──
     if(chatId){
+        // Show chat immediately from localStorage cache if available
+        const cachedChats=JSON.parse(localStorage.getItem('anicade_customer_chats')||'{}');
+        const cachedSession=cachedChats[chatId];
+        if(cachedSession){
+            _customerEntry={id:chatId,...cachedSession.customer};
+            openChatPage(cachedSession.customer);
+            renderBcMsgs(cachedSession.messages||[]);
+            bcLastCount=(cachedSession.messages||[]).length;
+        }
+        // Fetch fresh data in background
+        (async()=>{
+            try{
+                const data=await dbLoad();_dbData=data;
+                const session=data.customerChats?.[chatId];
+                if(session){
+                    // Update localStorage cache
+                    const allChats=JSON.parse(localStorage.getItem('anicade_customer_chats')||'{}');
+                    allChats[chatId]=session;localStorage.setItem('anicade_customer_chats',JSON.stringify(allChats));
+                    if(!_customerEntry){
+                        _customerEntry={id:chatId,...session.customer};
+                        openChatPage(session.customer);
+                    }
+                    renderBcMsgs(session.messages||[]);
+                    bcLastCount=session.messages?.length||0;
+                }
+            }catch(e){}
+        })();
+        if(cachedSession){ bcPollTimer=setInterval(bcPoll,7000); return; }
+        // No cache — must wait for DB
         try{
             const data=await dbLoad();_dbData=data;
             const session=data.customerChats?.[chatId];
             if(session){
                 _customerEntry={id:chatId,...session.customer};
                 openChatPage(session.customer);
-                renderBcMsgs(data.customerChats[chatId].messages||[]);
-                bcLastCount=(data.customerChats[chatId].messages||[]).length;
-                bcPollTimer=setInterval(bcPoll,7000);
-                return;
-            }
-        }catch(e){}
+                renderBcMsgs(session.messages||[]);
+                bcLastCount=session.messages?.length||0;
+                const allChats=JSON.parse(localStorage.getItem('anicade_customer_chats')||'{}');
+                allChats[chatId]=session;localStorage.setItem('anicade_customer_chats',JSON.stringify(allChats));
+            } else { document.getElementById('invalidRef').style.display='block'; }
+        }catch(e){ document.getElementById('invalidRef').style.display='block'; }
+        if(_customerEntry) bcPollTimer=setInterval(bcPoll,7000);
+        return;
     }
 
     if(!refCode){document.getElementById('invalidRef').style.display='block';return;}
 
-    let codes=[];
-    try{
-        _dbData=await dbLoad();
-        codes=_dbData.codes||[];
-        localStorage.setItem(LOCAL_CACHE,JSON.stringify(codes));
-    }catch(e){
-        codes=JSON.parse(localStorage.getItem(LOCAL_CACHE)||'[]');
-        _dbData=null;
+    // ── FAST PATH: show form immediately from localStorage cache ──
+    const cachedCodes=JSON.parse(localStorage.getItem(LOCAL_CACHE)||'[]');
+    let agent=cachedCodes.find(c=>c.code===refCode.toUpperCase());
+    if(agent){
+        // Show form right away
+        document.getElementById('formPage').style.display='block';
+        document.getElementById('agentChipName').textContent=`${agent.firstName} ${agent.lastName}`;
+        document.getElementById('agentChipCode').textContent=agent.code;
+        drawAvatar(document.getElementById('agentAvatarCanvas'),`${agent.firstName} ${agent.lastName}`,agent.code,42);
+        document.title=`ANICADE TECH | Referred by ${agent.firstName}`;
+        window._agentEntry=agent;
+        // Refresh codes in background
+        (async()=>{try{_dbData=await dbLoad();localStorage.setItem(LOCAL_CACHE,JSON.stringify(_dbData.codes||[]));window._agentEntry=(_dbData.codes||[]).find(c=>c.code===refCode.toUpperCase())||agent;}catch(e){}}
+        )();
+        return;
     }
 
-    const agent=codes.find(c=>c.code===refCode.toUpperCase());
+    // ── COLD START: no cache, must fetch ──
+    try{
+        _dbData=await dbLoad();
+        const codes=_dbData.codes||[];
+        localStorage.setItem(LOCAL_CACHE,JSON.stringify(codes));
+        agent=codes.find(c=>c.code===refCode.toUpperCase());
+    }catch(e){ /* no network, nothing cached either */ }
+
     if(!agent){document.getElementById('invalidRef').style.display='block';return;}
 
     document.getElementById('formPage').style.display='block';
@@ -541,6 +586,10 @@ async function bcPoll(){
         const chat=fresh.customerChats?.[_customerEntry.id];
         if(!chat) return;
         const msgs=chat.messages||[];
+        // Cache locally
+        const allChats=JSON.parse(localStorage.getItem('anicade_customer_chats')||'{}');
+        allChats[_customerEntry.id]={customer:_customerEntry,messages:msgs};
+        localStorage.setItem('anicade_customer_chats',JSON.stringify(allChats));
         if(msgs.length!==bcLastCount){
             renderBcMsgs(msgs);
             bcLastCount=msgs.length;
