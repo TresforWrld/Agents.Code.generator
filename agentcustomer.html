@@ -7,85 +7,171 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        :root{--primary:#0B1C2D;--accent:#00BFFF;--gold:#C6A85C;--text:#F5F7FA;--text-light:#94A3B8;--green:#39ff14;--red:#ff4d4d;--card-bg:rgba(15,30,48,0.92)}
-        html,body{background:var(--primary);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
-        .rings-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden}
-        .ring-el{position:absolute;top:50%;left:50%;border:1.5px solid transparent;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;will-change:transform}
-        .ring-el:nth-child(1){width:900px;height:900px;margin:-450px 0 0 -450px;border-color:rgba(0,191,255,0.09);animation:spin1 22s linear infinite}
-        .ring-el:nth-child(2){width:650px;height:650px;margin:-325px 0 0 -325px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(198,168,92,0.07);animation:spin2 15s linear infinite}
-        .ring-el:nth-child(3){width:430px;height:430px;margin:-215px 0 0 -215px;border-color:rgba(0,191,255,0.05);animation:spin1 32s linear infinite reverse}
-        @keyframes spin1{to{transform:rotate(360deg)}}
-        @keyframes spin2{to{transform:rotate(-360deg)}}
+        :root{
+            --bg:#0B1C2D;--accent:#00BFFF;--gold:#C6A85C;
+            --text:#F5F7FA;--muted:#94A3B8;
+            --green:#39ff14;--red:#ff4d4d;
+            --card:rgba(15,30,48,0.92);--border:rgba(255,255,255,0.07)
+        }
+        html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
 
-        .page{position:relative;z-index:2;max-width:520px;margin:0 auto;padding:60px 24px 80px;animation:fadeUp .5s ease both}
+        /* ── BG RINGS ── */
+        .bg-rings{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;display:flex;justify-content:center;align-items:center}
+        .bg-ring-wrap{position:absolute;width:min(680px,98vw);height:min(680px,98vw)}
+        .bg-ring-i{position:absolute;inset:0;border:2px solid transparent;transition:.5s}
+        .bg-ring-i:nth-child(1){border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border-color:rgba(0,191,255,0.16);animation:spin1 6s linear infinite}
+        .bg-ring-i:nth-child(2){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(198,168,92,0.12);animation:spin2 4s linear infinite}
+        .bg-ring-i:nth-child(3){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(0,191,255,0.07);animation:spin3 10s linear infinite}
+        @keyframes spin1{to{transform:rotate(360deg)}}
+        @keyframes spin2{to{transform:rotate(360deg)}}
+        @keyframes spin3{to{transform:rotate(-360deg)}}
+
+        /* ── REFERRAL FORM PAGE ── */
+        #formPage{position:relative;z-index:2;max-width:520px;margin:0 auto;padding:56px 24px 80px;animation:fadeUp .5s ease both}
         @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-        .header{text-align:center;margin-bottom:36px}
-        .logo-ring{position:relative;width:100px;height:100px;display:flex;align-items:center;justify-content:center;margin:0 auto 22px}
-        .logo-ring::before{content:'';position:absolute;inset:0;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border:2px solid rgba(198,168,92,0.5);animation:spin1 6s linear infinite}
-        .logo-ring::after{content:'';position:absolute;inset:8px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border:1.5px solid rgba(0,191,255,0.4);animation:spin2 4s linear infinite}
-        .logo-ring img{width:72px;height:72px;border-radius:50%;object-fit:cover;position:relative;z-index:2;border:2px solid rgba(198,168,92,0.35)}
-        .eyebrow{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;color:var(--accent);opacity:.7;margin-bottom:10px}
-        .h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--gold);text-shadow:0 0 28px rgba(198,168,92,0.3);margin-bottom:6px}
-        .sub{font-size:15px;color:var(--text-light);line-height:1.6}
-        .divider{width:50px;height:2px;background:linear-gradient(90deg,var(--gold),var(--accent));margin:14px auto 0;border-radius:2px}
+        .logo-ring-wrap{position:relative;width:110px;height:110px;display:flex;align-items:center;justify-content:center;margin:0 auto 22px;cursor:default}
+        .lr-i{position:absolute;inset:0;border:2px solid transparent;transition:.5s}
+        .lr-i:nth-child(1){border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border-color:rgba(198,168,92,0.55);animation:spin1 6s linear infinite}
+        .lr-i:nth-child(2){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(0,191,255,0.45);animation:spin2 4s linear infinite}
+        .lr-i:nth-child(3){border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(198,168,92,0.18);animation:spin3 10s linear infinite}
+        .logo-ring-wrap:hover .lr-i:nth-child(1){border:3px solid var(--gold);filter:drop-shadow(0 0 14px var(--gold))}
+        .logo-ring-wrap:hover .lr-i:nth-child(2){border:3px solid var(--accent);filter:drop-shadow(0 0 14px var(--accent))}
+        .logo-ring-wrap:hover .lr-i:nth-child(3){border:3px solid rgba(198,168,92,0.5);filter:drop-shadow(0 0 10px var(--gold))}
+        .lr-img{width:72px;height:72px;border-radius:50%;object-fit:cover;position:relative;z-index:2;border:2px solid rgba(198,168,92,0.35);box-shadow:0 0 22px rgba(198,168,92,0.2)}
 
-        /* AGENT CHIP */
+        .eyebrow{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;color:var(--accent);opacity:.7;margin-bottom:10px;text-align:center}
+        .page-h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--gold);text-shadow:0 0 28px rgba(198,168,92,0.3);margin-bottom:6px;text-align:center}
+        .page-sub{font-size:15px;color:var(--muted);line-height:1.6;text-align:center}
+        .divider{width:50px;height:2px;background:linear-gradient(90deg,var(--gold),var(--accent));margin:14px auto 28px;border-radius:2px}
+
         .agent-chip{display:flex;align-items:center;gap:12px;background:rgba(57,255,20,0.04);border:1px solid rgba(57,255,20,0.18);border-radius:14px;padding:14px 18px;margin-bottom:28px}
-        .agent-chip-avatar{width:42px;height:42px;border-radius:50%;flex-shrink:0;border:2px solid rgba(57,255,20,0.25)}
-        .agent-chip-info{flex:1}
+        .agent-chip-av{width:42px;height:42px;border-radius:50%;flex-shrink:0;border:2px solid rgba(57,255,20,0.25)}
         .agent-chip-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2.5px;color:var(--green);opacity:.6;margin-bottom:3px}
         .agent-chip-name{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--text)}
         .agent-chip-code{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--green);letter-spacing:2px}
 
-        /* FORM */
-        .form-card{background:var(--card-bg);border:1px solid rgba(198,168,92,0.15);border-radius:20px;padding:28px;margin-bottom:20px;position:relative;overflow:hidden}
+        .form-card{background:var(--card);border:1px solid rgba(198,168,92,0.15);border-radius:20px;padding:28px;margin-bottom:20px;position:relative;overflow:hidden}
         .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--accent),transparent)}
         .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
         .form-row.full{grid-template-columns:1fr}
-        .field label{display:block;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);margin-bottom:7px}
-        .field input,.field select,.field textarea{width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none;resize:none}
-        .field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(0,191,255,0.4);box-shadow:0 0 14px rgba(0,191,255,0.08)}
-        .field input::placeholder{color:rgba(148,163,184,0.35)}
+        .field label{display:block;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:7px}
+        .field input,.field select{width:100%;padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:border-color .25s,box-shadow .25s;-webkit-appearance:none}
+        .field input:focus,.field select:focus{border-color:rgba(0,191,255,0.4);box-shadow:0 0 14px rgba(0,191,255,0.08)}
+        .field input::placeholder{color:rgba(148,163,184,.35)}
         .field select option{background:#0d2035;color:var(--text)}
         #formErr{color:var(--red);font-size:13px;text-align:center;min-height:18px;margin-bottom:10px}
-        .submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,rgba(198,168,92,0.18),rgba(0,191,255,0.12));border:1px solid rgba(198,168,92,0.45);border-radius:12px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);cursor:pointer;transition:all .3s}
+        .submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,rgba(198,168,92,0.18),rgba(0,191,255,0.12));border:1px solid rgba(198,168,92,0.45);border-radius:12px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--gold);cursor:pointer;transition:all .3s}
         .submit-btn:hover:not(:disabled){background:linear-gradient(135deg,rgba(198,168,92,0.32),rgba(0,191,255,0.22));box-shadow:0 0 30px rgba(198,168,92,0.18);transform:translateY(-1px);color:#fff}
         .submit-btn:disabled{opacity:.4;cursor:not-allowed}
 
-        /* SUCCESS */
-        #successScreen{display:none;text-align:center;padding:20px 0;animation:fadeUp .5s ease both}
-        .success-icon{font-size:64px;margin-bottom:16px}
-        .success-title{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--green);text-shadow:0 0 24px rgba(57,255,20,0.35);letter-spacing:2px;margin-bottom:10px}
-        .success-msg{font-size:15px;color:var(--text-light);line-height:1.7;max-width:360px;margin:0 auto 24px}
-        .success-btn{display:inline-block;padding:13px 36px;background:linear-gradient(135deg,rgba(198,168,92,0.18),rgba(0,191,255,0.12));border:1px solid rgba(198,168,92,0.4);border-radius:50px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);cursor:pointer;text-decoration:none;transition:all .3s}
-        .success-btn:hover{background:linear-gradient(135deg,rgba(198,168,92,0.32),rgba(0,191,255,0.22));color:#fff}
+        /* ── INVALID ── */
+        #invalidRef{position:relative;z-index:2;text-align:center;padding:100px 24px}
+        .inv-icon{font-size:52px;margin-bottom:16px}
+        .inv-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--red);margin-bottom:10px}
+        .inv-msg{font-size:14px;color:var(--muted);max-width:300px;margin:0 auto}
 
-        .footer{text-align:center;margin-top:40px;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:rgba(148,163,184,.2)}
+        /* ════════════════════════════════════════
+           BUSINESS CHAT — full page
+        ════════════════════════════════════════ */
+        #chatPage{display:none;position:fixed;inset:0;z-index:100;background:#08131e;flex-direction:column}
+        #chatPage.show{display:flex}
 
-        #invalidRef{text-align:center;padding:80px 24px}
-        #invalidRef .inv-icon{font-size:48px;margin-bottom:16px}
-        #invalidRef .inv-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--red);margin-bottom:10px}
-        #invalidRef .inv-msg{font-size:14px;color:var(--text-light);max-width:300px;margin:0 auto}
+        /* Chat header */
+        .bc-header{background:linear-gradient(180deg,#0B1C2D,#0d2035);border-bottom:1px solid rgba(198,168,92,0.18);padding:0 16px;height:68px;display:flex;align-items:center;gap:14px;flex-shrink:0;position:relative}
+        .bc-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),var(--accent),transparent)}
+        .bc-avatar-wrap{position:relative;flex-shrink:0}
+        .bc-avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid rgba(198,168,92,0.45);box-shadow:0 0 16px rgba(198,168,92,0.2)}
+        .bc-online{position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;background:var(--green);border:2px solid #08131e;box-shadow:0 0 6px rgba(57,255,20,0.6);animation:pulse 2s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+        .bc-info{flex:1;min-width:0}
+        .bc-name{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--gold);letter-spacing:1px}
+        .bc-status{font-size:12px;color:var(--green);display:flex;align-items:center;gap:5px;margin-top:1px}
+        .bc-status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+        .bc-verified{display:inline-flex;align-items:center;gap:4px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1.5px;background:rgba(198,168,92,0.1);border:1px solid rgba(198,168,92,0.25);border-radius:4px;padding:2px 7px;color:var(--gold);margin-left:8px}
 
-        @media(max-width:480px){.form-row{grid-template-columns:1fr}.form-card{padding:20px 16px}}
+        /* Messages area */
+        .bc-messages{flex:1;overflow-y:auto;padding:20px 16px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+        .bc-messages::-webkit-scrollbar{width:4px}
+        .bc-messages::-webkit-scrollbar-track{background:transparent}
+        .bc-messages::-webkit-scrollbar-thumb{background:rgba(198,168,92,0.15);border-radius:2px}
+
+        /* Message bubbles */
+        .bc-msg{display:flex;flex-direction:column;gap:4px}
+        .bc-msg.official{align-items:flex-start;max-width:88%}
+        .bc-msg.customer{align-items:flex-end;align-self:flex-end;max-width:80%}
+        .bc-msg-sender{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1.5px;color:rgba(198,168,92,0.5);margin-bottom:2px}
+        .bc-bubble{padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.6;word-break:break-word}
+        .bc-msg.official .bc-bubble{background:rgba(198,168,92,0.08);border:1px solid rgba(198,168,92,0.2);border-bottom-left-radius:5px;color:var(--text)}
+        .bc-msg.customer .bc-bubble{background:linear-gradient(135deg,rgba(0,191,255,0.14),rgba(198,168,92,0.1));border:1px solid rgba(0,191,255,0.25);border-bottom-right-radius:5px;color:var(--text)}
+        .bc-ts{font-family:'Orbitron',sans-serif;font-size:7px;color:rgba(148,163,184,.28);letter-spacing:.5px;margin-top:2px}
+
+        /* ── WELCOME CARD (special first message) ── */
+        .welcome-card{background:rgba(11,28,45,0.95);border:1px solid rgba(198,168,92,0.28);border-radius:18px;border-bottom-left-radius:5px;overflow:hidden;max-width:320px}
+        .welcome-card-top{background:linear-gradient(135deg,rgba(198,168,92,0.14),rgba(0,191,255,0.08));padding:16px 18px 12px;border-bottom:1px solid rgba(198,168,92,0.14);position:relative}
+        .welcome-card-top::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+        .welcome-card-brand{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+        .welcome-card-logo{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(198,168,92,0.4)}
+        .welcome-card-bname{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--gold);letter-spacing:1px}
+        .welcome-card-tag{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:rgba(198,168,92,0.5)}
+        .welcome-card-text{font-size:14px;color:var(--text);line-height:1.65}
+        .welcome-card-text strong{color:var(--gold)}
+        .welcome-card-text .svc-tag{display:inline-block;background:rgba(0,191,255,0.1);border:1px solid rgba(0,191,255,0.3);border-radius:6px;padding:2px 9px;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1.5px;color:var(--accent);margin:4px 0}
+        .welcome-card-text .agent-tag{display:inline-block;background:rgba(57,255,20,0.06);border:1px solid rgba(57,255,20,0.2);border-radius:6px;padding:2px 9px;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1.5px;color:var(--green);margin:4px 0}
+        .welcome-card-body{padding:14px 18px 16px}
+        .welcome-card-note{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+        .view-services-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;background:linear-gradient(135deg,rgba(198,168,92,0.15),rgba(0,191,255,0.1));border:1px solid rgba(198,168,92,0.35);border-radius:10px;text-decoration:none;transition:all .25s;cursor:pointer}
+        .view-services-btn:hover{background:linear-gradient(135deg,rgba(198,168,92,0.28),rgba(0,191,255,0.2));border-color:rgba(198,168,92,0.6)}
+        .vsb-icon{font-size:18px;flex-shrink:0}
+        .vsb-text{flex:1}
+        .vsb-label{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--gold);display:block}
+        .vsb-sub{font-size:11px;color:var(--muted);display:block;margin-top:1px}
+        .vsb-arrow{font-size:16px;color:rgba(198,168,92,0.5);flex-shrink:0}
+
+        /* Typing indicator */
+        .typing-indicator{display:none;align-items:center;gap:5px;padding:4px 0}
+        .typing-indicator.show{display:flex}
+        .typing-dot{width:7px;height:7px;border-radius:50%;background:rgba(198,168,92,0.4);animation:typingBounce 1.2s infinite}
+        .typing-dot:nth-child(2){animation-delay:.2s}
+        .typing-dot:nth-child(3){animation-delay:.4s}
+        @keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+        /* ── CHAT INPUT ── */
+        .bc-input-row{border-top:1px solid rgba(255,255,255,0.07);padding:12px 14px;display:flex;gap:8px;align-items:flex-end;background:rgba(8,19,30,0.98);flex-shrink:0}
+        .bc-input-wrap{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:22px;padding:10px 16px;transition:border-color .2s}
+        .bc-input-wrap:focus-within{border-color:rgba(0,191,255,0.35)}
+        .bc-input{width:100%;background:transparent;border:none;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;resize:none;max-height:100px;line-height:1.4}
+        .bc-input::placeholder{color:rgba(148,163,184,.32)}
+        .bc-send{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--accent));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:transform .15s,opacity .2s;box-shadow:0 2px 12px rgba(0,191,255,0.3)}
+        .bc-send:hover{transform:scale(1.08)}
+        .bc-send:disabled{opacity:.35;cursor:not-allowed;transform:none}
+        .bc-powered{text-align:center;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:rgba(148,163,184,.18);padding:6px 0 2px;flex-shrink:0}
     </style>
 </head>
 <body>
-<div class="rings-bg"><div class="ring-el"></div><div class="ring-el"></div><div class="ring-el"></div></div>
 
-<div class="page" id="mainPage" style="display:none">
-    <div class="header">
-        <div class="logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+<div class="bg-rings">
+    <div class="bg-ring-wrap">
+        <i class="bg-ring-i"></i><i class="bg-ring-i"></i><i class="bg-ring-i"></i>
+    </div>
+</div>
+
+<!-- ── REFERRAL FORM PAGE ── -->
+<div id="formPage" style="display:none">
+    <div style="text-align:center;margin-bottom:36px">
+        <div class="logo-ring-wrap">
+            <i class="lr-i"></i><i class="lr-i"></i><i class="lr-i"></i>
+            <img src="https://i.imgur.com/RcBmjWM.png" class="lr-img" alt="ANICADE TECH">
+        </div>
         <div class="eyebrow">ANICADE TECH — REFERRAL</div>
-        <div class="h1">You've Been Referred!</div>
-        <div class="sub">An ANICADE TECH Agent has invited you.<br>Fill in your details below to get started.</div>
+        <div class="page-h1">You've Been Referred!</div>
+        <div class="page-sub">An ANICADE TECH Agent has invited you.<br>Fill in your details below to get started.</div>
         <div class="divider"></div>
     </div>
 
     <div class="agent-chip">
-        <canvas class="agent-chip-avatar" id="agentAvatarCanvas" width="42" height="42"></canvas>
-        <div class="agent-chip-info">
+        <canvas class="agent-chip-av" id="agentAvatarCanvas" width="42" height="42"></canvas>
+        <div>
             <div class="agent-chip-label">Referred By</div>
             <div class="agent-chip-name" id="agentChipName">—</div>
             <div class="agent-chip-code" id="agentChipCode">—</div>
@@ -122,23 +208,55 @@
             </div>
         </div>
         <div id="formErr"></div>
-        <button class="submit-btn" id="submitBtn" onclick="submitReferral()">✅ Submit My Details</button>
+        <button class="submit-btn" id="submitBtn" onclick="submitReferral()">✅ Submit & Open Chat</button>
     </div>
 
-    <div id="successScreen">
-        <div class="success-icon">🎉</div>
-        <div class="success-title">You're Registered!</div>
-        <div class="success-msg">Your details have been submitted successfully.<br>An ANICADE TECH representative will be in touch with you shortly.</div>
-        <a href="https://tresforwrld.github.io/ANICADEtech.net/" class="success-btn">Visit ANICADE TECH →</a>
+    <div style="text-align:center;margin-top:16px;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:rgba(148,163,184,.2)">
+        ANICADE TECH · AGENT REFERRAL SYSTEM
     </div>
-
-    <div class="footer">ANICADE TECH · POWERED BY AGENT REFERRAL SYSTEM</div>
 </div>
 
+<!-- ── INVALID ── -->
 <div id="invalidRef" style="display:none">
     <div class="inv-icon">⚠️</div>
     <div class="inv-title">Invalid Referral Link</div>
     <div class="inv-msg">This referral link is invalid or the agent code does not exist.</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     BUSINESS CHAT — full page
+════════════════════════════════════════ -->
+<div id="chatPage">
+
+    <!-- Header -->
+    <div class="bc-header">
+        <div class="bc-avatar-wrap">
+            <img src="https://i.imgur.com/RcBmjWM.png" class="bc-avatar" alt="ANICADE TECH">
+            <div class="bc-online"></div>
+        </div>
+        <div class="bc-info">
+            <div class="bc-name">
+                ANICADE TECH
+                <span class="bc-verified">✓ OFFICIAL</span>
+            </div>
+            <div class="bc-status">
+                <div class="bc-status-dot"></div>
+                Online · Typically replies within hours
+            </div>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="bc-messages" id="bcMessages"></div>
+
+    <!-- Input -->
+    <div class="bc-input-row">
+        <div class="bc-input-wrap">
+            <textarea class="bc-input" id="bcInput" placeholder="Type a message…" rows="1" maxlength="800" oninput="bcAutoResize(this)"></textarea>
+        </div>
+        <button class="bc-send" id="bcSendBtn" onclick="bcSend()">➤</button>
+    </div>
+    <div class="bc-powered">ANICADE TECH · SECURE BUSINESS CHAT</div>
 </div>
 
 <script>
@@ -147,62 +265,89 @@ const API_KEY = '$2a$10$VJXQzwtVgNhMTIJiiQvpy.hG7XaRD0.H42NyZhKzeLRungeekMmpO';
 const LOCAL_CACHE = 'anicade_agent_codes';
 const LOCAL_REFS  = 'anicade_agent_referrals';
 const DB_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const SERVICES_URL = 'https://tresforwrld.github.io/ANICADEtech.net-in/#';
 
+let _dbData = null;
+let _customerEntry = null; // saved after submit
+let bcPollTimer = null;
+let bcLastCount = 0;
+
+/* ── DB ── */
 async function dbLoad(){
     const r=await fetch(DB_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    const j=await r.json();return j.record||{codes:[],referrals:[]};
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json(); return j.record||{codes:[],referrals:[],customerChats:{}};
 }
 async function dbSave(data){
-    const r=await fetch(DB_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(data)});
-    return r.ok;
+    await fetch(DB_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(data)});
 }
 
+/* ── AVATAR ── */
 function hashCode(str){let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0}return Math.abs(h)}
-const PALETTES=[['#1a3a5c','#00BFFF'],['#2d1a5c','#a78bfa'],['#1a4a2e','#39ff14'],['#5c1a1a','#ff6b6b'],['#3d2b00','#C6A85C'],['#1a4a4a','#00e5cc'],['#2b1a4a','#f472b6'],['#0d2b3d','#38bdf8'],['#3d1a2b','#fb923c'],['#1a3d2b','#84cc16'],['#2b2b00','#eab308'],['#0d1a3d','#6366f1']];
+const PAL=[['#1a3a5c','#00BFFF'],['#2d1a5c','#a78bfa'],['#1a4a2e','#39ff14'],['#5c1a1a','#ff6b6b'],['#3d2b00','#C6A85C'],['#1a4a4a','#00e5cc'],['#2b1a4a','#f472b6'],['#0d2b3d','#38bdf8'],['#3d1a2b','#fb923c'],['#1a3d2b','#84cc16'],['#2b2b00','#eab308'],['#0d1a3d','#6366f1']];
 function drawAvatar(canvas,name,code,size=42){
     const ctx=canvas.getContext('2d');canvas.width=size;canvas.height=size;
-    const h=hashCode(code||name),pal=PALETTES[h%PALETTES.length],bg=pal[0],ac=pal[1];
+    const h=hashCode(code||name),pal=PAL[h%PAL.length];
     const grad=ctx.createRadialGradient(size*.4,size*.35,0,size*.5,size*.5,size*.7);
-    grad.addColorStop(0,bg);grad.addColorStop(1,'#0B1C2D');
+    grad.addColorStop(0,pal[0]);grad.addColorStop(1,'#0B1C2D');
     ctx.beginPath();ctx.arc(size/2,size/2,size/2,0,Math.PI*2);ctx.fillStyle=grad;ctx.fill();
-    const parts=name.trim().split(' ');
-    const ini=parts.length>=2?(parts[0][0]+parts[parts.length-1][0]).toUpperCase():(parts[0]||'A').substring(0,2).toUpperCase();
-    ctx.fillStyle=ac;ctx.font=`bold ${size*.32}px 'Orbitron',sans-serif`;
-    ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor=ac;ctx.shadowBlur=8;
+    const pts=name.trim().split(' ');
+    const ini=pts.length>=2?(pts[0][0]+pts[pts.length-1][0]).toUpperCase():(pts[0]||'A').substring(0,2).toUpperCase();
+    ctx.fillStyle=pal[1];ctx.font=`bold ${size*.32}px 'Orbitron',sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor=pal[1];ctx.shadowBlur=8;
     ctx.fillText(ini,size/2,size/2);
 }
 
-let _dbData = null; // cached full DB record
+/* ── TIME ── */
+function timeStr(ts){const d=new Date(ts),h=d.getHours(),m=d.getMinutes();return`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;}
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-window.addEventListener('DOMContentLoaded', async ()=>{
-    const params = new URLSearchParams(window.location.search);
-    const refCode = params.get('ref');
-    if(!refCode){ document.getElementById('invalidRef').style.display='block'; return; }
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',async()=>{
+    const params=new URLSearchParams(window.location.search);
+    const refCode=params.get('ref');
+    const chatId=params.get('chat'); // returning customer with chat session
 
-    // Try DB first, fall back to localStorage cache
-    let codes = [];
-    try {
-        _dbData = await dbLoad();
-        codes = _dbData.codes || [];
-        // Update local cache
-        localStorage.setItem(LOCAL_CACHE, JSON.stringify(codes));
-    } catch(e) {
-        codes = JSON.parse(localStorage.getItem(LOCAL_CACHE)||'[]');
-        _dbData = null;
+    // If returning to existing chat session
+    if(chatId){
+        try{
+            const data=await dbLoad();_dbData=data;
+            const session=data.customerChats?.[chatId];
+            if(session){
+                _customerEntry={id:chatId,...session.customer};
+                openChatPage(session.customer);
+                renderBcMsgs(data.customerChats[chatId].messages||[]);
+                bcLastCount=(data.customerChats[chatId].messages||[]).length;
+                bcPollTimer=setInterval(bcPoll,7000);
+                return;
+            }
+        }catch(e){}
     }
 
-    const agent = codes.find(c=>c.code===refCode.toUpperCase());
-    if(!agent){ document.getElementById('invalidRef').style.display='block'; return; }
+    if(!refCode){document.getElementById('invalidRef').style.display='block';return;}
 
-    document.getElementById('mainPage').style.display='block';
+    let codes=[];
+    try{
+        _dbData=await dbLoad();
+        codes=_dbData.codes||[];
+        localStorage.setItem(LOCAL_CACHE,JSON.stringify(codes));
+    }catch(e){
+        codes=JSON.parse(localStorage.getItem(LOCAL_CACHE)||'[]');
+        _dbData=null;
+    }
+
+    const agent=codes.find(c=>c.code===refCode.toUpperCase());
+    if(!agent){document.getElementById('invalidRef').style.display='block';return;}
+
+    document.getElementById('formPage').style.display='block';
     document.getElementById('agentChipName').textContent=`${agent.firstName} ${agent.lastName}`;
     document.getElementById('agentChipCode').textContent=agent.code;
     drawAvatar(document.getElementById('agentAvatarCanvas'),`${agent.firstName} ${agent.lastName}`,agent.code,42);
     document.title=`ANICADE TECH | Referred by ${agent.firstName}`;
-    window._agentEntry = agent;
+    window._agentEntry=agent;
 });
 
+/* ── SUBMIT REFERRAL ── */
 async function submitReferral(){
     const fn=document.getElementById('cFirstName').value.trim();
     const ln=document.getElementById('cLastName').value.trim();
@@ -214,38 +359,196 @@ async function submitReferral(){
     if(!fn||!ln||!em||!ph||!sv){err.textContent='Please fill in all fields.';return;}
 
     const agent=window._agentEntry;
-    const entry={
-        id:Date.now().toString(36),
-        agentCode:agent.code,
-        firstName:fn,lastName:ln,email:em,phone:ph,service:sv,
-        date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})
+    const btn=document.getElementById('submitBtn');
+    btn.disabled=true;btn.textContent='Setting up your chat…';
+
+    const chatId=Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);
+    const customerInfo={firstName:fn,lastName:ln,email:em,phone:ph,service:sv,agentCode:agent.code,agentName:`${agent.firstName} ${agent.lastName}`,date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})};
+
+    // Build welcome message
+    const welcomeMsg={
+        id:'welcome',type:'official',msgType:'welcome',
+        customer:customerInfo,
+        ts:Date.now()
     };
 
-    const btn = document.querySelector('.submit-btn') || document.getElementById('submitBtn');
-    if(btn){btn.disabled=true;btn.textContent='Saving...';}
+    const referralEntry={
+        id:chatId,agentCode:agent.code,
+        firstName:fn,lastName:ln,email:em,phone:ph,service:sv,
+        date:customerInfo.date
+    };
 
-    // Save to DB
-    try {
-        const fresh = _dbData || await dbLoad();
-        // Prevent duplicate email per agent
-        if(fresh.referrals.find(r=>r.email===em&&r.agentCode===agent.code)){
-            document.getElementById('formCard').style.display='none';
-            document.getElementById('successScreen').style.display='block';
-            return;
+    try{
+        const fresh=_dbData||await dbLoad();
+        // Save referral (deduplicate)
+        if(!fresh.referrals.find(r=>r.email===em&&r.agentCode===agent.code)){
+            fresh.referrals.push(referralEntry);
         }
-        fresh.referrals.push(entry);
+        // Create customer chat session
+        if(!fresh.customerChats) fresh.customerChats={};
+        if(!fresh.customerChats[chatId]){
+            fresh.customerChats[chatId]={
+                customer:customerInfo,
+                messages:[welcomeMsg],
+                createdAt:Date.now(),
+                unreadAdmin:1
+            };
+        }
         await dbSave(fresh);
-        localStorage.setItem(LOCAL_REFS, JSON.stringify(fresh.referrals));
-    } catch(e) {
-        // Offline fallback — save to localStorage so portal can sync later
-        const refs = JSON.parse(localStorage.getItem(LOCAL_REFS)||'[]');
-        if(!refs.find(r=>r.email===em&&r.agentCode===agent.code)) refs.push(entry);
-        localStorage.setItem(LOCAL_REFS, JSON.stringify(refs));
+        _dbData=fresh;
+        localStorage.setItem(LOCAL_REFS,JSON.stringify(fresh.referrals));
+    }catch(e){
+        // Offline fallback
+        const refs=JSON.parse(localStorage.getItem(LOCAL_REFS)||'[]');
+        if(!refs.find(r=>r.email===em&&r.agentCode===agent.code)) refs.push(referralEntry);
+        localStorage.setItem(LOCAL_REFS,JSON.stringify(refs));
+        if(!_dbData){_dbData={codes:[],referrals:refs,customerChats:{}};}
+        if(!_dbData.customerChats) _dbData.customerChats={};
+        _dbData.customerChats[chatId]={customer:customerInfo,messages:[welcomeMsg],createdAt:Date.now(),unreadAdmin:1};
     }
 
-    document.getElementById('formCard').style.display='none';
-    document.getElementById('successScreen').style.display='block';
+    _customerEntry={id:chatId,...customerInfo};
+
+    // Save chat session ID to localStorage so they can return
+    localStorage.setItem('anicade_chat_'+em,chatId);
+
+    // Update URL without reload so refresh returns to chat
+    const newUrl=`${window.location.pathname}?ref=${encodeURIComponent(agent.code)}&chat=${chatId}`;
+    history.replaceState(null,'',newUrl);
+
+    // Open chat
+    document.getElementById('formPage').style.display='none';
+    openChatPage(customerInfo);
+    const msgs=_dbData.customerChats[chatId].messages||[];
+    renderBcMsgs(msgs);
+    bcLastCount=msgs.length;
+    bcPollTimer=setInterval(bcPoll,7000);
 }
+
+/* ── OPEN CHAT PAGE ── */
+function openChatPage(customer){
+    document.title=`Chat · ANICADE TECH`;
+    const cp=document.getElementById('chatPage');
+    cp.classList.add('show');
+    document.getElementById('bcInput').addEventListener('keydown',e=>{
+        if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();bcSend();}
+    });
+    setTimeout(()=>scrollBcBottom(),100);
+}
+
+/* ── RENDER MESSAGES ── */
+function renderBcMsgs(msgs){
+    const box=document.getElementById('bcMessages');
+    if(!msgs||!msgs.length){box.innerHTML='';return;}
+    const wasAtBottom=box.scrollHeight-box.scrollTop-box.clientHeight<80;
+    let html='';
+    msgs.forEach(m=>{
+        if(m.msgType==='welcome'){
+            const c=m.customer;
+            html+=`<div class="bc-msg official">
+                <div class="bc-msg-sender">ANICADE™ TECH</div>
+                <div class="welcome-card">
+                    <div class="welcome-card-top">
+                        <div class="welcome-card-brand">
+                            <img src="https://i.imgur.com/RcBmjWM.png" class="welcome-card-logo" alt="ANICADE">
+                            <div>
+                                <div class="welcome-card-bname">ANICADE™ TECH</div>
+                                <div class="welcome-card-tag">OFFICIAL · ZAMBIA</div>
+                            </div>
+                        </div>
+                        <div class="welcome-card-text">
+                            👋 Hello <strong>${escHtml(c.firstName)}</strong>! Welcome to ANICADE TECH.<br><br>
+                            We've received your interest in:<br>
+                            <span class="svc-tag">${escHtml(c.service)}</span><br>
+                            Referred by agent: <span class="agent-tag">${escHtml(c.agentCode)}</span>
+                        </div>
+                    </div>
+                    <div class="welcome-card-body">
+                        <div class="welcome-card-note">
+                            Our team will review your details and get back to you shortly. Feel free to send us a message below while you wait! ✨
+                        </div>
+                        <a href="${SERVICES_URL}" target="_blank" class="view-services-btn">
+                            <span class="vsb-icon">🚀</span>
+                            <span class="vsb-text">
+                                <span class="vsb-label">View Our Services</span>
+                                <span class="vsb-sub">Explore what we offer</span>
+                            </span>
+                            <span class="vsb-arrow">›</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="bc-ts">${timeStr(m.ts)}</div>
+            </div>`;
+        } else if(m.type==='official'){
+            html+=`<div class="bc-msg official">
+                <div class="bc-msg-sender">ANICADE™ TECH</div>
+                <div class="bc-bubble">${escHtml(m.text)}</div>
+                <div class="bc-ts">${timeStr(m.ts)}</div>
+            </div>`;
+        } else if(m.type==='customer'){
+            html+=`<div class="bc-msg customer">
+                <div class="bc-bubble">${escHtml(m.text)}</div>
+                <div class="bc-ts">${timeStr(m.ts)}</div>
+            </div>`;
+        }
+    });
+    box.innerHTML=html;
+    if(wasAtBottom||bcLastCount===0) scrollBcBottom();
+}
+function scrollBcBottom(){
+    const box=document.getElementById('bcMessages');
+    box.scrollTop=box.scrollHeight;
+}
+
+/* ── SEND ── */
+async function bcSend(){
+    const input=document.getElementById('bcInput');
+    const text=input.value.trim();
+    if(!text||!_customerEntry)return;
+    input.value='';input.style.height='auto';
+    document.getElementById('bcSendBtn').disabled=true;
+
+    const msg={id:Date.now().toString(36),type:'customer',text,ts:Date.now()};
+    try{
+        const fresh=await dbLoad();
+        const chatId=_customerEntry.id;
+        if(!fresh.customerChats) fresh.customerChats={};
+        if(!fresh.customerChats[chatId]){
+            fresh.customerChats[chatId]={customer:_customerEntry,messages:[],unreadAdmin:0};
+        }
+        fresh.customerChats[chatId].messages.push(msg);
+        fresh.customerChats[chatId].unreadAdmin=(fresh.customerChats[chatId].unreadAdmin||0)+1;
+        await dbSave(fresh);
+        _dbData=fresh;
+        renderBcMsgs(fresh.customerChats[chatId].messages);
+        bcLastCount=fresh.customerChats[chatId].messages.length;
+    }catch(e){
+        // Optimistic local display
+        if(_dbData?.customerChats?.[_customerEntry.id]){
+            _dbData.customerChats[_customerEntry.id].messages.push(msg);
+            renderBcMsgs(_dbData.customerChats[_customerEntry.id].messages);
+        }
+    }
+    document.getElementById('bcSendBtn').disabled=false;
+    input.focus();
+}
+
+/* ── POLL ── */
+async function bcPoll(){
+    if(!_customerEntry?.id) return;
+    try{
+        const fresh=await dbLoad();
+        const chat=fresh.customerChats?.[_customerEntry.id];
+        if(!chat) return;
+        const msgs=chat.messages||[];
+        if(msgs.length!==bcLastCount){
+            renderBcMsgs(msgs);
+            bcLastCount=msgs.length;
+        }
+    }catch(e){}
+}
+
+function bcAutoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
 </script>
 </body>
 </html>
