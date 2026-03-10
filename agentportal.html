@@ -496,7 +496,24 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
   <div class="ov-err" id="codeErr"></div>
   <button class="ov-btn ov-btn-primary" id="codeSubmitBtn" onclick="submitCode()" style="display:none">ACCESS PORTAL</button>
   <a class="ov-link" id="genLink" href="https://tresforwrld.github.io/Agents.Code.generator/" style="display:none">Generate your agent code</a>
-  <button class="ov-btn ov-btn-ghost" id="adminOverrideBtn" onclick="openModal('adminViewAll','Admin Access','Enter the admin password to view all agent portals.')" style="display:none;margin-top:4px">Admin Login</button>
+  <div id="adminLoginDivider" style="display:none;width:100%;max-width:300px;align-items:center;gap:10px;margin:4px 0">
+    <div style="flex:1;height:1px;background:rgba(255,255,255,0.08)"></div>
+    <span style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:rgba(148,163,184,0.25)">OR</span>
+    <div style="flex:1;height:1px;background:rgba(255,255,255,0.08)"></div>
+  </div>
+  <button class="ov-btn ov-btn-ghost" id="adminOverrideBtn" onclick="showAdminLoginScreen()" style="display:none">&#9889; Admin Login</button>
+</div>
+
+<!-- ══ ADMIN LOGIN SCREEN ══ -->
+<div class="overlay" id="adminLoginScreen">
+  <div class="ov-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+  <div class="ov-title" style="color:var(--gold)">ADMIN ACCESS</div>
+  <div class="ov-sub">ANICADE TECH</div>
+  <div class="ov-msg">Enter the admin passcode to access all agent portals and management tools.</div>
+  <input class="ov-input" id="adminDirectPassInput" type="password" placeholder="Admin passcode" autocomplete="off">
+  <div class="ov-err" id="adminDirectErr"></div>
+  <button class="ov-btn ov-btn-primary" onclick="submitAdminDirectPass()">&#9889; ENTER ADMIN PORTAL</button>
+  <span class="ov-link" onclick="backToCodeFromAdmin()">Back to Agent Login</span>
 </div>
 
 <!-- ══ PASSWORD SCREEN ══ -->
@@ -933,8 +950,31 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 ───────────────────────────────────────── */
 function showLoginForm(){
   document.getElementById('dbSpinner').classList.remove('show');
-  ['codeInput','codeErr','codeSubmitBtn','genLink','adminOverrideBtn'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='';});
+  ['codeInput','codeErr','codeSubmitBtn','genLink'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='';});
+  const div=document.getElementById('adminLoginDivider');if(div)div.style.display='flex';
+  const btn=document.getElementById('adminOverrideBtn');if(btn)btn.style.display='';
   setTimeout(()=>document.getElementById('codeInput').focus(),80);
+}
+function showAdminLoginScreen(){
+  document.getElementById('loginScreen').classList.remove('show');
+  document.getElementById('adminDirectPassInput').value='';
+  document.getElementById('adminDirectErr').textContent='';
+  document.getElementById('adminLoginScreen').classList.add('show');
+  setTimeout(()=>document.getElementById('adminDirectPassInput').focus(),80);
+}
+function backToCodeFromAdmin(){
+  document.getElementById('adminLoginScreen').classList.remove('show');
+  document.getElementById('loginScreen').classList.add('show');
+}
+function submitAdminDirectPass(){
+  const val=document.getElementById('adminDirectPassInput').value;
+  const err=document.getElementById('adminDirectErr');err.textContent='';
+  if(!val){err.textContent='Enter admin passcode.';return;}
+  if(val!==ADMIN_PASS){err.textContent='Incorrect passcode.';document.getElementById('adminDirectPassInput').value='';document.getElementById('adminDirectPassInput').focus();return;}
+  document.getElementById('adminLoginScreen').classList.remove('show');
+  if(!_codes.length){showToast('No agents in database yet.');document.getElementById('loginScreen').classList.add('show');showLoginForm();return;}
+  localStorage.setItem('anicade_portal_agent','__ADMIN__');
+  renderPortal(_codes[0],true);showToast('Admin Mode Active');
 }
 window.addEventListener('DOMContentLoaded',async()=>{
   document.getElementById('dbSpinner').classList.add('show');
@@ -955,6 +995,8 @@ window.addEventListener('DOMContentLoaded',async()=>{
   }
   const stored=localStorage.getItem('anicade_portal_agent');
   const urlCode=new URLSearchParams(window.location.search).get('code');
+  // Auto-login admin
+  if(stored==='__ADMIN__'&&_codes.length){renderPortal(_codes[0],true);showToast('Admin Mode Active');return;}
   const code=urlCode||(stored&&stored!=='__ADMIN__'?stored:null);
   if(code){
     const entry=_codes.find(c=>c.code===code.toUpperCase());
@@ -963,6 +1005,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
   showLoginForm();
   document.getElementById('codeInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitCode();});
   document.getElementById('portalPassInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitPassword();});
+  document.getElementById('adminDirectPassInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitAdminDirectPass();});
 });
 function submitCode(){
   const val=document.getElementById('codeInput').value.trim().toUpperCase();
@@ -1003,7 +1046,7 @@ function showWrongCodeScreen(attempted,own){
   else{document.getElementById('wrongCodeHasOwn').style.display='none';document.getElementById('wrongCodeNoOwn').style.display='block';document.getElementById('wrongCodeBtn').textContent='Generate My Code';document.getElementById('wrongCodeBtn').dataset.action='generate';}
 }
 function wrongCodeAction(){const act=document.getElementById('wrongCodeBtn').dataset.action;if(act==='goOwn'&&window._ownEntry){pendingLoginEntry=window._ownEntry;if(!window._ownEntry.portalPassword){renderPortal(window._ownEntry,false);return;}document.getElementById('wrongCodeScreen').classList.remove('show');showPasswordStep(window._ownEntry);}else if(act==='generate'){window.location.href='https://tresforwrld.github.io/Agents.Code.generator/';}}
-function backToCode(){['passwordScreen','wrongCodeScreen'].forEach(id=>document.getElementById(id).classList.remove('show'));document.getElementById('codeInput').value='';document.getElementById('codeErr').textContent='';document.getElementById('loginScreen').classList.add('show');pendingLoginEntry=null;}
+function backToCode(){['passwordScreen','wrongCodeScreen','adminLoginScreen'].forEach(id=>document.getElementById(id).classList.remove('show'));document.getElementById('codeInput').value='';document.getElementById('codeErr').textContent='';document.getElementById('loginScreen').classList.add('show');pendingLoginEntry=null;}
 
 /* ─────────────────────────────────────────
    RENDER PORTAL
@@ -1045,7 +1088,7 @@ function renderPortal(entry,adminMode=false){
     document.getElementById('customerInboxSection').style.display='none';
     document.getElementById('adminActionBtns').style.display='none';
   }
-  ['loginScreen','passwordScreen','wrongCodeScreen'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  ['loginScreen','passwordScreen','wrongCodeScreen','adminLoginScreen'].forEach(id=>document.getElementById(id).classList.remove('show'));
   document.getElementById('portal').style.display='block';
   // Init chat — allow reinit when switching agents in admin mode
   initChat(entry);
@@ -1172,9 +1215,24 @@ async function chatSave(msgs){
   try{
     const r=await fetch(DB_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
     const j=await r.json();const record=j.record||{codes:[],referrals:[]};
-    record.chat=(msgs||[]).slice(-80);
+    // Keep last 60 msgs; strip binary data from all but the newest 5 media msgs to stay under DB size limit
+    let trimmed=(msgs||[]).slice(-60);
+    // Find indices of media messages (newest last)
+    const mediaIdxs=[];
+    for(let i=trimmed.length-1;i>=0;i--){if(trimmed[i].data&&trimmed[i].msgType!=='text'&&trimmed[i].type!=='dm')mediaIdxs.push(i);}
+    const keepData=new Set(mediaIdxs.slice(0,5)); // keep newest 5 with data
+    trimmed=trimmed.map((m,i)=>{
+      if(m.data&&!keepData.has(i)){
+        const copy=Object.assign({},m);
+        if(copy.msgType==='image')copy.data='[image]';
+        else if(copy.msgType==='voice')copy.data='';
+        return copy;
+      }
+      return m;
+    });
+    record.chat=trimmed;
     await fetch(DB_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(record)});
-    _chatMsgs=JSON.parse(JSON.stringify(record.chat));
+    _chatMsgs=JSON.parse(JSON.stringify((msgs||[]).slice(-60)));
   }catch(e){console.warn('chat save failed',e);}
 }
 
@@ -1186,6 +1244,7 @@ function renderChatMsgs(msgs){
   let html='',lastDay='';
   msgs.forEach((m,i)=>{
     if(m.type==='system'){html+=`<div class="chat-system">${escapeHtml(m.text||'')}</div>`;return;}
+    if(m.type==='dm')return; // DMs hidden from group chat
     const day=new Date(m.ts).toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'short'});
     if(day!==lastDay){html+=`<div class="chat-date-divider">${day}</div>`;lastDay=day;}
     const isMe=m.code===myCode;
@@ -1275,20 +1334,36 @@ function shareMsg(text){if(navigator.share)navigator.share({text,title:'ANICADE 
 /* MEDIA */
 async function handleMediaSelect(event){
   const file=event.target.files[0];if(!file)return;event.target.value='';
-  const isImage=file.type.startsWith('image/'),isVideo=file.type.startsWith('video/'),isAudio=file.type.startsWith('audio/');
-  const maxMB=isVideo?20:10;
-  if(file.size>maxMB*1024*1024){showToast('File too large. Max '+maxMB+'MB.');return;}
-  showToast('Sending media…');
+  if(!chatSender)return;
+  const isImage=file.type.startsWith('image/'),isAudio=file.type.startsWith('audio/'),isVideo=file.type.startsWith('video/');
+  if(isVideo){showToast('Video files are not supported in chat. Send images or voice notes.');return;}
+  if(file.size>15*1024*1024){showToast('File too large. Max 15MB.');return;}
+  showToast('Sending…');
   const reader=new FileReader();
   reader.onload=async e=>{
     let dataUrl=e.target.result,msgType='file';
     if(isImage){
-      await new Promise(res=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas');const s=Math.min(1,900/img.width);c.width=img.width*s;c.height=img.height*s;c.getContext('2d').drawImage(img,0,0,c.width,c.height);dataUrl=c.toDataURL('image/jpeg',0.78);res();};img.src=dataUrl;});
+      // Compress — try quality 0.7 first, then 0.45 if still big
+      dataUrl=await new Promise(res=>{
+        const img=new Image();
+        img.onload=()=>{
+          const c=document.createElement('canvas');
+          const s=Math.min(1,900/Math.max(img.width,img.height,1));
+          c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+          const ctx=c.getContext('2d');ctx.drawImage(img,0,0,c.width,c.height);
+          let out=c.toDataURL('image/jpeg',0.7);
+          if(out.length>200000)out=c.toDataURL('image/jpeg',0.45);
+          if(out.length>200000){c.width=Math.round(c.width*0.6);c.height=Math.round(c.height*0.6);ctx.drawImage(img,0,0,c.width,c.height);out=c.toDataURL('image/jpeg',0.45);}
+          res(out);
+        };
+        img.src=dataUrl;
+      });
       msgType='image';
-    }else if(isVideo){msgType='video';}else if(isAudio){msgType='voice';}
+    }else if(isAudio){msgType='voice';}
     const msgs=_chatMsgs.slice();
     msgs.push({type:'msg',msgType,name:chatSender.name,code:chatSender.code,data:dataUrl,fileName:file.name,ts:Date.now()});
-    _chatMsgs=msgs;chatLastCount=msgs.length;renderChatMsgs(msgs);await chatSave(msgs);showToast('Media sent!');
+    _chatMsgs=msgs;chatLastCount=msgs.length;renderChatMsgs(msgs);
+    await chatSave(msgs);showToast('Sent!');
   };
   reader.readAsDataURL(file);
 }
@@ -1444,71 +1519,54 @@ function openAgentProfile(code){
 function closeAgentProfile(){document.getElementById('agentProfileModal').classList.remove('open');_profileTargetCode=null;}
 function openDmFromProfile(){if(!_profileTargetCode||!chatSender)return;const code=_profileTargetCode;closeAgentProfile();openDmPanel(code);}
 
-/* ─────────────────────────────────────────
-   PRIVATE DM — DB-backed so both agents see messages
-───────────────────────────────────────── */
-let dmPeerCode=null,dmPollTimer=null,_dmMsgs=[];
-function dmKey(a,b){return[a,b].sort().join('::');}
 
-async function loadDmsFromDB(key){
-  try{
-    const r=await fetch(DB_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
-    const j=await r.json();
-    const all=j.record?.dms||{};
-    return all[key]||[];
-  }catch{
-    // fallback to localStorage cache
-    try{const all=JSON.parse(localStorage.getItem(DM_STORE)||'{}');return all[key]||[];}catch{return[];}
-  }
-}
-async function saveDmsToDB(key,msgs){
-  try{
-    const r=await fetch(DB_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
-    const j=await r.json();
-    const record=j.record||{codes:[],referrals:[],chat:[]};
-    if(!record.dms)record.dms={};
-    record.dms[key]=msgs.slice(-200);
-    // cache locally too
-    try{const all=JSON.parse(localStorage.getItem(DM_STORE)||'{}');all[key]=record.dms[key];localStorage.setItem(DM_STORE,JSON.stringify(all));}catch{}
-    await fetch(DB_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},body:JSON.stringify(record)});
-  }catch(e){
-    // fallback: save to localStorage only
-    try{const all=JSON.parse(localStorage.getItem(DM_STORE)||'{}');all[key]=msgs.slice(-200);localStorage.setItem(DM_STORE,JSON.stringify(all));}catch{}
-  }
+/* ─────────────────────────────────────────
+   PRIVATE DM — piggybacked on chat array
+   DM msgs: {type:'dm', from, to, name, text, ts}
+   Hidden in group chat, shown only in DM panel.
+───────────────────────────────────────── */
+let dmPeerCode=null,dmPollTimer=null;
+
+function getDmMsgs(peerCode){
+  if(!chatSender||!peerCode)return[];
+  return _chatMsgs.filter(m=>
+    m.type==='dm'&&
+    ((m.from===chatSender.code&&m.to===peerCode)||
+     (m.from===peerCode&&m.to===chatSender.code))
+  );
 }
 
 function openDmPanel(peerCode){
   const peer=_codes.find(c=>c.code===peerCode);if(!peer)return;
-  dmPeerCode=peerCode;_dmMsgs=[];
-  document.getElementById('dmPeerName').textContent=`${peer.firstName} ${peer.lastName}`;
-  drawAvatar(document.getElementById('dmAvCanvas'),`${peer.firstName} ${peer.lastName}`,peerCode,38);
-  document.getElementById('dmMessages').innerHTML='<div class="dm-empty" style="opacity:.5;font-size:11px">Loading…</div>';
+  dmPeerCode=peerCode;
+  document.getElementById('dmPeerName').textContent=peer.firstName+' '+peer.lastName;
+  drawAvatar(document.getElementById('dmAvCanvas'),peer.firstName+' '+peer.lastName,peerCode,38);
+  renderDmMsgs();
   document.getElementById('dmPanel').classList.add('open');document.body.style.overflow='hidden';
   const inp=document.getElementById('dmInput');
   inp.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();dmSend();}};
   inp.oninput=()=>autoResize(inp);
-  // Load from DB then poll
-  pollDms();
   if(dmPollTimer)clearInterval(dmPollTimer);
-  dmPollTimer=setInterval(pollDms,5000);
-  setTimeout(()=>inp.focus(),120);
+  dmPollTimer=setInterval(renderDmMsgs,4000);
+  setTimeout(()=>{inp.focus();document.getElementById('dmMessages').scrollTop=9999;},120);
 }
-function closeDmPanel(){document.getElementById('dmPanel').classList.remove('open');document.body.style.overflow='';if(dmPollTimer){clearInterval(dmPollTimer);dmPollTimer=null;}dmPeerCode=null;}
-
-async function pollDms(){
-  if(!dmPeerCode||!chatSender)return;
-  const key=dmKey(chatSender.code,dmPeerCode);
-  const msgs=await loadDmsFromDB(key);
-  if(msgs.length!==_dmMsgs.length||(msgs.length&&msgs[msgs.length-1]?.id!==_dmMsgs[_dmMsgs.length-1]?.id)){
-    _dmMsgs=msgs;renderDmMsgs();
-  }
+function closeDmPanel(){
+  document.getElementById('dmPanel').classList.remove('open');
+  document.body.style.overflow='';
+  if(dmPollTimer){clearInterval(dmPollTimer);dmPollTimer=null;}
+  dmPeerCode=null;
 }
 
 function renderDmMsgs(){
+  if(!dmPeerCode||!chatSender)return;
+  const msgs=getDmMsgs(dmPeerCode);
   const box=document.getElementById('dmMessages');
-  if(!_dmMsgs.length){box.innerHTML='<div class="dm-empty">&#x1F4AC; Start the conversation</div>';return;}
+  if(!msgs.length){box.innerHTML='<div class="dm-empty">&#x1F4AC; Start the conversation</div>';return;}
   const wasBot=box.scrollHeight-box.scrollTop-box.clientHeight<80;
-  box.innerHTML=_dmMsgs.map(m=>{const isMe=m.from===chatSender?.code;return`<div class="dm-msg ${isMe?'me':'them'}"><div class="dm-bubble">${escapeHtml(m.text)}</div><div class="dm-ts">${timeStr(m.ts)}</div></div>`;}).join('');
+  box.innerHTML=msgs.map(m=>{
+    const isMe=m.from===chatSender.code;
+    return '<div class="dm-msg '+(isMe?'me':'them')+'"><div class="dm-bubble">'+escapeHtml(m.text)+'</div><div class="dm-ts">'+timeStr(m.ts)+'</div></div>';
+  }).join('');
   if(wasBot)box.scrollTop=box.scrollHeight;
 }
 
@@ -1516,11 +1574,10 @@ async function dmSend(){
   const inp=document.getElementById('dmInput');const text=inp.value.trim();
   if(!text||!dmPeerCode||!chatSender)return;
   inp.value='';inp.style.height='auto';
-  const key=dmKey(chatSender.code,dmPeerCode);
-  const msg={id:Date.now().toString(36)+Math.random().toString(36).slice(2),from:chatSender.code,text,ts:Date.now()};
-  // Optimistic render
-  _dmMsgs=[..._dmMsgs,msg];renderDmMsgs();inp.focus();
-  await saveDmsToDB(key,_dmMsgs);
+  const msg={type:'dm',from:chatSender.code,to:dmPeerCode,name:chatSender.name,text,ts:Date.now()};
+  const msgs=_chatMsgs.slice();msgs.push(msg);
+  _chatMsgs=msgs;renderDmMsgs();inp.focus();
+  await chatSave(msgs);
 }
 
 /* ─────────────────────────────────────────
