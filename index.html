@@ -513,7 +513,12 @@ function copyMainCode(){
         setTimeout(()=>{b.textContent='📋 Copy My Code';b.style.background='';},2500);
     });
 }
-function enterPortal(){localStorage.setItem('anicade_portal_agent',document.getElementById('displayCode').textContent);window.location.href=PORTAL_URL;}
+function enterPortal(){
+  // Clear any stored session so the portal prompts for code + password fresh
+  localStorage.removeItem('anicade_portal_agent');
+  const code=document.getElementById('displayCode').textContent;
+  window.location.href=PORTAL_URL+'?code='+encodeURIComponent(code);
+}
 
 /* ── RENDER LIST ── */
 function renderList(){
