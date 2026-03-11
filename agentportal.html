@@ -108,6 +108,17 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 .section-hd{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text);display:flex;align-items:center;gap:14px;margin:32px 0 16px}
 .section-hd::before{content:'';display:block;width:4px;height:22px;background:linear-gradient(to bottom,var(--gold),var(--accent));border-radius:2px;flex-shrink:0}
 .section-hd::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(198,168,92,0.18),transparent)}
+/* Leaderboard */
+.lb-item{display:flex;align-items:center;gap:12px;padding:11px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:11px;margin-bottom:7px;transition:all .2s}
+.lb-item:hover{background:rgba(198,168,92,0.06);border-color:rgba(198,168,92,0.15)}
+.lb-item.lb-me{border-color:rgba(0,191,255,0.3);background:rgba(0,191,255,0.04)}
+.lb-rank{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;width:32px;text-align:center;flex-shrink:0}
+.lb-rank.gold{color:#FFD700}.lb-rank.silver{color:#C0C0C0}.lb-rank.bronze{color:#CD7F32}.lb-rank.other{color:var(--muted)}
+.lb-info{flex:1;min-width:0}
+.lb-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-sub{font-family:'Rajdhani',sans-serif;font-size:11px;color:var(--muted)}
+.lb-pts{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:var(--gold);text-align:right;flex-shrink:0}
+.lb-refs{font-family:'Rajdhani',sans-serif;font-size:10px;color:var(--muted);text-align:right}
 
 /* PROFILE CARD */
 .profile-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:start;margin-bottom:20px;animation:fadeUp .5s ease both}
@@ -659,8 +670,14 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
     <div id="allAgentsList"></div>
   </div>
 
-  <!-- Customer Inbox (admin) -->
-  <div id="customerInboxSection" style="display:none">
+  <!-- Global Leaderboard (visible to ALL agents) -->
+  <div id="leaderboardSection">
+    <div class="section-hd">🏆 Global Leaderboard</div>
+    <div id="leaderboardList"></div>
+  </div>
+
+  <!-- Customer Inbox (visible to ALL agents — filtered to own customers) -->
+  <div id="customerInboxSection">
     <div class="section-hd">Customer Inbox <span class="section-count" id="inboxCount" style="font-size:11px;margin-left:4px">0</span></div>
     <div class="inbox-list" id="inboxList"></div>
   </div>
@@ -910,12 +927,13 @@ async function dbSave(data){
 ───────────────────────────────────────── */
 function hsh(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
 const PAL=[['#1a3a5c','#00BFFF'],['#2d1a5c','#a78bfa'],['#1a4a2e','#39ff14'],['#5c1a1a','#ff6b6b'],['#3d2b00','#C6A85C'],['#1a4a4a','#00e5cc'],['#2b1a4a','#f472b6'],['#0d2b3d','#38bdf8'],['#3d1a2b','#fb923c'],['#1a3d2b','#84cc16'],['#2b2b00','#eab308'],['#0d1a3d','#6366f1']];
-function drawAvatar(canvas,name,code,size=84){
+function _pfpKey(code,dateStamp){return 'anicade_pfp_'+(dateStamp?code+'__'+dateStamp:code);}
+function drawAvatar(canvas,name,code,size=84,dateStamp){
   if(!canvas) return '#00BFFF';
   canvas.width=size; canvas.height=size;
   const ctx=canvas.getContext('2d');
   const p=PAL[hsh(code||name)%PAL.length];
-  const pfp=localStorage.getItem('anicade_pfp_'+(code||name));
+  const pfp=localStorage.getItem(_pfpKey(code||name,dateStamp))||localStorage.getItem('anicade_pfp_'+(code||name));
   if(pfp){
     const img=new Image();
     img.onload=()=>{ctx.beginPath();ctx.arc(size/2,size/2,size/2,0,Math.PI*2);ctx.clip();ctx.drawImage(img,0,0,size,size);};
@@ -935,7 +953,22 @@ function drawAvatar(canvas,name,code,size=84){
    HELPERS
 ───────────────────────────────────────── */
 function getTier(r){if(r>=30)return{name:'PLATINUM',cls:'tier-platinum',icon:'&#x1F48E;'};if(r>=15)return{name:'GOLD',cls:'tier-gold',icon:'&#x1F947;'};if(r>=5)return{name:'SILVER',cls:'tier-silver',icon:'&#x1F948;'};return{name:'BRONZE',cls:'tier-bronze',icon:'&#x1F949;'};}
-function daysActive(d){try{const p=d.split(' ');return Math.max(1,Math.round((Date.now()-new Date(`${p[0]} ${p[1]} ${p[2]}`).getTime())/86400000));}catch{return 1;}}
+function daysActive(d){
+  try{
+    // Handles "15 Mar 2025" or "15/03/2025" or timestamp
+    if(!d)return 1;
+    const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+    const p=String(d).trim().split(/[\s\/\-]+/);
+    let dt;
+    if(p.length>=3&&isNaN(p[0])){ // "15 Mar 2025"
+      dt=new Date(parseInt(p[2]),months[p[1]]||0,parseInt(p[0]));
+    } else if(p.length>=3){ // "2025/03/15" or "15/03/2025"
+      dt=p[0].length===4?new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])):new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));
+    } else dt=new Date(d);
+    if(isNaN(dt.getTime()))return 1;
+    return Math.max(1,Math.round((Date.now()-dt.getTime())/86400000));
+  }catch{return 1;}
+}
 function getRank(code){const ranked=_codes.map(c=>({code:c.code,n:_refs.filter(r=>r.agentCode===c.code).length})).sort((a,b)=>b.n-a.n);const pos=ranked.findIndex(r=>r.code===code);return pos>=0?pos+1:'—';}
 function agentColor(code){const cols=['#00BFFF','#C6A85C','#39ff14','#a78bfa','#f472b6','#fb923c','#38bdf8','#84cc16'];let h=0;for(let i=0;i<code.length;i++){h=((h<<5)-h)+code.charCodeAt(i);h|=0;}return cols[Math.abs(h)%cols.length];}
 function timeStr(ts){const d=new Date(ts);return`${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;}
@@ -1059,7 +1092,7 @@ function renderPortal(entry,adminMode=false){
   const points=refs.length*100+Math.floor(days*2);
   const rank=getRank(entry.code);
   const refLink=`${BASE_URL}?ref=${encodeURIComponent(entry.code)}`;
-  drawAvatar(document.getElementById('avatarCanvas'),`${entry.firstName} ${entry.lastName}`,entry.code,84);
+  drawAvatar(document.getElementById('avatarCanvas'),`${entry.firstName} ${entry.lastName}`,entry.code,84,entry.date);
   document.getElementById('pName').textContent=`${entry.firstName} ${entry.lastName}`;
   document.getElementById('pCode').textContent=entry.code;
   document.getElementById('pMeta').innerHTML=`<span class="meta-chip">&#128205; ${entry.region}</span><span class="meta-chip">&#128231; ${entry.email}</span><span class="meta-chip">&#128241; ${entry.phone}</span><span class="meta-chip">&#128197; ${entry.date}</span>`;
@@ -1078,16 +1111,17 @@ function renderPortal(entry,adminMode=false){
     document.getElementById('adminBannerSub').textContent=`Viewing: ${entry.firstName} ${entry.lastName} (${entry.code})`;
     document.getElementById('phSwitch').style.display='flex';
     document.getElementById('allAgentsSection').style.display='block';
-    document.getElementById('customerInboxSection').style.display='block';
     document.getElementById('adminActionBtns').style.display='block';
-    renderAllAgents();initInbox();
+    renderAllAgents();
   } else {
     document.getElementById('adminBanner').classList.remove('show');
     document.getElementById('phSwitch').style.display='none';
     document.getElementById('allAgentsSection').style.display='none';
-    document.getElementById('customerInboxSection').style.display='none';
     document.getElementById('adminActionBtns').style.display='none';
   }
+  // Leaderboard and customer inbox visible to everyone
+  renderLeaderboard();
+  initInbox();
   ['loginScreen','passwordScreen','wrongCodeScreen','adminLoginScreen'].forEach(id=>document.getElementById(id).classList.remove('show'));
   document.getElementById('portal').style.display='block';
   // Init chat — allow reinit when switching agents in admin mode
@@ -1146,6 +1180,43 @@ function renderAllAgents(){
   sorted.forEach(c=>{const cv=document.getElementById('alc-'+c.code);if(cv)drawAvatar(cv,`${c.firstName} ${c.lastName}`,c.code,40);});
 }
 function viewAgentPortal(code){const entry=_codes.find(c=>c.code===code);if(!entry)return;renderPortal(entry,true);window.scrollTo({top:0,behavior:'smooth'});showToast('Viewing '+entry.firstName+'\'s portal');}
+
+function renderLeaderboard(){
+  const el=document.getElementById('leaderboardList');
+  if(!el)return;
+  if(!_codes.length){el.innerHTML='<div class="empty-mini">No agents yet.</div>';return;}
+  const myCode=currentEntry?.code||null;
+  const ranked=_codes
+    .filter(c=>!c.banned)
+    .map(c=>{
+      const rc=_refs.filter(r=>r.agentCode===c.code).length;
+      const days=daysActive(c.date);
+      const pts=rc*100+Math.floor(days*2);
+      return{code:c.code,name:`${c.firstName} ${c.lastName}`,region:c.region||'',rc,days,pts,tier:getTier(rc)};
+    })
+    .sort((a,b)=>b.pts-a.pts||b.rc-a.rc)
+    .slice(0,20);
+  const rankLabels=['🥇','🥈','🥉'];
+  const rankCls=['gold','silver','bronze'];
+  el.innerHTML=ranked.map((a,i)=>{
+    const isMe=a.code===myCode;
+    const rl=i<3?rankLabels[i]:`#${i+1}`;
+    const rc=i<3?rankCls[i]:'other';
+    return`<div class="lb-item ${isMe?'lb-me':''}">
+      <div class="lb-rank ${rc}">${rl}</div>
+      <canvas id="lbav-${a.code}" width="36" height="36" style="border-radius:50%;flex-shrink:0"></canvas>
+      <div class="lb-info">
+        <div class="lb-name">${escapeHtml(a.name)}${isMe?' <span style="color:var(--accent);font-size:10px">(you)</span>':''} <span class="tier-badge ${a.tier.cls}" style="font-size:7px;padding:1px 5px">${a.tier.icon}</span></div>
+        <div class="lb-sub">${escapeHtml(a.region)} · ${a.days}d active</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="lb-pts">${a.pts.toLocaleString()} pts</div>
+        <div class="lb-refs">${a.rc} referral${a.rc!==1?'s':''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  ranked.forEach(a=>{const cv=document.getElementById('lbav-'+a.code);const ent=_codes.find(c=>c.code===a.code);if(cv)drawAvatar(cv,a.name,a.code,36,ent?.date);});
+}
 
 async function adminBan(code){
   if(!confirm(`Ban/unban agent ${code}? They will not be able to log in while banned.`)) return;
@@ -1423,7 +1494,7 @@ function playVoice(btn,dataUrl){
 }
 
 function initChat(entry){
-  chatSender={name:`${entry.firstName} ${entry.lastName}`,code:entry.code};
+  chatSender={name:`${entry.firstName} ${entry.lastName}`,code:entry.code,date:entry.date};
   window._ownEntry=entry;
   document.getElementById('chatFab').style.display='flex';
   drawAvatar(document.getElementById('chatHeaderAv'),`${entry.firstName} ${entry.lastName}`,entry.code,40);
@@ -1448,15 +1519,20 @@ async function initInbox(){_customerChats=await loadCustomerChats();renderInbox(
 
 function renderInbox(){
   const list=document.getElementById('inboxList');
-  const chats=Object.entries(_customerChats);
+  let chats=Object.entries(_customerChats);
+  // Non-admin agents only see chats from their own referrals
+  if(!isAdmin&&currentEntry){
+    chats=chats.filter(([,session])=>session.customer?.agentCode===currentEntry.code);
+  }
   document.getElementById('inboxCount').textContent=chats.length;
-  if(!chats.length){list.innerHTML='<div class="empty-mini">No customer chats yet.</div>';return;}
+  if(!chats.length){list.innerHTML=`<div class="empty-mini">${isAdmin?'No customer chats yet.':'No customer enquiries for your referral link yet.'}</div>`;return;}
   chats.sort((a,b)=>{const aL=a[1].messages?.slice(-1)[0]?.ts||a[1].createdAt||0;const bL=b[1].messages?.slice(-1)[0]?.ts||b[1].createdAt||0;return bL-aL;});
   list.innerHTML=chats.map(([cid,session])=>{
     const c=session.customer||{};const msgs=session.messages||[];const lastMsg=msgs[msgs.length-1];const unread=session.unreadAdmin||0;
     const preview=lastMsg?(lastMsg.msgType==='welcome'?'Enquiry submitted':lastMsg.type==='official'?'You: '+lastMsg.text:(c.firstName||'Customer')+': '+lastMsg.text):'No messages';
     const name=`${c.firstName||''} ${c.lastName||''}`.trim()||c.email||'Customer';
-    return`<div class="inbox-item ${unread>0?'has-unread':''}" onclick="openAdminChat('${cid}')"><canvas class="inbox-av" id="inbAv-${cid}" width="44" height="44"></canvas><div class="inbox-info"><div class="inbox-name">${escapeHtml(name)}</div><div class="inbox-preview">${escapeHtml(preview.substring(0,55))}</div><span class="inbox-svc">${escapeHtml(c.service||'—')}</span></div><div class="inbox-meta"><span class="inbox-time">${lastMsg?timeStr2(lastMsg.ts):''}</span>${unread>0?`<span class="inbox-badge">${unread>9?'9+':unread}</span>`:''}</div></div>`;
+    const agentTag=isAdmin?`<span style="font-size:10px;color:var(--gold);font-family:Orbitron,sans-serif"> · ${c.agentCode||''}</span>`:'';
+    return`<div class="inbox-item ${unread>0?'has-unread':''}" onclick="openAdminChat('${cid}')"><canvas class="inbox-av" id="inbAv-${cid}" width="44" height="44"></canvas><div class="inbox-info"><div class="inbox-name">${escapeHtml(name)}${agentTag}</div><div class="inbox-preview">${escapeHtml(preview.substring(0,55))}</div><span class="inbox-svc">${escapeHtml(c.service||'—')}</span></div><div class="inbox-meta"><span class="inbox-time">${lastMsg?timeStr2(lastMsg.ts):''}</span>${unread>0?`<span class="inbox-badge">${unread>9?'9+':unread}</span>`:''}</div></div>`;
   }).join('');
   chats.forEach(([cid,session])=>{const c=session.customer||{};const name=`${c.firstName||''} ${c.lastName||''}`.trim()||c.email||'C';const cv=document.getElementById('inbAv-'+cid);if(cv)drawAvatar(cv,name,cid,44);});
 }
@@ -1601,8 +1677,9 @@ function peSelectPhoto(event){
 }
 function saveProfilePhoto(){
   if(!_pendingPhoto)return;const entry=window._ownEntry||currentEntry;if(!entry)return;
-  localStorage.setItem('anicade_pfp_'+entry.code,_pendingPhoto);
-  drawAvatar(document.getElementById('avatarCanvas'),`${entry.firstName} ${entry.lastName}`,entry.code,84);
+  const key=_pfpKey(entry.code,entry.date);
+  localStorage.setItem(key,_pendingPhoto);
+  drawAvatar(document.getElementById('avatarCanvas'),`${entry.firstName} ${entry.lastName}`,entry.code,84,entry.date);
   closeProfileEdit();showToast('Profile photo updated!');
 }
 
