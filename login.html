@@ -269,6 +269,10 @@
         const DEFAULT_REDIRECT_URL = 'https://tresforwrld.github.io/ANICADEtech.net-in/#';
 
         function getRedirectURL() {
+            // Check URL param first (used by code generator and other external pages)
+            const urlParam = new URLSearchParams(window.location.search).get('redirect');
+            if (urlParam) return decodeURIComponent(urlParam);
+            // Then check localStorage
             const pending = localStorage.getItem('anicade_login_redirect');
             if (pending) { localStorage.removeItem('anicade_login_redirect'); return pending; }
             return DEFAULT_REDIRECT_URL;
