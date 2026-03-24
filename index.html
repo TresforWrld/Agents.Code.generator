@@ -65,7 +65,7 @@
         #adminModal{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);display:none;justify-content:center;align-items:center;padding:24px}
         #adminModal.show{display:flex}
         .modal-box{background:#0d2035;border:1px solid rgba(198,168,92,0.35);border-radius:22px;padding:38px 34px;max-width:360px;width:100%;text-align:center;animation:fadeUp .25s ease both}
-        .modal-icon{display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:14px}
+        .modal-icon{font-size:38px;margin-bottom:14px}
         .modal-title{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:8px}
         .modal-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.6}
         .modal-input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;outline:none;text-align:center;letter-spacing:3px;margin-bottom:8px;-webkit-appearance:none;transition:border-color .2s}
@@ -184,7 +184,7 @@
 <!-- ADMIN MODAL -->
 <div id="adminModal">
     <div class="modal-box">
-        <div class="modal-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div>
+        <div class="modal-icon">🔑</div>
         <div class="modal-title" id="modalTitle">Admin Access</div>
         <div class="modal-sub" id="modalSub">Enter the admin password to continue.</div>
         <input type="password" class="modal-input" id="adminPassInput" placeholder="••••••••••" autocomplete="off">
@@ -204,7 +204,7 @@
     </div>
     <div class="ov-title" style="color:var(--gold)">Access Restricted</div>
     <p class="ov-msg">You need to be logged in to access the Agent Code Generator.</p>
-    <a href="https://tresforwrld.github.io/ANICADEtech.net-in/login.html" class="ov-btn ov-btn-cyan" onclick="setRedirect()">Go to Login →</a>
+    <a href="https://tresforwrld.github.io/Agents.Code.generator/login.html" class="ov-btn ov-btn-cyan" onclick="setRedirect()">Go to Login →</a>
 </div>
 
 <!-- OVERLAY: Already has a code -->
@@ -220,11 +220,11 @@
         <div class="existing-code-val" id="existCode">—</div>
         <div class="existing-details" id="existDetails"></div>
         <div class="existing-btns">
-            <button class="copy-btn-sm" id="existCopyBtn" onclick="copyExisting()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy My Code</button>
-            <button class="portal-btn-sm" id="existPortalBtn" onclick="goPortalExisting()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Enter Agent Portal</button>
+            <button class="copy-btn-sm" id="existCopyBtn" onclick="copyExisting()">📋 Copy My Code</button>
+            <button class="portal-btn-sm" id="existPortalBtn" onclick="goPortalExisting()">🚀 Enter Agent Portal →</button>
         </div>
     </div>
-    <button class="ov-btn ov-btn-ghost" onclick="openModal('override','Admin Override','Enter admin password to bypass.')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> Admin Override</button>
+    <button class="ov-btn ov-btn-ghost" onclick="openModal('override','Admin Override','Enter admin password to bypass.')">🔑 Admin Override</button>
 </div>
 
 <!-- MAIN -->
@@ -260,22 +260,22 @@
                 <select id="aCountry" onchange="onCountryChange()">
                     <option value="" disabled selected>Select country...</option>
                     <optgroup label="─── African Countries ───">
-                        <option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option>
-                        <option value="ZA">South Africa</option><option value="NG">Nigeria</option>
-                        <option value="KE">Kenya</option><option value="GH">Ghana</option>
-                        <option value="TZ">Tanzania</option><option value="UG">Uganda</option>
-                        <option value="ET">Ethiopia</option><option value="EG">Egypt</option>
-                        <option value="RW">Rwanda</option><option value="MZ">Mozambique</option>
-                        <option value="MW">Malawi</option><option value="BW">Botswana</option>
-                        <option value="NA">Namibia</option><option value="AO">Angola</option>
-                        <option value="CD">DR Congo</option><option value="CI">Côte d'Ivoire</option>
-                        <option value="CM">Cameroon</option><option value="SN">Senegal</option>
-                        <option value="MA">Morocco</option><option value="TN">Tunisia</option>
-                        <option value="LS">Lesotho</option><option value="SZ">Eswatini</option>
-                        <option value="MU">Mauritius</option>
+                        <option value="ZM">🇿🇲 Zambia</option><option value="ZW">🇿🇼 Zimbabwe</option>
+                        <option value="ZA">🇿🇦 South Africa</option><option value="NG">🇳🇬 Nigeria</option>
+                        <option value="KE">🇰🇪 Kenya</option><option value="GH">🇬🇭 Ghana</option>
+                        <option value="TZ">🇹🇿 Tanzania</option><option value="UG">🇺🇬 Uganda</option>
+                        <option value="ET">🇪🇹 Ethiopia</option><option value="EG">🇪🇬 Egypt</option>
+                        <option value="RW">🇷🇼 Rwanda</option><option value="MZ">🇲🇿 Mozambique</option>
+                        <option value="MW">🇲🇼 Malawi</option><option value="BW">🇧🇼 Botswana</option>
+                        <option value="NA">🇳🇦 Namibia</option><option value="AO">🇦🇴 Angola</option>
+                        <option value="CD">🇨🇩 DR Congo</option><option value="CI">🇨🇮 Côte d'Ivoire</option>
+                        <option value="CM">🇨🇲 Cameroon</option><option value="SN">🇸🇳 Senegal</option>
+                        <option value="MA">🇲🇦 Morocco</option><option value="TN">🇹🇳 Tunisia</option>
+                        <option value="LS">🇱🇸 Lesotho</option><option value="SZ">🇸🇿 Eswatini</option>
+                        <option value="MU">🇲🇺 Mauritius</option>
                     </optgroup>
                     <optgroup label="─── Outside Africa ───">
-                        <option value="ABROAD">Abroad (Outside Africa)</option>
+                        <option value="ABROAD">🌍 Abroad (Outside Africa)</option>
                     </optgroup>
                 </select>
             </div>
@@ -318,7 +318,7 @@
         </div>
 
         <div class="form-err" id="formErr"></div>
-        <button class="gen-btn" id="genBtn" onclick="generateCode()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Generate My Agent Code</button>
+        <button class="gen-btn" id="genBtn" onclick="generateCode()">⚡ Generate My Agent Code</button>
     </div>
 
     <div id="codeResult">
@@ -326,28 +326,28 @@
         <div class="code-val" id="displayCode">ANC-0001</div>
         <div class="code-details" id="displayDetails"></div>
         <div class="step-instructions">
-            <div class="step-instructions-title"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> NEXT STEPS</div>
+            <div class="step-instructions-title">📋 NEXT STEPS</div>
             <div class="step-item" id="step1"><div class="step-num">1</div><div><strong>Copy your code</strong> — save it somewhere safe. This is your permanent agent identifier.</div></div>
             <div class="step-item" id="step2"><div class="step-num">2</div><div><strong>Enter your Agent Portal</strong> — view referrals, share your link, track your progress.</div></div>
             <div class="step-item" id="step3"><div class="step-num">3</div><div><strong>Share your referral link</strong> — send it to customers and grow your count.</div></div>
         </div>
-        <button class="copy-code-btn" id="copyMainBtn" onclick="copyMainCode()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy My Code</button>
-        <button class="enter-portal-btn" id="portalBtn" onclick="enterPortal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Enter Agent Portal</button>
+        <button class="copy-code-btn" id="copyMainBtn" onclick="copyMainCode()">📋 Copy My Code</button>
+        <button class="enter-portal-btn" id="portalBtn" onclick="enterPortal()">🚀 Enter Agent Portal →</button>
     </div>
 
     <div class="list-hdr">
         <div class="list-hdr-title" id="listTitle">MY CODE (0)</div>
         <div class="list-actions">
-            <button class="adm-btn adm-view" id="viewAllBtn" onclick="handleViewAll()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> View All</button>
+            <button class="adm-btn adm-view" id="viewAllBtn" onclick="handleViewAll()">🔑 View All</button>
             <button class="adm-btn adm-clear" onclick="handleClearAll()">Clear All</button>
         </div>
     </div>
-    <div class="adm-banner" id="admBanner"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> ADMIN MODE — VIEWING ALL CODES</div>
+    <div class="adm-banner" id="admBanner">⚡ ADMIN MODE — VIEWING ALL CODES</div>
     <div id="codesList"></div>
 
     <div class="page-footer">
         © 2026 ANICADE TECH &nbsp;·&nbsp;
-        <a href="https://tresforwrld.github.io/ANICADEtech.net-in/terms.html">Terms of Use</a>
+        <a href="https://tresforwrld.github.io/ANICADEtech.net/terms.html">Terms of Use</a>
         &nbsp;·&nbsp; AGENT PORTAL &nbsp;·&nbsp; INTERNAL USE ONLY
     </div>
 </div>
@@ -458,7 +458,7 @@ function copyExisting(){
     navigator.clipboard.writeText(document.getElementById('existCode').textContent).then(()=>{
         const b=document.getElementById('existCopyBtn');b.textContent='✅ Copied!';
         document.getElementById('existPortalBtn').classList.add('show');
-        setTimeout(()=>b.textContent='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy My Code',2500);
+        setTimeout(()=>b.textContent='📋 Copy My Code',2500);
     });
 }
 function goPortalExisting(){localStorage.setItem('anicade_portal_agent',document.getElementById('existCode').textContent);window.location.href=PORTAL_URL;}
@@ -494,7 +494,7 @@ async function generateCode(){
             if(!ok)throw new Error('save failed');
             localStorage.setItem(LOCAL_CACHE,JSON.stringify(allCodes));
         }catch(e){
-            allCodes.shift();btn.disabled=false;btn.textContent='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Generate My Agent Code';
+            allCodes.shift();btn.disabled=false;btn.textContent='⚡ Generate My Agent Code';
             err.textContent='⚠️ Failed to save. Check your connection and try again.';return;
         }
     }else{localStorage.setItem(LOCAL_CACHE,JSON.stringify(allCodes));}
@@ -510,7 +510,7 @@ function copyMainCode(){
         const b=document.getElementById('copyMainBtn');b.textContent='✅ Code Copied!';b.style.background='rgba(57,255,20,0.18)';
         document.getElementById('step1').classList.add('done');
         const pb=document.getElementById('portalBtn');pb.classList.add('show');pb.scrollIntoView({behavior:'smooth',block:'nearest'});
-        setTimeout(()=>{b.textContent='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy My Code';b.style.background='';},2500);
+        setTimeout(()=>{b.textContent='📋 Copy My Code';b.style.background='';},2500);
     });
 }
 function enterPortal(){
@@ -525,7 +525,7 @@ function renderList(){
     const el=document.getElementById('codesList'),tl=document.getElementById('listTitle');
     const show=adminUnlocked?allCodes:allCodes.filter(c=>c.generatedBy===currentUser||c.fingerprint===currentFP);
     tl.textContent=adminUnlocked?`ALL CODES (${allCodes.length})`:`MY CODE (${show.length})`;
-    if(!show.length){el.innerHTML=`<div class="empty-state"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>${adminUnlocked?'NO CODES IN DATABASE YET':'YOUR CODE WILL APPEAR HERE AFTER GENERATING'}</div>`;return;}
+    if(!show.length){el.innerHTML=`<div class="empty-state"><span>📋</span>${adminUnlocked?'NO CODES IN DATABASE YET':'YOUR CODE WILL APPEAR HERE AFTER GENERATING'}</div>`;return;}
     el.innerHTML=show.map(c=>{
         const mine=c.generatedBy===currentUser||c.fingerprint===currentFP;
         return`<div class="code-entry${mine?' mine':''}">
@@ -571,12 +571,12 @@ function submitAdmin(){
         if(dbReady){dbLoad().then(d=>{if(d){d.codes=[];dbSave(d);}});}
         localStorage.removeItem(LOCAL_CACHE);allCodes=[];adminUnlocked=false;
         document.getElementById('admBanner').classList.remove('show');
-        document.getElementById('viewAllBtn').classList.remove('on');document.getElementById('viewAllBtn').textContent='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> View All';
+        document.getElementById('viewAllBtn').classList.remove('on');document.getElementById('viewAllBtn').textContent='🔑 View All';
         document.getElementById('codeResult').style.display='none';renderList();
     }
 }
 function handleViewAll(){
-    if(adminUnlocked){adminUnlocked=false;document.getElementById('admBanner').classList.remove('show');document.getElementById('viewAllBtn').classList.remove('on');document.getElementById('viewAllBtn').textContent='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> View All';renderList();}
+    if(adminUnlocked){adminUnlocked=false;document.getElementById('admBanner').classList.remove('show');document.getElementById('viewAllBtn').classList.remove('on');document.getElementById('viewAllBtn').textContent='🔑 View All';renderList();}
     else openModal('viewAll','Admin Access','Enter admin password to view all codes.');
 }
 function handleClearAll(){openModal('clearAll','Clear All Codes','Enter admin password to permanently delete all codes.');}
