@@ -77,7 +77,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 .modal-cancel:hover{background:rgba(255,255,255,0.08);color:var(--text)}
 
 /* ── PORTAL HEADER ── */
-.portal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding:18px 24px;background:rgba(11,28,45,0.96);border:1px solid rgba(198,168,92,0.18);border-radius:14px;box-shadow:0 4px 28px rgba(0,0,0,0.35);animation:fadeDown .6s ease both}
+.portal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding:14px 16px;background:rgba(11,28,45,0.96);border:1px solid rgba(198,168,92,0.18);border-radius:14px;box-shadow:0 4px 28px rgba(0,0,0,0.35);animation:fadeDown .6s ease both;gap:10px;flex-wrap:nowrap}
 .portal-header-brand{display:flex;align-items:center;gap:12px}
 .ph-logo{position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ph-logo::before{content:'';position:absolute;inset:0;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border:1.5px solid rgba(198,168,92,0.5);animation:logospin1 6s linear infinite}
@@ -86,10 +86,10 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 .ph-name{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--gold);letter-spacing:1.5px}
 .ph-name span{color:var(--accent)}
 .ph-tag{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2.5px;color:rgba(148,163,184,0.45)}
-.portal-header-right{display:flex;align-items:center;gap:8px}
-.ph-agent{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.portal-header-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.ph-agent{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);min-width:0;overflow:hidden}
 .ph-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 7px rgba(57,255,20,0.55);animation:pulse 2s infinite;flex-shrink:0}
-.ph-btn{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1.5px;padding:6px 13px;border-radius:7px;cursor:pointer;transition:all .2s;border:1px solid}
+.ph-btn{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;padding:6px 10px;border-radius:7px;cursor:pointer;transition:all .2s;border:1px solid;white-space:nowrap}
 .ph-switch{background:rgba(198,168,92,0.05);border-color:rgba(198,168,92,0.18);color:rgba(198,168,92,0.5);display:none}
 .ph-switch:hover{background:rgba(198,168,92,0.12);color:var(--gold)}
 .ph-logout{background:rgba(255,80,80,0.05);border-color:rgba(255,80,80,0.15);color:rgba(255,100,100,0.5)}
@@ -483,6 +483,18 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
   .ring-el:nth-child(2){width:360px;height:360px;margin:-180px 0 0 -180px}
   .ring-el:nth-child(3){width:250px;height:250px;margin:-125px 0 0 -125px}
 }
+
+/* ── ADVERTISING MATERIALS ── */
+.ads-tab{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1.5px;padding:8px 14px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;margin-bottom:-1px}
+.ads-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.ads-tab:hover{color:var(--text)}
+.ads-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:10px}
+.ads-card-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1.5px;color:var(--gold);margin-bottom:8px;text-transform:uppercase}
+.ads-card-text{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.ads-copy-btn{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;padding:6px 14px;background:rgba(0,191,255,0.07);border:1px solid rgba(0,191,255,0.2);color:var(--accent);border-radius:20px;cursor:pointer;transition:all .2s}
+.ads-copy-btn:hover{background:rgba(0,191,255,0.15)}
+.ads-copy-btn.copied{background:rgba(57,255,20,0.1);border-color:rgba(57,255,20,0.3);color:var(--green)}
+
 </style>
 </head>
 <body>
@@ -495,7 +507,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 
 <!-- ══ LOGIN SCREEN ══ -->
 <div class="overlay show" id="loginScreen">
-  <div class="ov-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+  <div class="ov-logo-ring"><img src="https://i.imgur.com/9mjKZAj.jpeg" alt="ANICADE TECH"></div>
   <div class="ov-title">AGENT PORTAL</div>
   <div class="ov-sub">ANICADE TECH</div>
   <div class="ov-msg">Enter your agent code to access your personal dashboard.</div>
@@ -517,7 +529,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 
 <!-- ══ ADMIN LOGIN SCREEN ══ -->
 <div class="overlay" id="adminLoginScreen">
-  <div class="ov-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+  <div class="ov-logo-ring"><img src="https://i.imgur.com/9mjKZAj.jpeg" alt="ANICADE TECH"></div>
   <div class="ov-title" style="color:var(--gold)">ADMIN ACCESS</div>
   <div class="ov-sub">ANICADE TECH</div>
   <div class="ov-msg">Enter the admin passcode to access all agent portals and management tools.</div>
@@ -529,7 +541,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 
 <!-- ══ PASSWORD SCREEN ══ -->
 <div class="overlay" id="passwordScreen">
-  <div class="ov-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+  <div class="ov-logo-ring"><img src="https://i.imgur.com/9mjKZAj.jpeg" alt="ANICADE TECH"></div>
   <div class="ov-title">PORTAL ACCESS</div>
   <div id="pwPreview"></div>
   <div class="ov-msg">Enter your portal password to continue.</div>
@@ -541,7 +553,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 
 <!-- ══ WRONG CODE SCREEN ══ -->
 <div class="overlay" id="wrongCodeScreen">
-  <div class="ov-logo-ring"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+  <div class="ov-logo-ring"><img src="https://i.imgur.com/9mjKZAj.jpeg" alt="ANICADE TECH"></div>
   <div class="ov-title" style="color:var(--red)">ACCESS DENIED</div>
   <div class="ov-msg" id="wrongCodeMsg"></div>
   <div id="wrongCodeHasOwn" style="display:none;font-size:14px;color:var(--muted)">Your code: <strong id="wrongCodeOwn" style="color:var(--accent)">—</strong><br><span id="wrongCodeOwnName" style="color:var(--muted)"></span></div>
@@ -570,14 +582,14 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
   <!-- Header (reference nav style) -->
   <div class="portal-header">
     <div class="portal-header-brand">
-      <div class="ph-logo"><img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH"></div>
+      <div class="ph-logo"><img src="https://i.imgur.com/9mjKZAj.jpeg" alt="ANICADE TECH"></div>
       <div>
         <div class="ph-name">ANICADE<span>.</span>TECH</div>
         <div class="ph-tag">AGENT PORTAL</div>
       </div>
     </div>
     <div class="portal-header-right">
-      <div class="ph-agent"><div class="ph-dot"></div><span id="phUsername">AGENT</span></div>
+      <div class="ph-agent"><div class="ph-dot"></div><span id="phUsername" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px">AGENT</span></div>
       <button class="ph-btn ph-switch" id="phSwitch" onclick="handleAdminSwitch()">Switch Agent</button>
       <button class="ph-btn ph-logout" onclick="logout()">Log Out</button>
     </div>
@@ -585,7 +597,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 
   <!-- Admin Banner -->
   <div class="admin-banner" id="adminBanner">
-    <span style="font-size:16px">&#9889;</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)" stroke="var(--gold)" stroke-width="1"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
     <div>
       <div class="admin-banner-label">ADMIN MODE ACTIVE</div>
       <div class="admin-banner-sub" id="adminBannerSub">—</div>
@@ -652,10 +664,10 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
         <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
       </div>
       <div class="tier-steps">
-        <div class="tier-step" id="tierBronze"><span class="tier-step-icon">&#x1F949;</span><div class="tier-step-name">Bronze</div><div class="tier-step-req">0+</div></div>
-        <div class="tier-step" id="tierSilver"><span class="tier-step-icon">&#x1F948;</span><div class="tier-step-name">Silver</div><div class="tier-step-req">5+</div></div>
-        <div class="tier-step" id="tierGold"><span class="tier-step-icon">&#x1F947;</span><div class="tier-step-name">Gold</div><div class="tier-step-req">15+</div></div>
-        <div class="tier-step" id="tierPlatinum"><span class="tier-step-icon">&#x1F48E;</span><div class="tier-step-name">Platinum</div><div class="tier-step-req">30+</div></div>
+        <div class="tier-step" id="tierBronze"><span class="tier-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><div class="tier-step-name">Bronze</div><div class="tier-step-req">0+</div></div>
+        <div class="tier-step" id="tierSilver"><span class="tier-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C0C0C0" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><div class="tier-step-name">Silver</div><div class="tier-step-req">5+</div></div>
+        <div class="tier-step" id="tierGold"><span class="tier-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C6A85C" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><div class="tier-step-name">Gold</div><div class="tier-step-req">15+</div></div>
+        <div class="tier-step" id="tierPlatinum"><span class="tier-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" stroke-width="1.8"><polyline points="6 3 18 3 22 9 12 22 2 9 6 3"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="12" y1="3" x2="12" y2="22"/></svg></span><div class="tier-step-name">Platinum</div><div class="tier-step-req">30+</div></div>
       </div>
     </div>
     <div class="section-card">
@@ -672,7 +684,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 
   <!-- Global Leaderboard (visible to ALL agents) -->
   <div id="leaderboardSection">
-    <div class="section-hd">🏆 Global Leaderboard</div>
+    <div class="section-hd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M6 9H4a2 2 0 0 0-2 2v1a4 4 0 0 0 4 4h.5M18 9h2a2 2 0 0 1 2 2v1a4 4 0 0 1-4 4h-.5"/><path d="M6 9V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v5"/><rect x="8" y="17" width="8" height="4" rx="1"/><line x1="8" y1="21" x2="16" y2="21"/></svg>Global Leaderboard</div>
     <div id="leaderboardList"></div>
   </div>
 
@@ -680,6 +692,129 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
   <div id="customerInboxSection">
     <div class="section-hd">Customer Inbox <span class="section-count" id="inboxCount" style="font-size:11px;margin-left:4px">0</span></div>
     <div class="inbox-list" id="inboxList"></div>
+  </div>
+
+
+  <!-- Advertising Materials -->
+  <div id="adsSection" style="margin-top:28px">
+    <div class="section-hd" style="display:flex;align-items:center;gap:8px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+      Advertising Materials
+    </div>
+
+    <!-- Tab Bar -->
+    <div style="display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:0;overflow-x:auto;scrollbar-width:none">
+      <button class="ads-tab active" onclick="switchAdsTab('captions',this)">Captions</button>
+      <button class="ads-tab" onclick="switchAdsTab('scripts',this)">Scripts</button>
+      <button class="ads-tab" onclick="switchAdsTab('graphics',this)">Graphics</button>
+      <button class="ads-tab" onclick="switchAdsTab('faqs',this)">FAQs</button>
+    </div>
+
+    <!-- Captions Tab -->
+    <div class="ads-tab-content" id="ads-captions">
+      <div class="ads-card">
+        <div class="ads-card-label">WhatsApp / Status Caption</div>
+        <div class="ads-card-text" id="cap1">Need a website, logo or social media ads? ANICADE TECH delivers professional results at Zambian prices. Web, AI, Design &amp; more — starting from K100. WhatsApp us now!</div>
+        <button class="ads-copy-btn" onclick="copyAdsText('cap1',this)">Copy</button>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">Facebook / Instagram Post</div>
+        <div class="ads-card-text" id="cap2">Your business deserves a professional online presence. ANICADE TECH builds websites, runs ads, designs logos and sets up AI chatbots — all from Kabwe, Zambia. Fast turnaround. Affordable rates. DM us or WhatsApp +260 777 083 995 to get started.</div>
+        <button class="ads-copy-btn" onclick="copyAdsText('cap2',this)">Copy</button>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">Short Promo Caption</div>
+        <div class="ads-card-text" id="cap3">Tech solutions for every Zambian business — web, ads, AI, design and more. ANICADE TECH. From K100.</div>
+        <button class="ads-copy-btn" onclick="copyAdsText('cap3',this)">Copy</button>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">Agent Referral Caption</div>
+        <div class="ads-card-text" id="cap4" style="font-style:italic">Hi! I'm working with ANICADE TECH — a local tech company in Zambia. They do websites, logos, ads, AI chatbots and more at great prices. Use my referral link to sign up and get in touch with them: [YOUR REFERRAL LINK]</div>
+        <button class="ads-copy-btn" onclick="copyAdsText('cap4',this)">Copy</button>
+      </div>
+    </div>
+
+    <!-- Scripts Tab -->
+    <div class="ads-tab-content" id="ads-scripts" style="display:none">
+      <div class="ads-card">
+        <div class="ads-card-label">Cold Approach — Business Owner</div>
+        <div class="ads-card-text" id="sc1">Hi [Name], I noticed your business doesn't have a website yet. I'm working with ANICADE TECH — a local tech company that builds professional websites starting from K1,500. They also do logos, social media ads and AI chatbots. Would you be interested in learning more?</div>
+        <button class="ads-copy-btn" onclick="copyAdsText('sc1',this)">Copy</button>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">Follow-Up Script</div>
+        <div class="ads-card-text" id="sc2">Hi [Name], just following up on my earlier message about ANICADE TECH's services. They're currently offering web development, logo design, ad management and more — all delivered fast via WhatsApp. Let me know if you'd like a quote!</div>
+        <button class="ads-copy-btn" onclick="copyAdsText('sc2',this)">Copy</button>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">WhatsApp Opening Line</div>
+        <div class="ads-card-text" id="sc3">Hi! I wanted to share something useful — ANICADE TECH offers professional tech services (websites, logos, ads, AI) right here in Zambia at very affordable prices. Thought it might be helpful for your business!</div>
+        <button class="ads-copy-btn" onclick="copyAdsText('sc3',this)">Copy</button>
+      </div>
+    </div>
+
+    <!-- Graphics Tab -->
+    <div class="ads-tab-content" id="ads-graphics" style="display:none">
+      <div class="ads-card" style="text-align:center">
+        <div class="ads-card-label">Official Logo</div>
+        <img src="https://i.imgur.com/9mjKZAj.jpeg" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(198,168,92,0.3);margin:10px auto;display:block">
+        <div class="ads-card-text">Right-click or long-press to save. Use on your posts, status, and referral materials.</div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">Brand Colours</div>
+        <div style="display:flex;gap:10px;margin:10px 0;flex-wrap:wrap">
+          <div style="text-align:center">
+            <div style="width:44px;height:44px;background:#0B1C2D;border-radius:8px;border:1px solid rgba(255,255,255,0.1)"></div>
+            <div style="font-size:10px;color:var(--muted);margin-top:4px">#0B1C2D</div>
+          </div>
+          <div style="text-align:center">
+            <div style="width:44px;height:44px;background:#C6A85C;border-radius:8px"></div>
+            <div style="font-size:10px;color:var(--muted);margin-top:4px">#C6A85C</div>
+          </div>
+          <div style="text-align:center">
+            <div style="width:44px;height:44px;background:#00BFFF;border-radius:8px"></div>
+            <div style="font-size:10px;color:var(--muted);margin-top:4px">#00BFFF</div>
+          </div>
+          <div style="text-align:center">
+            <div style="width:44px;height:44px;background:#39ff14;border-radius:8px"></div>
+            <div style="font-size:10px;color:var(--muted);margin-top:4px">#39FF14</div>
+          </div>
+        </div>
+        <div class="ads-card-text">Use these colours on any graphics you create for ANICADE TECH.</div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">Fonts</div>
+        <div class="ads-card-text">
+          <strong style="color:var(--gold);font-family:'Orbitron',sans-serif">Orbitron</strong> — headings and titles<br>
+          <strong style="color:var(--accent);font-family:'Rajdhani',sans-serif">Rajdhani</strong> — body text and descriptions<br><br>
+          Available free on Google Fonts.
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQs Tab -->
+    <div class="ads-tab-content" id="ads-faqs" style="display:none">
+      <div class="ads-card">
+        <div class="ads-card-label">Q: How fast do they deliver?</div>
+        <div class="ads-card-text">Most projects are delivered within 2–7 days depending on complexity. Simple logos and landing pages are often done within 24–48 hours.</div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">Q: How do I pay?</div>
+        <div class="ads-card-text">Payment is via mobile money, bank transfer, or cash in Kabwe. You agree terms via WhatsApp before any work begins.</div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">Q: Is there a refund policy?</div>
+        <div class="ads-card-text">All sales are final, but ANICADE TECH will work with you to resolve any issues. Refunds are considered if the work doesn't match the agreed brief.</div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">Q: Who do I contact for more info?</div>
+        <div class="ads-card-text">Direct all client enquiries to WhatsApp: +260 777 083 995 or email anicadetech@gmail.com. As an agent, always send clients through your referral link.</div>
+      </div>
+      <div class="ads-card">
+        <div class="ads-card-label">Q: What services do they offer?</div>
+        <div class="ads-card-text">Website design &amp; development, AI chatbots, logo &amp; brand design, social media graphics, ad management, domain &amp; hosting setup, premium apps, and more — starting from K100.</div>
+      </div>
+    </div>
   </div>
 
 </div><!-- /portal -->
@@ -952,7 +1087,16 @@ function drawAvatar(canvas,name,code,size=84,dateStamp){
 /* ─────────────────────────────────────────
    HELPERS
 ───────────────────────────────────────── */
-function getTier(r){if(r>=30)return{name:'PLATINUM',cls:'tier-platinum',icon:'&#x1F48E;'};if(r>=15)return{name:'GOLD',cls:'tier-gold',icon:'&#x1F947;'};if(r>=5)return{name:'SILVER',cls:'tier-silver',icon:'&#x1F948;'};return{name:'BRONZE',cls:'tier-bronze',icon:'&#x1F949;'};}
+function getTier(r){
+  var dIcon='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" stroke-width="2"><polyline points="6 3 18 3 22 9 12 22 2 9 6 3"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="12" y1="3" x2="12" y2="22"/></svg>';
+  var gIcon='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C6A85C" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+  var sIcon='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C0C0C0" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+  var bIcon='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+  if(r>=30)return{name:'PLATINUM',cls:'tier-platinum',icon:dIcon};
+  if(r>=15)return{name:'GOLD',cls:'tier-gold',icon:gIcon};
+  if(r>=5)return{name:'SILVER',cls:'tier-silver',icon:sIcon};
+  return{name:'BRONZE',cls:'tier-bronze',icon:bIcon};
+}
 function daysActive(d){
   try{
     // Handles "15 Mar 2025" or "15/03/2025" or timestamp
@@ -1196,7 +1340,7 @@ function renderLeaderboard(){
     })
     .sort((a,b)=>b.pts-a.pts||b.rc-a.rc)
     .slice(0,20);
-  const rankLabels=['🥇','🥈','🥉'];
+  const rankLabels=['#1','#2','#3'];
   const rankCls=['gold','silver','bronze'];
   el.innerHTML=ranked.map((a,i)=>{
     const isMe=a.code===myCode;
@@ -1833,6 +1977,24 @@ async function postStatus(){
 ───────────────────────────────────────── */
 const _io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12});
 document.querySelectorAll('.fade-in').forEach(el=>_io.observe(el));
+
+
+function switchAdsTab(tab, btn) {
+  document.querySelectorAll('.ads-tab').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.ads-tab-content').forEach(function(c){ c.style.display='none'; });
+  btn.classList.add('active');
+  document.getElementById('ads-'+tab).style.display='block';
+}
+function copyAdsText(id, btn) {
+  var text = document.getElementById(id).textContent.trim();
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent='Copied!';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent='Copy'; btn.classList.remove('copied'); }, 2000);
+  }).catch(function(){
+    showToast('Copy failed');
+  });
+}
 
 </script>
 </body>
