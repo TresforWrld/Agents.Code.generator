@@ -664,10 +664,10 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
         <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
       </div>
       <div class="tier-steps">
-        <div class="tier-step" id="tierBronze"><span class="tier-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><div class="tier-step-name">Bronze</div><div class="tier-step-req">0+</div></div>
-        <div class="tier-step" id="tierSilver"><span class="tier-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C0C0C0" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><div class="tier-step-name">Silver</div><div class="tier-step-req">5+</div></div>
-        <div class="tier-step" id="tierGold"><span class="tier-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C6A85C" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><div class="tier-step-name">Gold</div><div class="tier-step-req">15+</div></div>
-        <div class="tier-step" id="tierPlatinum"><span class="tier-step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" stroke-width="1.8"><polyline points="6 3 18 3 22 9 12 22 2 9 6 3"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="12" y1="3" x2="12" y2="22"/></svg></span><div class="tier-step-name">Platinum</div><div class="tier-step-req">30+</div></div>
+        <div class="tier-step" id="tierBronze"><span class="tier-step-icon"><span style="width:18px;height:18px;border-radius:50%;background:#cd7f32;display:inline-block;box-shadow:0 0 8px rgba(205,127,50,0.5)"></span></span><div class="tier-step-name">Bronze</div><div class="tier-step-req">0+</div></div>
+        <div class="tier-step" id="tierSilver"><span class="tier-step-icon"><span style="width:18px;height:18px;border-radius:50%;background:#C0C0C0;display:inline-block;box-shadow:0 0 8px rgba(192,192,192,0.5)"></span></span><div class="tier-step-name">Silver</div><div class="tier-step-req">5+</div></div>
+        <div class="tier-step" id="tierGold"><span class="tier-step-icon"><span style="width:18px;height:18px;border-radius:50%;background:#C6A85C;display:inline-block;box-shadow:0 0 8px rgba(198,168,92,0.5)"></span></span><div class="tier-step-name">Gold</div><div class="tier-step-req">15+</div></div>
+        <div class="tier-step" id="tierPlatinum"><span class="tier-step-icon"><span style="width:18px;height:18px;border-radius:50%;background:#00BFFF;display:inline-block;box-shadow:0 0 8px rgba(0,191,255,0.5)"></span></span><div class="tier-step-name">Platinum</div><div class="tier-step-req">30+</div></div>
       </div>
     </div>
     <div class="section-card">
@@ -707,6 +707,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
       <button class="ads-tab active" onclick="switchAdsTab('captions',this)">Captions</button>
       <button class="ads-tab" onclick="switchAdsTab('scripts',this)">Scripts</button>
       <button class="ads-tab" onclick="switchAdsTab('graphics',this)">Graphics</button>
+      <button class="ads-tab" onclick="switchAdsTab('media',this)">Media</button>
       <button class="ads-tab" onclick="switchAdsTab('faqs',this)">FAQs</button>
     </div>
 
@@ -760,6 +761,11 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
         <img src="https://i.imgur.com/9mjKZAj.jpeg" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(198,168,92,0.3);margin:10px auto;display:block">
         <div class="ads-card-text">Right-click or long-press to save. Use on your posts, status, and referral materials.</div>
       </div>
+      <div class="ads-card" style="text-align:center">
+        <div class="ads-card-label">Website Preview</div>
+        <img src="https://files.catbox.moe/mauo6k.jpg" style="width:100%;border-radius:8px;object-fit:cover;border:1px solid rgba(198,168,92,0.2);margin:10px 0;display:block">
+        <div class="ads-card-text">Share this preview image when promoting the website to potential clients.</div>
+      </div>
       <div class="ads-card">
         <div class="ads-card-label">Brand Colours</div>
         <div style="display:flex;gap:10px;margin:10px 0;flex-wrap:wrap">
@@ -792,6 +798,23 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
       </div>
     </div>
 
+
+    <!-- Media Tab -->
+    <div class="ads-tab-content" id="ads-media" style="display:none">
+      <div class="ads-card">
+        <div class="ads-card-label">Promotional Images</div>
+        <div class="ads-card-text" style="margin-bottom:12px">Long-press any image to save. Use these on social media, WhatsApp status, and marketing materials.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <img src="https://i.imgur.com/SjoLY9G.jpeg" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+          <img src="https://i.imgur.com/uPGmSPd.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+          <img src="https://i.imgur.com/g5DXuNc.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+          <img src="https://i.imgur.com/9HjORWT.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+          <img src="https://i.imgur.com/jZSP3Nz.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+          <img src="https://i.imgur.com/HWIMxKz.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+        </div>
+      </div>
+    </div>
+
     <!-- FAQs Tab -->
     <div class="ads-tab-content" id="ads-faqs" style="display:none">
       <div class="ads-card">
@@ -808,7 +831,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
       </div>
       <div class="ads-card">
         <div class="ads-card-label">Q: Who do I contact for more info?</div>
-        <div class="ads-card-text">Direct all client enquiries to WhatsApp: +260 777 083 995 or email anicadetech@gmail.com. As an agent, always send clients through your referral link.</div>
+        <div class="ads-card-text">Direct all client enquiries to WhatsApp: +260 777 083 995 or email <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="583936313b393c3d2c3d3b30183f35393134763b3735">[email&#160;protected]</a>. As an agent, always send clients through your referral link.</div>
       </div>
       <div class="ads-card">
         <div class="ads-card-label">Q: What services do they offer?</div>
@@ -1019,7 +1042,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ─────────────────────────────────────────
    CONSTANTS
 ───────────────────────────────────────── */
@@ -1088,10 +1111,10 @@ function drawAvatar(canvas,name,code,size=84,dateStamp){
    HELPERS
 ───────────────────────────────────────── */
 function getTier(r){
-  var dIcon='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" stroke-width="2"><polyline points="6 3 18 3 22 9 12 22 2 9 6 3"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="12" y1="3" x2="12" y2="22"/></svg>';
-  var gIcon='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C6A85C" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
-  var sIcon='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C0C0C0" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
-  var bIcon='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+  var dIcon='<span style="width:10px;height:10px;border-radius:50%;background:#00BFFF;display:inline-block;box-shadow:0 0 6px rgba(0,191,255,0.6)"></span>';
+  var gIcon='<span style="width:10px;height:10px;border-radius:50%;background:#C6A85C;display:inline-block;box-shadow:0 0 6px rgba(198,168,92,0.6)"></span>';
+  var sIcon='<span style="width:10px;height:10px;border-radius:50%;background:#C0C0C0;display:inline-block;box-shadow:0 0 6px rgba(192,192,192,0.4)"></span>';
+  var bIcon='<span style="width:10px;height:10px;border-radius:50%;background:#cd7f32;display:inline-block;box-shadow:0 0 6px rgba(205,127,50,0.5)"></span>';
   if(r>=30)return{name:'PLATINUM',cls:'tier-platinum',icon:dIcon};
   if(r>=15)return{name:'GOLD',cls:'tier-gold',icon:gIcon};
   if(r>=5)return{name:'SILVER',cls:'tier-silver',icon:sIcon};
@@ -1239,7 +1262,7 @@ function renderPortal(entry,adminMode=false){
   drawAvatar(document.getElementById('avatarCanvas'),`${entry.firstName} ${entry.lastName}`,entry.code,84,entry.date);
   document.getElementById('pName').textContent=`${entry.firstName} ${entry.lastName}`;
   document.getElementById('pCode').textContent=entry.code;
-  document.getElementById('pMeta').innerHTML=`<span class="meta-chip">&#128205; ${entry.region}</span><span class="meta-chip">&#128231; ${entry.email}</span><span class="meta-chip">&#128241; ${entry.phone}</span><span class="meta-chip">&#128197; ${entry.date}</span>`;
+  document.getElementById('pMeta').innerHTML=`<span class="meta-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${entry.region}</span><span class="meta-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>${entry.email}</span><span class="meta-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18" stroke-linecap="round" stroke-width="3"/></svg>${entry.phone}</span><span class="meta-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${entry.date}</span>`;
   document.getElementById('pTier').innerHTML=`<span class="tier-badge ${tier.cls}">${tier.icon} ${tier.name} AGENT</span>`;
   document.getElementById('statReferrals').textContent=refs.length;
   document.getElementById('statDays').textContent=days;
@@ -1479,7 +1502,7 @@ function renderChatMsgs(msgs){
       const mine=codes.includes(myCode);
       reactHtml+=`<span class="reaction-pill${mine?' mine':''}" onclick="toggleReaction(${i},'${emoji}')">${emoji}<span class="reaction-count">${codes.length}</span></span>`;
     });
-    const actHtml=`<div class="msg-actions-row">${reactHtml}<span class="react-btn" onclick="openReactionPicker(${i},event)">&#x1F642;</span>${m.text?`<span class="share-btn-msg" onclick="shareMsg('${escapeHtml((m.text||'').replace(/'/g,"\\'")).slice(0,200)}')">&#8599; Share</span>`:''}</div>`;
+    const actHtml=`<div class="msg-actions-row">${reactHtml}<span class="react-btn" onclick="openReactionPicker(${i},event)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-linecap="round" stroke-width="2.5"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-linecap="round" stroke-width="2.5"/></svg></span>${m.text?`<span class="share-btn-msg" onclick="shareMsg('${escapeHtml((m.text||'').replace(/'/g,"\\'")).slice(0,200)}')">&#8599; Share</span>`:''}</div>`;
     html+=`<div class="chat-msg ${isMe?'me':'them'}">
       ${!sameSender&&!isMe?`<div class="chat-msg-meta" style="color:${col}" onclick="openAgentProfile('${m.code}')">${escapeHtml(m.name)} &middot; ${m.code}</div>`:''}
       ${!sameSender&&isMe?`<div class="chat-msg-meta">${escapeHtml(m.name)}</div>`:''}
@@ -1986,16 +2009,12 @@ function switchAdsTab(tab, btn) {
   document.getElementById('ads-'+tab).style.display='block';
 }
 function copyAdsText(id, btn) {
-  var text = document.getElementById(id).textContent.trim();
-  navigator.clipboard.writeText(text).then(function(){
+  var text = document.getElementById(id).textContent.trim();navigator.clipboard.writeText(text).then(function(){
     btn.textContent='Copied!';
     btn.classList.add('copied');
     setTimeout(function(){ btn.textContent='Copy'; btn.classList.remove('copied'); }, 2000);
-  }).catch(function(){
-    showToast('Copy failed');
-  });
+  }).catch(function(){ showToast('Copy failed'); });
 }
-
 </script>
 </body>
 </html>
