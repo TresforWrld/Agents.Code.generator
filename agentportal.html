@@ -530,6 +530,20 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 .calc-preset{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;padding:6px 12px;background:rgba(198,168,92,0.06);border:1px solid rgba(198,168,92,0.15);color:var(--gold);border-radius:6px;cursor:pointer;transition:all .2s}
 .calc-preset:hover,.calc-preset.active{background:rgba(198,168,92,0.15);border-color:var(--gold)}
 
+
+/* ── PROFILE CROP ── */
+#cropModal{position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.95);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+#cropModal.show{display:flex}
+.crop-container{position:relative;width:min(320px,90vw);height:min(320px,90vw);overflow:hidden;border-radius:10px;border:1px solid rgba(198,168,92,0.3);touch-action:none;cursor:move;background:#111;flex-shrink:0}
+.crop-canvas{position:absolute;top:0;left:0}
+.crop-overlay{position:absolute;inset:0;pointer-events:none}
+.crop-circle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70%;height:70%;border:2px solid rgba(198,168,92,0.8);border-radius:50%;box-shadow:0 0 0 9999px rgba(0,0,0,0.55)}
+.crop-controls{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+.crop-btn{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;padding:9px 18px;border-radius:8px;cursor:pointer;border:1px solid;font-weight:700}
+.crop-confirm{background:linear-gradient(135deg,rgba(57,255,20,0.15),rgba(57,255,20,0.07));border-color:rgba(57,255,20,0.3);color:var(--green)}
+.crop-cancel{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);color:var(--muted)}
+.crop-hint{font-family:'Rajdhani',sans-serif;font-size:11px;color:rgba(148,163,184,0.5);margin-top:10px;text-align:center}
+
 </style>
 </head>
 <body>
@@ -2311,10 +2325,11 @@ function copyAdsText(id, btn) {
 }
 
 // ── AI IMAGE GENERATOR ───────────────────────
-// ── AD IMAGE GENERATOR (HuggingFace) ────────
-var _imgW = 512, _imgH = 512;
+// ── AD IMAGE GENERATOR (Pollinations.ai via img src) ────
+var _imgW = 1024, _imgH = 1024;
 var _lastImgPrompt = '';
-var _lastImgBlob = null;
+var _lastImgUrl = '';
+var _genSeed = 1;
 
 function pickPreset(btn, val) {
   document.querySelectorAll('.gen-preset').forEach(function(b){ b.classList.remove('active'); });
@@ -2332,15 +2347,17 @@ function generateAdImage() {
   var prompt = document.getElementById('imgPrompt').value.trim();
   if(!prompt){ showToast('Enter a prompt first'); return; }
   _lastImgPrompt = prompt;
-  _runGenerate(prompt);
+  _genSeed = Math.floor(Math.random() * 999999);
+  _runGenerate(prompt, _genSeed);
 }
 
 function regenerateAdImage() {
   if(!_lastImgPrompt){ showToast('Generate something first'); return; }
-  _runGenerate(_lastImgPrompt);
+  _genSeed = Math.floor(Math.random() * 999999);
+  _runGenerate(_lastImgPrompt, _genSeed);
 }
 
-function _runGenerate(prompt) {
+function _runGenerate(prompt, seed) {
   var btn = document.getElementById('genImgBtn');
   btn.disabled = true; btn.style.opacity = '0.5';
 
@@ -2355,71 +2372,66 @@ function _runGenerate(prompt) {
     document.getElementById('imgResult').scrollIntoView({behavior:'smooth', block:'start'});
   }, 100);
 
-  // HuggingFace Inference API - SDXL model, no auth needed for public models
-  var fullPrompt = prompt + ', high quality, 4k, professional advertising photograph';
-  var seed = Math.floor(Math.random() * 2147483647);
+  // Pollinations.ai — image URL approach, no fetch, no CORS
+  var encoded = encodeURIComponent(prompt + ', high quality, professional, no watermark, no text overlay');
+  var url = 'https://image.pollinations.ai/prompt/' + encoded
+    + '?width=' + _imgW
+    + '&height=' + _imgH
+    + '&seed=' + seed
+    + '&nologo=true'
+    + '&model=flux'
+    + '&enhance=true'
+    + '&timestamp=' + Date.now(); // cache buster
 
-  fetch('https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      inputs: fullPrompt,
-      parameters: {
-        width: _imgW,
-        height: _imgH,
-        seed: seed,
-        num_inference_steps: 25,
-        guidance_scale: 7.5
-      }
-    })
-  })
-  .then(function(r) {
-    if(!r.ok) {
-      return r.json().then(function(j) {
-        // Model loading — wait and retry
-        if(j.error && j.error.indexOf('loading') > -1) {
-          document.getElementById('imgStatus').textContent = 'Model loading, retrying...';
-          setTimeout(function(){ _runGenerate(prompt); }, 20000);
-          return;
-        }
-        throw new Error(j.error || 'API error ' + r.status);
-      });
+  _lastImgUrl = url;
+
+  var el = document.getElementById('generatedImg');
+
+  // Set a timeout — pollinations can take up to 60s
+  var timeout = setTimeout(function(){
+    if(el.style.display === 'none') {
+      _showGenError('Taking too long. Try a simpler prompt or tap Try Again.');
+      btn.disabled = false; btn.style.opacity = '1';
     }
-    return r.blob();
-  })
-  .then(function(blob) {
-    if(!blob) return; // retry case handled above
-    _lastImgBlob = blob;
-    var url = URL.createObjectURL(blob);
-    var el = document.getElementById('generatedImg');
-    el.src = url;
-    el.style.display = 'block';
+  }, 90000);
+
+  el.onload = function() {
+    clearTimeout(timeout);
     document.getElementById('imgLoading').style.display = 'none';
+    el.style.display = 'block';
     document.getElementById('imgActions').style.display = 'flex';
     document.getElementById('imgStatus').textContent = 'Done';
     btn.disabled = false; btn.style.opacity = '1';
-  })
-  .catch(function(err) {
-    console.error('Gen error:', err);
-    document.getElementById('imgLoading').style.display = 'none';
-    var errEl = document.getElementById('imgError');
-    errEl.style.display = 'block';
-    errEl.textContent = 'Generation failed: ' + (err.message || 'Check connection and try again.');
-    document.getElementById('imgStatus').textContent = 'Failed';
+  };
+
+  el.onerror = function() {
+    clearTimeout(timeout);
+    _showGenError('Generation failed. Check connection and try again.');
     btn.disabled = false; btn.style.opacity = '1';
-  });
+  };
+
+  el.src = url;
+}
+
+function _showGenError(msg) {
+  document.getElementById('imgLoading').style.display = 'none';
+  var err = document.getElementById('imgError');
+  err.style.display = 'block';
+  err.textContent = msg;
+  document.getElementById('imgStatus').textContent = 'Failed';
 }
 
 function saveGenImg() {
-  if(!_lastImgBlob){ showToast('Generate an image first'); return; }
-  var url = URL.createObjectURL(_lastImgBlob);
+  if(!_lastImgUrl){ showToast('Generate an image first'); return; }
+  // Use the img element src directly — create a link
   var a = document.createElement('a');
-  a.href = url;
-  a.download = 'anicade-ad-' + Date.now() + '.png';
+  a.href = _lastImgUrl;
+  a.download = 'anicade-ad-' + _genSeed + '.jpg';
+  a.target = '_blank';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  showToast('Saving... long-press image if needed');
 }
 
 // ── IMAGE SAVE HELPERS ──────────────────────
@@ -2463,9 +2475,31 @@ function _obKey(){ return 'anicade_ob_' + (currentEntry ? currentEntry.code : 'g
 function loadOnboarding(){
   var saved = {};
   try{ saved = JSON.parse(localStorage.getItem(_obKey()) || '{}'); }catch(e){}
+
+  // Auto-detect completed steps from real data
+  // ob1: has profile photo
+  var hasPfp = !!localStorage.getItem('anicade_pfp_' + (currentEntry ? currentEntry.code : ''));
+  if(hasPfp) saved['ob1'] = 1;
+
+  // ob2: referral link — always available once logged in
+  if(currentEntry && currentEntry.code) saved['ob2'] = 1;
+
+  // ob4: has at least 1 referral
+  var myRefs = _refs ? _refs.filter(function(r){ return r.agentCode === (currentEntry ? currentEntry.code : ''); }) : [];
+  if(myRefs.length >= 1) saved['ob4'] = 1;
+
+  // ob5: has 5+ referrals (closed sales proxy)
+  if(myRefs.length >= 5) saved['ob5'] = 1;
+
+  // Save updated state
+  try{ localStorage.setItem(_obKey(), JSON.stringify(saved)); }catch(e){}
+
   ['ob1','ob2','ob3','ob4','ob5','ob6'].forEach(function(id){
-    if(saved[id]) document.getElementById(id).classList.add('done');
-    else document.getElementById(id).classList.remove('done');
+    var el = document.getElementById(id);
+    if(el){
+      if(saved[id]) el.classList.add('done');
+      else el.classList.remove('done');
+    }
   });
   updateOnboardProgress();
 }
@@ -2512,6 +2546,125 @@ function calcEarnings(){
   document.getElementById('calcMonthly').textContent = 'K' + monthly.toLocaleString();
 }
 
+
+// ── PROFILE CROP ────────────────────────────
+var _cropImg = null, _cropX = 0, _cropY = 0, _cropZoom = 1;
+var _cropDragging = false, _cropLastX = 0, _cropLastY = 0;
+var _cropCallback = null;
+
+function openCropModal(file, callback) {
+  _cropCallback = callback;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      _cropImg = img;
+      _cropX = 0; _cropY = 0; _cropZoom = 1;
+      document.getElementById('cropZoom').value = 1;
+      var container = document.getElementById('cropContainer');
+      var size = container.offsetWidth;
+      var canvas = document.getElementById('cropCanvas');
+      canvas.width = size; canvas.height = size;
+      drawCrop();
+      document.getElementById('cropModal').classList.add('show');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function drawCrop() {
+  var canvas = document.getElementById('cropCanvas');
+  var ctx = canvas.getContext('2d');
+  var size = canvas.width;
+  ctx.clearRect(0, 0, size, size);
+  if(!_cropImg) return;
+  var scale = _cropZoom * Math.min(size / _cropImg.width, size / _cropImg.height);
+  var w = _cropImg.width * scale, h = _cropImg.height * scale;
+  var x = size/2 - w/2 + _cropX, y = size/2 - h/2 + _cropY;
+  ctx.drawImage(_cropImg, x, y, w, h);
+}
+
+function cropZoomChange() {
+  _cropZoom = parseFloat(document.getElementById('cropZoom').value);
+  drawCrop();
+}
+
+function closeCropModal() {
+  document.getElementById('cropModal').classList.remove('show');
+}
+
+function confirmCrop() {
+  var canvas = document.getElementById('cropCanvas');
+  var size = canvas.width;
+  // Crop the circle area (center 70%)
+  var cropSize = Math.round(size * 0.70);
+  var offset = Math.round((size - cropSize) / 2);
+  var out = document.createElement('canvas');
+  out.width = out.height = 200;
+  var ctx = out.getContext('2d');
+  ctx.drawImage(canvas, offset, offset, cropSize, cropSize, 0, 0, 200, 200);
+  var dataUrl = out.toDataURL('image/jpeg', 0.92);
+  closeCropModal();
+  if(_cropCallback) _cropCallback(dataUrl);
+}
+
+// Touch & mouse drag
+(function() {
+  var c = document.getElementById('cropContainer');
+  if(!c) return;
+  c.addEventListener('mousedown', function(e){
+    _cropDragging=true; _cropLastX=e.clientX; _cropLastY=e.clientY; e.preventDefault();
+  });
+  window.addEventListener('mousemove', function(e){
+    if(!_cropDragging) return;
+    _cropX += e.clientX - _cropLastX; _cropY += e.clientY - _cropLastY;
+    _cropLastX=e.clientX; _cropLastY=e.clientY; drawCrop();
+  });
+  window.addEventListener('mouseup', function(){ _cropDragging=false; });
+  // Touch
+  c.addEventListener('touchstart', function(e){
+    if(e.touches.length===1){ _cropDragging=true; _cropLastX=e.touches[0].clientX; _cropLastY=e.touches[0].clientY; }
+    e.preventDefault();
+  }, {passive:false});
+  c.addEventListener('touchmove', function(e){
+    if(e.touches.length===1 && _cropDragging){
+      _cropX += e.touches[0].clientX-_cropLastX; _cropY += e.touches[0].clientY-_cropLastY;
+      _cropLastX=e.touches[0].clientX; _cropLastY=e.touches[0].clientY; drawCrop();
+    } else if(e.touches.length===2) {
+      // Pinch zoom
+      var d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      if(c._lastPinch) { _cropZoom = Math.min(3, Math.max(0.5, _cropZoom * (d/c._lastPinch))); document.getElementById('cropZoom').value=_cropZoom; drawCrop(); }
+      c._lastPinch = d;
+    }
+    e.preventDefault();
+  }, {passive:false});
+  c.addEventListener('touchend', function(e){ _cropDragging=false; c._lastPinch=null; });
+  // Scroll zoom
+  c.addEventListener('wheel', function(e){
+    _cropZoom = Math.min(3, Math.max(0.5, _cropZoom - e.deltaY*0.002));
+    document.getElementById('cropZoom').value=_cropZoom; drawCrop(); e.preventDefault();
+  }, {passive:false});
+})();
+
 </script>
+<!-- CROP MODAL -->
+<div id="cropModal">
+  <div style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:14px">CROP PHOTO</div>
+  <div class="crop-container" id="cropContainer">
+    <canvas id="cropCanvas" class="crop-canvas"></canvas>
+    <div class="crop-overlay"><div class="crop-circle"></div></div>
+  </div>
+  <div class="crop-hint">Drag to reposition &nbsp;·&nbsp; Pinch or scroll to zoom</div>
+  <div style="display:flex;gap:8px;margin-top:6px;align-items:center;justify-content:center">
+    <span style="font-family:'Orbitron',sans-serif;font-size:8px;color:var(--muted);letter-spacing:1px">ZOOM</span>
+    <input type="range" id="cropZoom" min="0.5" max="3" step="0.05" value="1" style="width:140px;accent-color:var(--accent)" oninput="cropZoomChange()">
+  </div>
+  <div class="crop-controls">
+    <button class="crop-btn crop-confirm" onclick="confirmCrop()">Use Photo</button>
+    <button class="crop-btn crop-cancel" onclick="closeCropModal()">Cancel</button>
+  </div>
+</div>
+
 </body>
 </html>
