@@ -12,7 +12,6 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://files.catbox.moe/mauo6k.jpg">
-<script src="https://js.puter.com/v2/"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -747,9 +746,8 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
       <button class="ads-tab active" onclick="switchAdsTab('captions',this)">Captions</button>
       <button class="ads-tab" onclick="switchAdsTab('scripts',this)">Scripts</button>
       <button class="ads-tab" onclick="switchAdsTab('graphics',this)">Graphics</button>
-      <button class="ads-tab" onclick="switchAdsTab('ai-image',this)">AI Image</button>
       <button class="ads-tab" onclick="switchAdsTab('media',this)">Media</button>
-      <button class="ads-tab" onclick="switchAdsTab('generate',this)">Generate</button>
+      <button class="ads-tab" onclick="switchAdsTab('generate',this)">AI Generate</button>
       <button class="ads-tab" onclick="switchAdsTab('faqs',this)">FAQs</button>
     </div>
 
@@ -843,177 +841,36 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 
 
     <!-- AI Image Generator Tab -->
-    <div class="ads-tab-content" id="ads-ai-image" style="display:none">
-      <div class="ads-card">
-        <div class="ads-card-label">AI Ad Image Generator</div>
-        <div class="ads-card-text">Describe the image you want. Be specific — mention the product, style, colours, and mood. Generated images are free to download and use in your marketing.</div>
-
-        <!-- Prompt input -->
-        <div style="position:relative;margin-bottom:10px">
-          <textarea id="imgPrompt" placeholder="e.g. Professional website design for a Zambian business, dark blue and gold theme, modern and clean, tech company branding..." style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 14px;font-family:'Rajdhani',sans-serif;font-size:13px;color:#F5F7FA;resize:none;height:90px;outline:none;line-height:1.5;transition:border-color .2s" onfocus="this.style.borderColor='rgba(0,191,255,0.35)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"></textarea>
-        </div>
-
-        <!-- Style selector -->
-        <div style="margin-bottom:12px">
-          <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1.5px;color:var(--muted);margin-bottom:7px;text-transform:uppercase">Style</div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap" id="styleOptions">
-            <button class="style-opt active" onclick="selectStyle(this,'photorealistic')">Photorealistic</button>
-            <button class="style-opt" onclick="selectStyle(this,'digital art')">Digital Art</button>
-            <button class="style-opt" onclick="selectStyle(this,'minimalist')">Minimalist</button>
-            <button class="style-opt" onclick="selectStyle(this,'cinematic')">Cinematic</button>
-            <button class="style-opt" onclick="selectStyle(this,'flat design')">Flat Design</button>
-            <button class="style-opt" onclick="selectStyle(this,'3D render')">3D Render</button>
-          </div>
-        </div>
-
-        <!-- Size selector -->
-        <div style="margin-bottom:14px">
-          <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1.5px;color:var(--muted);margin-bottom:7px;text-transform:uppercase">Size</div>
-          <div style="display:flex;gap:6px">
-            <button class="style-opt active" onclick="selectSize(this,1024,1024)" id="sizeBtn-sq">Square</button>
-            <button class="style-opt" onclick="selectSize(this,1200,630)" id="sizeBtn-land">Landscape</button>
-            <button class="style-opt" onclick="selectSize(this,1080,1920)" id="sizeBtn-port">Portrait</button>
-          </div>
-        </div>
-
-        <!-- Generate button -->
-        <button id="genImgBtn" onclick="generateAdImage()" style="width:100%;background:linear-gradient(135deg,rgba(0,191,255,0.12),rgba(0,191,255,0.06));color:var(--accent);border:1px solid rgba(0,191,255,0.25);padding:12px;border-radius:9px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          GENERATE IMAGE
-        </button>
-      </div>
-
-      <!-- Result area -->
-      <div id="imgResult" style="display:none">
-        <div class="ads-card" style="text-align:center">
-          <div class="ads-card-label" style="margin-bottom:10px">Generated Image</div>
-
-          <!-- Loading state -->
-          <div id="imgLoading" style="padding:40px 0;display:flex;flex-direction:column;align-items:center;gap:12px">
-            <div style="width:36px;height:36px;border:2px solid rgba(0,191,255,0.1);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite"></div>
-            <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--muted)">GENERATING...</div>
-            <div style="font-size:11px;color:rgba(148,163,184,0.5)">This takes 10–20 seconds</div>
-          </div>
-
-          <!-- Image -->
-          <img id="generatedImg" src="" alt="Generated" style="display:none;width:100%;border-radius:10px;border:1px solid rgba(0,191,255,0.15)">
-
-          <!-- Error state -->
-          <div id="imgError" style="display:none;padding:20px;color:rgba(255,100,100,0.7);font-size:12px"></div>
-
-          <!-- Actions -->
-          <div id="imgActions" style="display:none;margin-top:12px;display:none;gap:8px;flex-direction:column">
-            <a id="downloadBtn" download="anicade-ad.jpg" style="display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(135deg,rgba(57,255,20,0.1),rgba(57,255,20,0.05));color:var(--green);border:1px solid rgba(57,255,20,0.25);padding:10px;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;text-decoration:none">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              SAVE IMAGE
-            </a>
-            <button onclick="generateAdImage()" style="display:flex;align-items:center;justify-content:center;gap:7px;background:rgba(0,191,255,0.06);color:var(--muted);border:1px solid rgba(255,255,255,0.07);padding:10px;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-              REGENERATE
-            </button>
-          </div>
-        </div>
-
-        <!-- Prompt used -->
-        <div style="font-size:11px;color:rgba(148,163,184,0.35);text-align:center;margin-top:8px;font-style:italic;padding:0 10px" id="usedPrompt"></div>
-      </div>
-
-      <!-- Tips -->
-      <div class="ads-card" style="margin-top:4px">
-        <div class="ads-card-label">Prompt Tips</div>
-        <div class="ads-card-text" style="margin-bottom:0">
-          <strong style="color:var(--text)">Be specific:</strong> "Dark blue tech company logo mockup on a phone screen, Zambia, gold accents"<br><br>
-          <strong style="color:var(--text)">Add context:</strong> Include "advertising", "social media post", "banner" to get marketing-ready images<br><br>
-          <strong style="color:var(--text)">Style matters:</strong> "Photorealistic" for real-looking images, "Flat design" for clean graphics
-        </div>
-      </div>
-    </div>
-
-    <!-- Media Tab -->
-    <div class="ads-tab-content" id="ads-media" style="display:none">
-      <div class="ads-card">
-        <div class="ads-card-label">Promotional Images</div>
-        <div class="ads-card-text" style="margin-bottom:12px">Tap Save to download. Use on social media, WhatsApp status and marketing materials.</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div style="display:flex;flex-direction:column;gap:5px">
-            <img src="https://i.imgur.com/SjoLY9G.jpeg" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <button onclick="saveMediaImg('https://i.imgur.com/SjoLY9G.jpeg','anicade-promo-1.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            <img src="https://i.imgur.com/uPGmSPd.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <button onclick="saveMediaImg('https://i.imgur.com/uPGmSPd.png','anicade-promo-2.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            <img src="https://i.imgur.com/g5DXuNc.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <button onclick="saveMediaImg('https://i.imgur.com/g5DXuNc.png','anicade-promo-3.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            <img src="https://i.imgur.com/9HjORWT.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <button onclick="saveMediaImg('https://i.imgur.com/9HjORWT.png','anicade-promo-4.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            <img src="https://i.imgur.com/jZSP3Nz.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <button onclick="saveMediaImg('https://i.imgur.com/jZSP3Nz.png','anicade-promo-5.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            <img src="https://i.imgur.com/HWIMxKz.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <button onclick="saveMediaImg('https://i.imgur.com/HWIMxKz.png','anicade-promo-6.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80','anicade-analytics-dashboard.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80','anicade-laptop-workspace.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=600&q=80','anicade-digital-design.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px">
-            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80','anicade-digital-marketing.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Ad Generator Tab -->
     <div class="ads-tab-content" id="ads-generate" style="display:none">
-      <!-- STYLE PRESETS -->
       <div class="ads-card">
         <div class="ads-card-label">Style</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap" id="presetBtns">
-          <button class="gen-preset" onclick="pickPreset(this)">Corporate</button>
-          <button class="gen-preset" onclick="pickPreset(this)">Social Ad</button>
-          <button class="gen-preset" onclick="pickPreset(this)">Minimal</button>
-          <button class="gen-preset" onclick="pickPreset(this)">African Biz</button>
-          <button class="gen-preset" onclick="pickPreset(this)">Tech Banner</button>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="gen-preset" onclick="pickPreset(this,'professional tech services banner, dark navy blue background, gold and cyan accents, modern Zambian business, clean sophisticated layout, no text')">Corporate</button>
+          <button class="gen-preset" onclick="pickPreset(this,'vibrant social media advertisement for digital services, bold colors, eye-catching design, African tech company promotion, no text overlay')">Social Ad</button>
+          <button class="gen-preset" onclick="pickPreset(this,'minimalist white background, elegant clean design, luxury digital services brand, professional, simple modern layout, no text')">Minimal</button>
+          <button class="gen-preset" onclick="pickPreset(this,'African business digital services promotion, colorful professional Zambia tech company, warm vibrant tones, modern, no text')">African Biz</button>
+          <button class="gen-preset" onclick="pickPreset(this,'futuristic tech company banner, dark background, glowing blue and gold light effects, digital agency, professional, no text')">Tech Banner</button>
         </div>
       </div>
 
-      <!-- SIZE -->
       <div class="ads-card">
         <div class="ads-card-label">Size</div>
         <div style="display:flex;gap:8px">
-          <button class="gen-size active" id="sz-sq" onclick="pickSize(this,'square')">Square</button>
-          <button class="gen-size" id="sz-ls" onclick="pickSize(this,'landscape')">Landscape</button>
-          <button class="gen-size" id="sz-pt" onclick="pickSize(this,'portrait')">Portrait</button>
+          <button class="gen-size active" onclick="pickSize(this,512,512)">Square</button>
+          <button class="gen-size" onclick="pickSize(this,768,432)">Landscape</button>
+          <button class="gen-size" onclick="pickSize(this,432,768)">Portrait</button>
         </div>
       </div>
 
-      <!-- PROMPT + GENERATE -->
       <div class="ads-card">
         <div class="ads-card-label">Prompt</div>
-        <textarea id="imgPrompt" placeholder="Describe your image... e.g. Professional website design banner for a Zambian business, dark blue background, gold accents, modern tech style" style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px;font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--text);outline:none;resize:none;min-height:90px;line-height:1.5;transition:border-color .2s;margin-bottom:12px" onfocus="this.style.borderColor='rgba(0,191,255,0.3)'" onblur="this.style.borderColor='rgba(255,255,255,0.09)'"></textarea>
+        <textarea id="imgPrompt" placeholder="Describe your ad image... e.g. Professional website design banner for a Zambian business, dark blue background, gold accents, modern tech style, no text" style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px;font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--text);outline:none;resize:none;min-height:90px;line-height:1.5;transition:border-color .2s;margin-bottom:12px" onfocus="this.style.borderColor='rgba(0,191,255,0.3)'" onblur="this.style.borderColor='rgba(255,255,255,0.09)'"></textarea>
         <button id="genImgBtn" onclick="generateAdImage()" style="width:100%;background:linear-gradient(135deg,rgba(0,191,255,0.15),rgba(0,191,255,0.07));border:1px solid rgba(0,191,255,0.3);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:13px;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           GENERATE IMAGE
         </button>
       </div>
 
-      <!-- RESULT -->
       <div id="imgResult" style="display:none">
         <div class="ads-card">
           <div class="ads-card-label" style="display:flex;align-items:center;justify-content:space-between">
@@ -1023,26 +880,26 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
           <div id="imgLoading" style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:40px 20px">
             <div style="width:36px;height:36px;border:2px solid rgba(0,191,255,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite"></div>
             <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--muted)">GENERATING...</div>
-            <div style="font-size:11px;color:rgba(148,163,184,0.4)">Usually 10–30 seconds</div>
+            <div style="font-size:11px;color:rgba(148,163,184,0.4)">Usually 15–40 seconds</div>
           </div>
           <img id="generatedImg" style="width:100%;display:none;border-radius:10px;margin-bottom:10px" alt="Generated">
-          <div id="imgError" style="display:none;text-align:center;padding:16px;color:var(--red);font-size:12px;line-height:1.5"></div>
+          <div id="imgError" style="display:none;text-align:center;padding:16px;border-radius:8px;background:rgba(255,77,77,0.06);border:1px solid rgba(255,77,77,0.15);color:var(--red);font-size:12px;line-height:1.6;margin-bottom:8px"></div>
           <div id="imgActions" style="display:none;gap:8px">
-            <button id="downloadBtn" onclick="saveGenImg()" style="flex:1;background:linear-gradient(135deg,rgba(57,255,20,0.1),rgba(57,255,20,0.05));border:1px solid rgba(57,255,20,0.2);color:var(--green);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+            <button onclick="saveGenImg()" style="flex:1;background:linear-gradient(135deg,rgba(57,255,20,0.1),rgba(57,255,20,0.05));border:1px solid rgba(57,255,20,0.2);color:var(--green);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Save
             </button>
             <button onclick="regenerateAdImage()" style="flex:1;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-              Again
+              Try Again
             </button>
           </div>
         </div>
       </div>
 
-      <div class="ads-card" style="margin-top:4px">
+      <div class="ads-card">
         <div class="ads-card-label">Tips</div>
-        <div class="ads-card-text">Be specific: <em style="color:var(--accent)">"Professional tech banner, dark navy, gold accents, Zambian business, clean modern layout"</em><br><br>Pick a Style preset to auto-fill a starting prompt, then edit it.</div>
+        <div class="ads-card-text">Tap a style button to fill the prompt, then customise it. Add <em style="color:var(--accent)">"no text"</em> to keep images clean. Be specific about colours and mood for best results.</div>
       </div>
     </div>
 
@@ -2454,35 +2311,19 @@ function copyAdsText(id, btn) {
 }
 
 // ── AI IMAGE GENERATOR ───────────────────────
-// ── AD IMAGE GENERATOR (Puter.js) ──────────
-var _imgAspect = 'square';
+// ── AD IMAGE GENERATOR (HuggingFace) ────────
+var _imgW = 512, _imgH = 512;
 var _lastImgPrompt = '';
-var _lastGenImgEl = null;
+var _lastImgBlob = null;
 
-var PRESET_PROMPTS = {
-  'Corporate': 'professional corporate tech services banner, dark navy background, blue and gold accents, modern Zambia business, clean sophisticated layout',
-  'Social Ad': 'vibrant social media advertisement, bold saturated colors, eye-catching design, digital services promotion, African market audience',
-  'Minimal': 'minimalist clean white background, elegant typography, luxury brand feel, professional services, simple modern design',
-  'African Biz': 'African business digital services promotion, colorful Zambian professional, modern tech company, warm vibrant tones',
-  'Tech Banner': 'tech company banner, dark background, glowing cyan and gold accents, futuristic technology, professional digital agency'
-};
-
-var ASPECT_MAP = {
-  'square': '1:1',
-  'landscape': '16:9',
-  'portrait': '9:16'
-};
-
-function pickPreset(btn) {
+function pickPreset(btn, val) {
   document.querySelectorAll('.gen-preset').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
-  var key = btn.textContent.trim();
-  var prompt = PRESET_PROMPTS[key] || '';
-  document.getElementById('imgPrompt').value = prompt;
+  document.getElementById('imgPrompt').value = val;
 }
 
-function pickSize(btn, size) {
-  _imgAspect = size;
+function pickSize(btn, w, h) {
+  _imgW = w; _imgH = h;
   document.querySelectorAll('.gen-size').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
 }
@@ -2491,15 +2332,15 @@ function generateAdImage() {
   var prompt = document.getElementById('imgPrompt').value.trim();
   if(!prompt){ showToast('Enter a prompt first'); return; }
   _lastImgPrompt = prompt;
-  _doGenerate(prompt);
+  _runGenerate(prompt);
 }
 
 function regenerateAdImage() {
   if(!_lastImgPrompt){ showToast('Generate something first'); return; }
-  _doGenerate(_lastImgPrompt);
+  _runGenerate(_lastImgPrompt);
 }
 
-function _doGenerate(prompt) {
+function _runGenerate(prompt) {
   var btn = document.getElementById('genImgBtn');
   btn.disabled = true; btn.style.opacity = '0.5';
 
@@ -2510,51 +2351,75 @@ function _doGenerate(prompt) {
   document.getElementById('imgActions').style.display = 'none';
   document.getElementById('imgStatus').textContent = 'Generating...';
 
-  setTimeout(function(){ document.getElementById('imgResult').scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
+  setTimeout(function(){
+    document.getElementById('imgResult').scrollIntoView({behavior:'smooth', block:'start'});
+  }, 100);
 
-  var fullPrompt = prompt + ', high quality professional advertising image, no watermark, no text overlay';
-  var aspect = ASPECT_MAP[_imgAspect] || '1:1';
+  // HuggingFace Inference API - SDXL model, no auth needed for public models
+  var fullPrompt = prompt + ', high quality, 4k, professional advertising photograph';
+  var seed = Math.floor(Math.random() * 2147483647);
 
-  if(typeof puter === 'undefined') {
-    showGenError('Puter.js not loaded. Check your connection and refresh.');
-    btn.disabled = false; btn.style.opacity = '1';
-    return;
-  }
-
-  puter.ai.txt2img(fullPrompt, {
-    model: 'dall-e-3',
-    quality: 'standard',
-    size: aspect === '16:9' ? '1792x1024' : aspect === '9:16' ? '1024x1792' : '1024x1024'
+  fetch('https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      inputs: fullPrompt,
+      parameters: {
+        width: _imgW,
+        height: _imgH,
+        seed: seed,
+        num_inference_steps: 25,
+        guidance_scale: 7.5
+      }
+    })
   })
-  .then(function(imgEl) {
-    document.getElementById('imgLoading').style.display = 'none';
+  .then(function(r) {
+    if(!r.ok) {
+      return r.json().then(function(j) {
+        // Model loading — wait and retry
+        if(j.error && j.error.indexOf('loading') > -1) {
+          document.getElementById('imgStatus').textContent = 'Model loading, retrying...';
+          setTimeout(function(){ _runGenerate(prompt); }, 20000);
+          return;
+        }
+        throw new Error(j.error || 'API error ' + r.status);
+      });
+    }
+    return r.blob();
+  })
+  .then(function(blob) {
+    if(!blob) return; // retry case handled above
+    _lastImgBlob = blob;
+    var url = URL.createObjectURL(blob);
     var el = document.getElementById('generatedImg');
-    el.src = imgEl.src;
+    el.src = url;
     el.style.display = 'block';
-    _lastGenImgEl = imgEl;
+    document.getElementById('imgLoading').style.display = 'none';
     document.getElementById('imgActions').style.display = 'flex';
     document.getElementById('imgStatus').textContent = 'Done';
     btn.disabled = false; btn.style.opacity = '1';
   })
   .catch(function(err) {
-    console.error('Puter gen error:', err);
-    showGenError('Generation failed. Make sure you are signed in to Puter or try again.');
+    console.error('Gen error:', err);
+    document.getElementById('imgLoading').style.display = 'none';
+    var errEl = document.getElementById('imgError');
+    errEl.style.display = 'block';
+    errEl.textContent = 'Generation failed: ' + (err.message || 'Check connection and try again.');
+    document.getElementById('imgStatus').textContent = 'Failed';
     btn.disabled = false; btn.style.opacity = '1';
   });
 }
 
-function showGenError(msg) {
-  document.getElementById('imgLoading').style.display = 'none';
-  var err = document.getElementById('imgError');
-  err.style.display = 'block';
-  err.textContent = msg;
-  document.getElementById('imgStatus').textContent = 'Failed';
-}
-
 function saveGenImg() {
-  var el = document.getElementById('generatedImg');
-  if(!el.src || el.style.display==='none'){ showToast('Generate an image first'); return; }
-  fetchAndSave(el.src, 'anicade-ad-' + Date.now() + '.jpg');
+  if(!_lastImgBlob){ showToast('Generate an image first'); return; }
+  var url = URL.createObjectURL(_lastImgBlob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'anicade-ad-' + Date.now() + '.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
 }
 
 // ── IMAGE SAVE HELPERS ──────────────────────
