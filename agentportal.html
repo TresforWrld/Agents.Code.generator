@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>ANICADE TECH | Agent Portal</title>
+<meta property="og:title" content="ANICADE TECH | Agent Portal">
+<meta property="og:description" content="Your ANICADE TECH Agent Dashboard — track referrals, earn commission, access advertising materials and tools.">
+<meta property="og:image" content="https://files.catbox.moe/mauo6k.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://files.catbox.moe/mauo6k.jpg">
+<script src="https://js.puter.com/v2/"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -77,7 +86,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 .modal-cancel:hover{background:rgba(255,255,255,0.08);color:var(--text)}
 
 /* ── PORTAL HEADER ── */
-.portal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding:14px 16px;background:rgba(11,28,45,0.96);border:1px solid rgba(198,168,92,0.18);border-radius:14px;box-shadow:0 4px 28px rgba(0,0,0,0.35);animation:fadeDown .6s ease both;gap:10px;flex-wrap:nowrap}
+.portal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding:12px 14px;background:rgba(11,28,45,0.96);border:1px solid rgba(198,168,92,0.18);border-radius:14px;box-shadow:0 4px 28px rgba(0,0,0,0.35);animation:fadeDown .6s ease both;gap:8px;flex-wrap:wrap}
 .portal-header-brand{display:flex;align-items:center;gap:12px}
 .ph-logo{position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ph-logo::before{content:'';position:absolute;inset:0;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border:1.5px solid rgba(198,168,92,0.5);animation:logospin1 6s linear infinite}
@@ -86,10 +95,10 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 .ph-name{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--gold);letter-spacing:1.5px}
 .ph-name span{color:var(--accent)}
 .ph-tag{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2.5px;color:rgba(148,163,184,0.45)}
-.portal-header-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.portal-header-right{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:auto}
 .ph-agent{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);min-width:0;overflow:hidden}
 .ph-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 7px rgba(57,255,20,0.55);animation:pulse 2s infinite;flex-shrink:0}
-.ph-btn{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;padding:6px 10px;border-radius:7px;cursor:pointer;transition:all .2s;border:1px solid;white-space:nowrap}
+.ph-btn{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:.5px;padding:5px 9px;border-radius:7px;cursor:pointer;transition:all .2s;border:1px solid;white-space:nowrap;flex-shrink:0}
 .ph-switch{background:rgba(198,168,92,0.05);border-color:rgba(198,168,92,0.18);color:rgba(198,168,92,0.5);display:none}
 .ph-switch:hover{background:rgba(198,168,92,0.12);color:var(--gold)}
 .ph-logout{background:rgba(255,80,80,0.05);border-color:rgba(255,80,80,0.15);color:rgba(255,100,100,0.5)}
@@ -924,7 +933,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
     <div class="ads-tab-content" id="ads-media" style="display:none">
       <div class="ads-card">
         <div class="ads-card-label">Promotional Images</div>
-        <div class="ads-card-text" style="margin-bottom:12px">Long-press any image to save. Use these on social media, WhatsApp status, and marketing materials.</div>
+        <div class="ads-card-text" style="margin-bottom:12px">Tap Save to download. Use on social media, WhatsApp status and marketing materials.</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div style="display:flex;flex-direction:column;gap:5px">
             <img src="https://i.imgur.com/SjoLY9G.jpeg" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
@@ -949,6 +958,139 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
           <div style="display:flex;flex-direction:column;gap:5px">
             <img src="https://i.imgur.com/HWIMxKz.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
             <button onclick="saveMediaImg('https://i.imgur.com/HWIMxKz.png','anicade-promo-6.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80','anicade-analytics-dashboard.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80','anicade-laptop-workspace.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=600&q=80','anicade-digital-design.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80','anicade-digital-marketing.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ad Generator Tab -->
+    <div class="ads-tab-content" id="ads-generate" style="display:none">
+      <!-- STYLE PRESETS -->
+      <div class="ads-card">
+        <div class="ads-card-label">Style</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap" id="presetBtns">
+          <button class="gen-preset" onclick="pickPreset(this)">Corporate</button>
+          <button class="gen-preset" onclick="pickPreset(this)">Social Ad</button>
+          <button class="gen-preset" onclick="pickPreset(this)">Minimal</button>
+          <button class="gen-preset" onclick="pickPreset(this)">African Biz</button>
+          <button class="gen-preset" onclick="pickPreset(this)">Tech Banner</button>
+        </div>
+      </div>
+
+      <!-- SIZE -->
+      <div class="ads-card">
+        <div class="ads-card-label">Size</div>
+        <div style="display:flex;gap:8px">
+          <button class="gen-size active" id="sz-sq" onclick="pickSize(this,'square')">Square</button>
+          <button class="gen-size" id="sz-ls" onclick="pickSize(this,'landscape')">Landscape</button>
+          <button class="gen-size" id="sz-pt" onclick="pickSize(this,'portrait')">Portrait</button>
+        </div>
+      </div>
+
+      <!-- PROMPT + GENERATE -->
+      <div class="ads-card">
+        <div class="ads-card-label">Prompt</div>
+        <textarea id="imgPrompt" placeholder="Describe your image... e.g. Professional website design banner for a Zambian business, dark blue background, gold accents, modern tech style" style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px;font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--text);outline:none;resize:none;min-height:90px;line-height:1.5;transition:border-color .2s;margin-bottom:12px" onfocus="this.style.borderColor='rgba(0,191,255,0.3)'" onblur="this.style.borderColor='rgba(255,255,255,0.09)'"></textarea>
+        <button id="genImgBtn" onclick="generateAdImage()" style="width:100%;background:linear-gradient(135deg,rgba(0,191,255,0.15),rgba(0,191,255,0.07));border:1px solid rgba(0,191,255,0.3);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:13px;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          GENERATE IMAGE
+        </button>
+      </div>
+
+      <!-- RESULT -->
+      <div id="imgResult" style="display:none">
+        <div class="ads-card">
+          <div class="ads-card-label" style="display:flex;align-items:center;justify-content:space-between">
+            <span>Result</span>
+            <span id="imgStatus" style="font-size:11px;color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:600"></span>
+          </div>
+          <div id="imgLoading" style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:40px 20px">
+            <div style="width:36px;height:36px;border:2px solid rgba(0,191,255,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite"></div>
+            <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--muted)">GENERATING...</div>
+            <div style="font-size:11px;color:rgba(148,163,184,0.4)">Usually 10–30 seconds</div>
+          </div>
+          <img id="generatedImg" style="width:100%;display:none;border-radius:10px;margin-bottom:10px" alt="Generated">
+          <div id="imgError" style="display:none;text-align:center;padding:16px;color:var(--red);font-size:12px;line-height:1.5"></div>
+          <div id="imgActions" style="display:none;gap:8px">
+            <button id="downloadBtn" onclick="saveGenImg()" style="flex:1;background:linear-gradient(135deg,rgba(57,255,20,0.1),rgba(57,255,20,0.05));border:1px solid rgba(57,255,20,0.2);color:var(--green);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Save
+            </button>
+            <button onclick="regenerateAdImage()" style="flex:1;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              Again
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ads-card" style="margin-top:4px">
+        <div class="ads-card-label">Tips</div>
+        <div class="ads-card-text">Be specific: <em style="color:var(--accent)">"Professional tech banner, dark navy, gold accents, Zambian business, clean modern layout"</em><br><br>Pick a Style preset to auto-fill a starting prompt, then edit it.</div>
+      </div>
+    </div>
+
+    <!-- Media Tab -->
+    <div class="ads-tab-content" id="ads-media" style="display:none">
+      <div class="ads-card">
+        <div class="ads-card-label">Promotional Images</div>
+        <div class="ads-card-text" style="margin-bottom:12px">Tap Save to download. Use on social media, WhatsApp status and marketing materials.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://i.imgur.com/SjoLY9G.jpeg" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://i.imgur.com/SjoLY9G.jpeg','anicade-promo-1.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://i.imgur.com/uPGmSPd.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://i.imgur.com/uPGmSPd.png','anicade-promo-2.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://i.imgur.com/g5DXuNc.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://i.imgur.com/g5DXuNc.png','anicade-promo-3.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://i.imgur.com/9HjORWT.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://i.imgur.com/9HjORWT.png','anicade-promo-4.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://i.imgur.com/jZSP3Nz.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://i.imgur.com/jZSP3Nz.png','anicade-promo-5.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://i.imgur.com/HWIMxKz.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://i.imgur.com/HWIMxKz.png','anicade-promo-6.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80','anicade-analytics-dashboard.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=600&q=80','anicade-laptop-workspace.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=600&q=80','anicade-digital-design.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
+            <button onclick="saveMediaImg('https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80','anicade-digital-marketing.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
           </div>
         </div>
       </div>
@@ -2312,18 +2454,35 @@ function copyAdsText(id, btn) {
 }
 
 // ── AI IMAGE GENERATOR ───────────────────────
-// ── AD IMAGE GENERATOR ──────────────────────
-// ── AD IMAGE GENERATOR ─────────────────────
-var _imgW = 1024, _imgH = 1024, _lastImgPrompt = '', _lastImgSeed = null;
+// ── AD IMAGE GENERATOR (Puter.js) ──────────
+var _imgAspect = 'square';
+var _lastImgPrompt = '';
+var _lastGenImgEl = null;
 
-function applyGenPreset(btn, val) {
-  document.getElementById('imgPrompt').value = val;
+var PRESET_PROMPTS = {
+  'Corporate': 'professional corporate tech services banner, dark navy background, blue and gold accents, modern Zambia business, clean sophisticated layout',
+  'Social Ad': 'vibrant social media advertisement, bold saturated colors, eye-catching design, digital services promotion, African market audience',
+  'Minimal': 'minimalist clean white background, elegant typography, luxury brand feel, professional services, simple modern design',
+  'African Biz': 'African business digital services promotion, colorful Zambian professional, modern tech company, warm vibrant tones',
+  'Tech Banner': 'tech company banner, dark background, glowing cyan and gold accents, futuristic technology, professional digital agency'
+};
+
+var ASPECT_MAP = {
+  'square': '1:1',
+  'landscape': '16:9',
+  'portrait': '9:16'
+};
+
+function pickPreset(btn) {
   document.querySelectorAll('.gen-preset').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
+  var key = btn.textContent.trim();
+  var prompt = PRESET_PROMPTS[key] || '';
+  document.getElementById('imgPrompt').value = prompt;
 }
 
-function selectGenSize(btn, w, h) {
-  _imgW = w; _imgH = h;
+function pickSize(btn, size) {
+  _imgAspect = size;
   document.querySelectorAll('.gen-size').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
 }
@@ -2332,95 +2491,74 @@ function generateAdImage() {
   var prompt = document.getElementById('imgPrompt').value.trim();
   if(!prompt){ showToast('Enter a prompt first'); return; }
   _lastImgPrompt = prompt;
-  _lastImgSeed = Math.floor(Math.random() * 999999);
-  _runGenerate(_lastImgPrompt, _lastImgSeed);
+  _doGenerate(prompt);
 }
 
 function regenerateAdImage() {
   if(!_lastImgPrompt){ showToast('Generate something first'); return; }
-  _lastImgSeed = Math.floor(Math.random() * 999999);
-  _runGenerate(_lastImgPrompt, _lastImgSeed);
+  _doGenerate(_lastImgPrompt);
 }
 
-function _runGenerate(prompt, seed) {
+function _doGenerate(prompt) {
   var btn = document.getElementById('genImgBtn');
   btn.disabled = true; btn.style.opacity = '0.5';
 
-  var result = document.getElementById('imgResult');
-  result.style.display = 'block';
+  document.getElementById('imgResult').style.display = 'block';
   document.getElementById('imgLoading').style.display = 'flex';
   document.getElementById('generatedImg').style.display = 'none';
   document.getElementById('imgError').style.display = 'none';
   document.getElementById('imgActions').style.display = 'none';
   document.getElementById('imgStatus').textContent = 'Generating...';
 
-  setTimeout(function(){ result.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+  setTimeout(function(){ document.getElementById('imgResult').scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
 
-  var fullPrompt = prompt + ', high quality, professional advertising photograph';
-  var encoded = encodeURIComponent(fullPrompt);
-  var url = 'https://image.pollinations.ai/prompt/' + encoded
-    + '?width=' + _imgW + '&height=' + _imgH
-    + '&seed=' + seed + '&nologo=true&enhance=true&model=flux';
+  var fullPrompt = prompt + ', high quality professional advertising image, no watermark, no text overlay';
+  var aspect = ASPECT_MAP[_imgAspect] || '1:1';
 
-  var img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.onload = function() {
+  if(typeof puter === 'undefined') {
+    showGenError('Puter.js not loaded. Check your connection and refresh.');
+    btn.disabled = false; btn.style.opacity = '1';
+    return;
+  }
+
+  puter.ai.txt2img(fullPrompt, {
+    model: 'dall-e-3',
+    quality: 'standard',
+    size: aspect === '16:9' ? '1792x1024' : aspect === '9:16' ? '1024x1792' : '1024x1024'
+  })
+  .then(function(imgEl) {
     document.getElementById('imgLoading').style.display = 'none';
     var el = document.getElementById('generatedImg');
-    el.src = url; el.style.display = 'block';
-    var dl = document.getElementById('downloadBtn');
-    window._lastGenUrl = url; window._lastGenSeed = seed;
+    el.src = imgEl.src;
+    el.style.display = 'block';
+    _lastGenImgEl = imgEl;
     document.getElementById('imgActions').style.display = 'flex';
     document.getElementById('imgStatus').textContent = 'Done';
     btn.disabled = false; btn.style.opacity = '1';
-  };
-  img.onerror = function() {
-    document.getElementById('imgLoading').style.display = 'none';
-    var err = document.getElementById('imgError');
-    err.style.display = 'block';
-    err.textContent = 'Generation failed. Check your connection and try a simpler prompt.';
-    document.getElementById('imgStatus').textContent = 'Failed';
+  })
+  .catch(function(err) {
+    console.error('Puter gen error:', err);
+    showGenError('Generation failed. Make sure you are signed in to Puter or try again.');
     btn.disabled = false; btn.style.opacity = '1';
-  };
-  img.src = url;
+  });
 }
 
-
-
-// ── LEADERBOARD COLLAPSE ────────────────────
-var _lbExpanded = false;
-function toggleLeaderboard() {
-  _lbExpanded = !_lbExpanded;
-  var list = document.getElementById('leaderboardList');
-  var chev = document.getElementById('lbChevron');
-  var btn = document.getElementById('lbExpandBtn');
-  if(_lbExpanded) {
-    list.querySelectorAll('.lb-row.lb-hidden').forEach(function(r){ r.style.display=''; });
-    if(chev) chev.style.transform = 'rotate(180deg)';
-    if(btn) btn.style.display = 'none';
-  } else {
-    list.querySelectorAll('.lb-row').forEach(function(r, i){
-      if(i >= 3) r.style.display = 'none';
-    });
-    if(chev) chev.style.transform = '';
-    var rows = list.querySelectorAll('.lb-row');
-    if(btn) btn.style.display = rows.length > 3 ? 'block' : 'none';
-  }
+function showGenError(msg) {
+  document.getElementById('imgLoading').style.display = 'none';
+  var err = document.getElementById('imgError');
+  err.style.display = 'block';
+  err.textContent = msg;
+  document.getElementById('imgStatus').textContent = 'Failed';
 }
-function expandLeaderboard() {
-  _lbExpanded = true;
-  document.getElementById('leaderboardList').querySelectorAll('.lb-row').forEach(function(r){ r.style.display=''; });
-  document.getElementById('lbExpandBtn').style.display = 'none';
-  var chev = document.getElementById('lbChevron');
-  if(chev) chev.style.transform = 'rotate(180deg)';
+
+function saveGenImg() {
+  var el = document.getElementById('generatedImg');
+  if(!el.src || el.style.display==='none'){ showToast('Generate an image first'); return; }
+  fetchAndSave(el.src, 'anicade-ad-' + Date.now() + '.jpg');
 }
 
 // ── IMAGE SAVE HELPERS ──────────────────────
-function saveGenImg() {
-  var url = window._lastGenUrl;
-  if(!url){ showToast('No image generated yet'); return; }
-  fetchAndSave(url, 'anicade-ad-' + (window._lastGenSeed||Date.now()) + '.jpg');
-}
+// saveGenImg defined above
 
 function saveMediaImg(src, filename, btn) {
   var orig = btn.innerHTML;
