@@ -509,6 +509,19 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
 .gen-size.active{background:rgba(0,191,255,0.1);border-color:rgba(0,191,255,0.3);color:var(--accent)}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+
+/* ── ONBOARDING ── */
+.ob-item{display:flex;align-items:center;gap:14px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.ob-item:hover{background:rgba(255,255,255,0.02)}
+.ob-item.done{opacity:.5}
+.ob-check{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:transparent;transition:all .2s}
+.ob-item.done .ob-check{background:var(--green);border-color:var(--green);color:#0B1C2D}
+.ob-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.ob-sub{font-size:11px;color:var(--muted)}
+/* ── CALCULATOR ── */
+.calc-preset{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;padding:6px 12px;background:rgba(198,168,92,0.06);border:1px solid rgba(198,168,92,0.15);color:var(--gold);border-radius:6px;cursor:pointer;transition:all .2s}
+.calc-preset:hover,.calc-preset.active{background:rgba(198,168,92,0.15);border-color:var(--gold)}
+
 </style>
 </head>
 <body>
@@ -915,27 +928,27 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div style="display:flex;flex-direction:column;gap:5px">
             <img src="https://i.imgur.com/SjoLY9G.jpeg" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <a href="https://i.imgur.com/SjoLY9G.jpeg" download="anicade-promo-1.jpg" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;text-decoration:none"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</a>
+            <button onclick="saveMediaImg('https://i.imgur.com/SjoLY9G.jpeg','anicade-promo-1.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:5px">
             <img src="https://i.imgur.com/uPGmSPd.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <a href="https://i.imgur.com/uPGmSPd.png" download="anicade-promo-2.jpg" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;text-decoration:none"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</a>
+            <button onclick="saveMediaImg('https://i.imgur.com/uPGmSPd.png','anicade-promo-2.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:5px">
             <img src="https://i.imgur.com/g5DXuNc.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <a href="https://i.imgur.com/g5DXuNc.png" download="anicade-promo-3.jpg" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;text-decoration:none"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</a>
+            <button onclick="saveMediaImg('https://i.imgur.com/g5DXuNc.png','anicade-promo-3.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:5px">
             <img src="https://i.imgur.com/9HjORWT.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <a href="https://i.imgur.com/9HjORWT.png" download="anicade-promo-4.jpg" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;text-decoration:none"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</a>
+            <button onclick="saveMediaImg('https://i.imgur.com/9HjORWT.png','anicade-promo-4.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:5px">
             <img src="https://i.imgur.com/jZSP3Nz.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <a href="https://i.imgur.com/jZSP3Nz.png" download="anicade-promo-5.jpg" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;text-decoration:none"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</a>
+            <button onclick="saveMediaImg('https://i.imgur.com/jZSP3Nz.png','anicade-promo-5.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:5px">
             <img src="https://i.imgur.com/HWIMxKz.png" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:1;border:1px solid var(--border)">
-            <a href="https://i.imgur.com/HWIMxKz.png" download="anicade-promo-6.jpg" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;text-decoration:none"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</a>
+            <button onclick="saveMediaImg('https://i.imgur.com/HWIMxKz.png','anicade-promo-6.jpg',this)" style="display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:6px 8px;border-radius:6px;cursor:pointer;width:100%"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Save</button>
           </div>
         </div>
       </div>
@@ -987,10 +1000,10 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
           <img id="generatedImg" style="width:100%;display:none;border-radius:10px;margin-bottom:10px" alt="Generated Ad">
           <div id="imgError" style="display:none;text-align:center;padding:20px;color:var(--red);font-size:12px"></div>
           <div id="imgActions" style="display:none;gap:8px">
-            <a id="downloadBtn" download="anicade-ad.jpg" target="_blank" style="flex:1;background:linear-gradient(135deg,rgba(57,255,20,0.1),rgba(57,255,20,0.05));border:1px solid rgba(57,255,20,0.2);color:var(--green);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none">
+            <button id="downloadBtn" onclick="saveGenImg()" style="flex:1;background:linear-gradient(135deg,rgba(57,255,20,0.1),rgba(57,255,20,0.05));border:1px solid rgba(57,255,20,0.2);color:var(--green);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Save Image
-            </a>
+            </button>
             <button onclick="regenerateAdImage()" style="flex:1;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.15);color:var(--accent);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:10px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
               Regenerate
@@ -1026,6 +1039,91 @@ html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-ser
       <div class="ads-card">
         <div class="ads-card-label">Q: What services do they offer?</div>
         <div class="ads-card-text">Website design &amp; development, AI chatbots, logo &amp; brand design, social media graphics, ad management, domain &amp; hosting setup, premium apps, and more — starting from K100.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Onboarding Checklist -->
+  <div id="onboardingSection" style="margin-top:28px">
+    <div class="section-hd" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleOnboarding()">
+      <span style="display:flex;align-items:center;gap:8px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Agent Onboarding
+      </span>
+      <span id="onboardPct" style="font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:var(--accent)">0%</span>
+    </div>
+    <div id="onboardBody">
+      <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;margin-bottom:14px;overflow:hidden">
+        <div id="onboardBar" style="height:100%;background:linear-gradient(to right,var(--gold),var(--accent));border-radius:2px;width:0%;transition:width .4s ease"></div>
+      </div>
+      <div class="section-card" style="padding:0;overflow:hidden">
+        <div class="ob-item" id="ob1" onclick="toggleOb('ob1')">
+          <div class="ob-check" id="ob1-chk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="ob-text"><div class="ob-title">Set up your profile photo</div><div class="ob-sub">Tap Edit Photo on your profile card</div></div>
+        </div>
+        <div class="ob-item" id="ob2" onclick="toggleOb('ob2')">
+          <div class="ob-check" id="ob2-chk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="ob-text"><div class="ob-title">Copy your referral link</div><div class="ob-sub">Share it to start earning commission</div></div>
+        </div>
+        <div class="ob-item" id="ob3" onclick="toggleOb('ob3')">
+          <div class="ob-check" id="ob3-chk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="ob-text"><div class="ob-title">Share your first post</div><div class="ob-sub">Use a caption from Advertising Materials</div></div>
+        </div>
+        <div class="ob-item" id="ob4" onclick="toggleOb('ob4')">
+          <div class="ob-check" id="ob4-chk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="ob-text"><div class="ob-title">Get your first referral</div><div class="ob-sub">Someone signs up using your link</div></div>
+        </div>
+        <div class="ob-item" id="ob5" onclick="toggleOb('ob5')">
+          <div class="ob-check" id="ob5-chk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="ob-text"><div class="ob-title">Close your first sale</div><div class="ob-sub">Earn your first 15% commission</div></div>
+        </div>
+        <div class="ob-item" id="ob6" onclick="toggleOb('ob6')" style="border-bottom:none">
+          <div class="ob-check" id="ob6-chk"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="ob-text"><div class="ob-title">Review the FAQs</div><div class="ob-sub">Know how to answer client questions</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Earnings Calculator -->
+  <div id="calcSection" style="margin-top:28px">
+    <div class="section-hd" style="display:flex;align-items:center;gap:8px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+      Earnings Calculator
+    </div>
+    <div class="section-card">
+      <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1.5px;color:var(--muted);margin-bottom:10px">SELECT SERVICE PRICE</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="calcPresets">
+        <button class="calc-preset" onclick="setCalcPrice(this,300)">K300</button>
+        <button class="calc-preset" onclick="setCalcPrice(this,800)">K800</button>
+        <button class="calc-preset" onclick="setCalcPrice(this,1100)">K1,100</button>
+        <button class="calc-preset" onclick="setCalcPrice(this,1500)">K1,500</button>
+        <button class="calc-preset" onclick="setCalcPrice(this,2500)">K2,500</button>
+        <button class="calc-preset" onclick="setCalcPrice(this,3500)">K3,500</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--muted);flex-shrink:0">OR ENTER PRICE</div>
+        <div style="position:relative;flex:1">
+          <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);font-weight:700">K</span>
+          <input id="calcInput" type="number" min="0" placeholder="0" oninput="calcEarnings()" style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:10px 12px 10px 28px;font-family:'Orbitron',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='rgba(0,191,255,0.3)'" onblur="this.style.borderColor='rgba(255,255,255,0.09)'">
+        </div>
+      </div>
+      <div id="calcResult" style="display:none">
+        <div style="background:linear-gradient(135deg,rgba(57,255,20,0.06),rgba(57,255,20,0.02));border:1px solid rgba(57,255,20,0.15);border-radius:10px;padding:16px;text-align:center;margin-bottom:10px">
+          <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--muted);margin-bottom:6px">YOUR COMMISSION (15%)</div>
+          <div id="calcCommission" style="font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:var(--green);text-shadow:0 0 20px rgba(57,255,20,0.3)">K0</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+            <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--muted);margin-bottom:4px">BONUS TIER (20%)</div>
+            <div id="calcBonus" style="font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;color:var(--gold)">K0</div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+            <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--muted);margin-bottom:4px">10 SALES / MONTH</div>
+            <div id="calcMonthly" style="font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;color:var(--accent)">K0</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1312,19 +1410,24 @@ function getTier(r){
 }
 function daysActive(d){
   try{
-    // Handles "15 Mar 2025" or "15/03/2025" or timestamp
-    if(!d)return 1;
+    if(!d) return 1;
     const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
     const p=String(d).trim().split(/[\s\/\-]+/);
     let dt;
-    if(p.length>=3&&isNaN(p[0])){ // "15 Mar 2025"
+    // "22 Mar 2026" — day is numeric, month is alpha (p[1] is NaN)
+    if(p.length>=3 && isNaN(parseInt(p[1]))){
       dt=new Date(parseInt(p[2]),months[p[1]]||0,parseInt(p[0]));
-    } else if(p.length>=3){ // "2025/03/15" or "15/03/2025"
-      dt=p[0].length===4?new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])):new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));
-    } else dt=new Date(d);
-    if(isNaN(dt.getTime()))return 1;
+    } else if(p.length>=3){
+      // "2026/03/22" or "22/03/2026"
+      dt=p[0].length===4
+        ?new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]))
+        :new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));
+    } else {
+      dt=new Date(d);
+    }
+    if(isNaN(dt.getTime())) return 1;
     return Math.max(1,Math.round((Date.now()-dt.getTime())/86400000));
-  }catch{return 1;}
+  }catch(e){ return 1; }
 }
 function getRank(code){const ranked=_codes.map(c=>({code:c.code,n:_refs.filter(r=>r.agentCode===c.code).length})).sort((a,b)=>b.n-a.n);const pos=ranked.findIndex(r=>r.code===code);return pos>=0?pos+1:'—';}
 function agentColor(code){const cols=['#00BFFF','#C6A85C','#39ff14','#a78bfa','#f472b6','#fb923c','#38bdf8','#84cc16'];let h=0;for(let i=0;i<code.length;i++){h=((h<<5)-h)+code.charCodeAt(i);h|=0;}return cols[Math.abs(h)%cols.length];}
@@ -1456,6 +1559,7 @@ function renderPortal(entry,adminMode=false){
   document.getElementById('pTier').innerHTML=`<span class="tier-badge ${tier.cls}">${tier.icon} ${tier.name} AGENT</span>`;
   document.getElementById('statReferrals').textContent=refs.length;
   document.getElementById('statDays').textContent=days;
+  setTimeout(loadOnboarding, 100);
   document.getElementById('statRank').textContent='#'+rank;
   document.getElementById('statPoints').textContent=points;
   document.getElementById('refCode').textContent='REF-'+entry.code.replace('-','');
@@ -2265,7 +2369,7 @@ function _runGenerate(prompt, seed) {
     var el = document.getElementById('generatedImg');
     el.src = url; el.style.display = 'block';
     var dl = document.getElementById('downloadBtn');
-    dl.href = url; dl.download = 'anicade-ad-' + seed + '.jpg';
+    window._lastGenUrl = url; window._lastGenSeed = seed;
     document.getElementById('imgActions').style.display = 'flex';
     document.getElementById('imgStatus').textContent = 'Done';
     btn.disabled = false; btn.style.opacity = '1';
@@ -2310,6 +2414,101 @@ function expandLeaderboard() {
   var chev = document.getElementById('lbChevron');
   if(chev) chev.style.transform = 'rotate(180deg)';
 }
+
+// ── IMAGE SAVE HELPERS ──────────────────────
+function saveGenImg() {
+  var url = window._lastGenUrl;
+  if(!url){ showToast('No image generated yet'); return; }
+  fetchAndSave(url, 'anicade-ad-' + (window._lastGenSeed||Date.now()) + '.jpg');
+}
+
+function saveMediaImg(src, filename, btn) {
+  var orig = btn.innerHTML;
+  btn.innerHTML = 'Saving...';
+  btn.disabled = true;
+  fetchAndSave(src, filename, function(ok) {
+    btn.innerHTML = ok ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Saved' : orig;
+    btn.style.color = ok ? 'var(--green)' : '';
+    setTimeout(function(){ btn.innerHTML = orig; btn.style.color = ''; btn.disabled = false; }, 2200);
+  });
+}
+
+function fetchAndSave(url, filename, cb) {
+  fetch(url)
+    .then(function(r){ return r.blob(); })
+    .then(function(blob){
+      var burl = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = burl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(burl); }, 1000);
+      if(cb) cb(true);
+    })
+    .catch(function(){
+      // CORS fallback — open in new tab, user can long-press to save
+      showToast('Long-press the image to save');
+      window.open(url, '_blank');
+      if(cb) cb(false);
+    });
+}
+
+// ── ONBOARDING ──────────────────────────────
+function _obKey(){ return 'anicade_ob_' + (currentEntry ? currentEntry.code : 'guest'); }
+function loadOnboarding(){
+  var saved = {};
+  try{ saved = JSON.parse(localStorage.getItem(_obKey()) || '{}'); }catch(e){}
+  ['ob1','ob2','ob3','ob4','ob5','ob6'].forEach(function(id){
+    if(saved[id]) document.getElementById(id).classList.add('done');
+    else document.getElementById(id).classList.remove('done');
+  });
+  updateOnboardProgress();
+}
+function toggleOb(id){
+  var el = document.getElementById(id);
+  el.classList.toggle('done');
+  var saved = {};
+  try{ saved = JSON.parse(localStorage.getItem(_obKey()) || '{}'); }catch(e){}
+  if(el.classList.contains('done')) saved[id] = 1;
+  else delete saved[id];
+  localStorage.setItem(_obKey(), JSON.stringify(saved));
+  updateOnboardProgress();
+}
+function updateOnboardProgress(){
+  var done = document.querySelectorAll('.ob-item.done').length;
+  var total = document.querySelectorAll('.ob-item').length;
+  var pct = Math.round((done/total)*100);
+  document.getElementById('onboardBar').style.width = pct + '%';
+  document.getElementById('onboardPct').textContent = pct + '%';
+  if(pct === 100) document.getElementById('onboardPct').style.color = 'var(--green)';
+}
+function toggleOnboarding(){
+  var body = document.getElementById('onboardBody');
+  body.style.display = body.style.display === 'none' ? 'block' : 'none';
+}
+
+// ── EARNINGS CALCULATOR ─────────────────────
+function setCalcPrice(btn, price){
+  document.querySelectorAll('.calc-preset').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('calcInput').value = price;
+  calcEarnings();
+}
+function calcEarnings(){
+  var val = parseFloat(document.getElementById('calcInput').value) || 0;
+  document.querySelectorAll('.calc-preset').forEach(function(b){ b.classList.remove('active'); });
+  if(!val){ document.getElementById('calcResult').style.display='none'; return; }
+  document.getElementById('calcResult').style.display = 'block';
+  var comm = Math.round(val * 0.15);
+  var bonus = Math.round(val * 0.20);
+  var monthly = comm * 10;
+  document.getElementById('calcCommission').textContent = 'K' + comm.toLocaleString();
+  document.getElementById('calcBonus').textContent = 'K' + bonus.toLocaleString();
+  document.getElementById('calcMonthly').textContent = 'K' + monthly.toLocaleString();
+}
+
 </script>
 </body>
 </html>
